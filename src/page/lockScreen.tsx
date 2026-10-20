@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import '../css/lockScreenCss.css'
+import 'pretendard/dist/web/static/pretendard.css'
 
 const PASSCODE = "1234"; // 4자리 비밀번호
 const SWIPE_THRESHOLD = 80;
@@ -26,6 +27,7 @@ export const LockScreen = ({ onSuccess }: LockScreenProps) => {
   const [dragging, setDragging] = useState(false);
   const [pin, setPin] = useState("");
   const [shake, setShake] = useState(false);
+  const [unlocking, setUnlocking] = useState(false);
   const startY = useRef<number | null>(null);
 
   /* ---------- 위로 밀기 제스처 ---------- */
@@ -61,13 +63,13 @@ export const LockScreen = ({ onSuccess }: LockScreenProps) => {
 
   /* ---------- 비밀번호 입력 로직 ---------- */
   const handleKey = (n: string) => {
-    if (pin.length >= 4) return;
+    if (pin.length >= 4 || unlocking) return;
     const next = pin + n;
     setPin(next);
     if (next.length === 4) {
       setTimeout(() => {
         if (next === PASSCODE) {
-          onSuccess && onSuccess();
+          setUnlocking(true);
         } else {
           setShake(true);
           setTimeout(() => {
@@ -79,6 +81,12 @@ export const LockScreen = ({ onSuccess }: LockScreenProps) => {
     }
   };
 
+  const handleUnlockTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget && e.propertyName === 'transform' && unlocking) {
+      onSuccess?.();
+    }
+  };
+
   const handleDelete = () => setPin(pin.slice(0, -1));
 
   const handleCancel = () => {
@@ -87,7 +95,10 @@ export const LockScreen = ({ onSuccess }: LockScreenProps) => {
   };
 
   return (
-    <div className="lock-wrapper">
+    <div
+      className={`lock-wrapper${unlocking ? ' unlocking' : ''}`}
+      onTransitionEnd={handleUnlockTransitionEnd}
+    >
       {/* 배경 사진 (공통) */}
       <div className="lock-bg" />
 
@@ -97,7 +108,7 @@ export const LockScreen = ({ onSuccess }: LockScreenProps) => {
         <div className="dynamic-island">
           <svg width="15" height="17" viewBox="0 0 15 17" fill="none">
             <path d="M3.5 7V5a4 4 0 1 1 8 0v2" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-            <rect x="1" y="7" width="13" height="9" rx="2.5" fill="#fff" />
+            <rect x="1" y="7" width="13" height="9" rx="5" fill="#fff" />
           </svg>
         </div>
         <div className="status-right">
@@ -212,7 +223,7 @@ export const LockScreen = ({ onSuccess }: LockScreenProps) => {
         </div>
 
         {/* 홈 바 */}
-        <div className="home-indicator-wrapper">
+        <div className="home-indicator-wrapper_main">
           <div className="home-indicator" />
         </div>
       </div>

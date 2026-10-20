@@ -1,0 +1,478 @@
+/* ===== 반응형 기준: 390px 폭 디자인을 화면 폭에 맞춰 비율 확대/축소 ===== */
+.home-wrapper {
+    --u: calc(min(100vw, 430px) / 390); /* 1u = 390px 기준 1px */
+  position: relative;
+  width: 100%;
+  height: 100dvh; /* 동적 뷰포트 높이 설정 */
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: #000;
+  font-family: var(--ios-font);
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ===================== 배경화면 ===================== */
+.home-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ===================== 상태바 ===================== */
+.home-status {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--u) * 52);
+}
+.hs-time {
+    position: absolute;
+    top: calc(var(--u) * 15);
+    left: calc(var(--u) * 47);
+    font-size: calc(var(--u) * 17);
+    line-height: calc(var(--u) * 22);
+    font-weight: 600;
+    letter-spacing: calc(var(--u) * -0.2);
+}
+.hs-right {
+    position: absolute;
+    top: calc(var(--u) * 19);
+    right: calc(var(--u) * 28);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 7);
+}
+.hs-signal {
+    width: calc(var(--u) * 18);
+    height: calc(var(--u) * 12);
+}
+.hs-wifi {
+    width: calc(var(--u) * 17);
+    height: calc(var(--u) * 12);
+}
+.hs-battery {
+    position: relative;
+    width: calc(var(--u) * 25);
+    height: calc(var(--u) * 13);
+    border-radius: calc(var(--u) * 4);
+    background: linear-gradient(to right, #fff 73%, rgba(255, 255, 255, 0.4) 73%);
+    color: rgba(0, 0, 0, 0.65);
+    font-size: calc(var(--u) * 10);
+    font-weight: 700;
+    line-height: calc(var(--u) * 13);
+    text-align: center;
+    margin-right: calc(var(--u) * 3);
+}
+.hs-battery::after {
+    content: "";
+    position: absolute;
+    right: calc(var(--u) * -3);
+    top: calc(var(--u) * 4);
+    width: calc(var(--u) * 2);
+    height: calc(var(--u) * 5);
+    border-radius: 0 calc(var(--u) * 2) calc(var(--u) * 2) 0;
+    background-color: rgba(255, 255, 255, 0.45);
+}
+
+/* ===================== 위젯 ===================== */
+.home-widgets {
+    position: absolute;
+    top: calc(var(--u) * 77);
+    left: calc(var(--u) * 26);
+    right: calc(var(--u) * 26);
+    display: flex;
+    justify-content: space-between;
+}
+
+.widget {
+    text-align: left;
+    width: calc(var(--u) * 158);
+    height: calc(var(--u) * 158);
+    border-radius: calc(var(--u) * 23);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.widget-calendar {
+    background-color: #fff;
+    padding: calc(var(--u) * 15) calc(var(--u) * 16) 0;
+    color: #111;
+}
+.widget-cal-day {
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 14);
+    font-weight: 600;
+}
+.widget-cal-date {
+    text-align: left;
+    font-size: calc(var(--u) * 34);
+    line-height: calc(var(--u) * 34);
+    font-weight: 300;
+    letter-spacing: calc(var(--u) * -1);
+}
+.widget-cal-event {
+    margin-top: calc(var(--u) * 32);
+    font-size: calc(var(--u) * 15);
+    line-height: calc(var(--u) * 18);
+    font-weight: 500;
+    color: #8a8a8e;
+}
+
+/* ===================== 앱 아이콘 그리드 ===================== */
+.home-grid {
+    position: absolute;
+    top: calc(var(--u) * 273);
+    left: calc(var(--u) * 30);
+    display: grid;
+    grid-template-columns: repeat(4, calc(var(--u) * 60));
+    width: calc(100% - var(--u) * 60);
+    justify-content: space-between;
+    row-gap: var(--home-grid-row-gap, calc(var(--u) * 18));
+}
+
+.app-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(var(--u) * 60);
+}
+.app-icon-wrap {
+    position: relative;
+    width: calc(var(--u) * 60);
+    height: calc(var(--u) * 60);
+}
+.app-icon {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: calc(var(--u) * 13.5);
+    overflow: hidden;
+    background-color: #fff;
+}
+.app-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.app-label {
+    width: calc(var(--u) * 90);
+    margin-top: calc(var(--u) * 4);
+    text-align: center;
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 16);
+    font-weight: 500;
+    white-space: nowrap;
+    color: #fff;
+}
+.app-badge {
+    position: absolute;
+    top: calc(var(--u) * -10);
+    left: calc(var(--u) * 46);
+    min-width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+    padding: 0 calc(var(--u) * 7);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 12);
+    background-color: #ff3b30;
+    color: #fff;
+    font-size: calc(var(--u) * 17);
+    font-weight: 600;
+    line-height: calc(var(--u) * 24);
+    text-align: center;
+    z-index: 2;
+}
+
+/* 캘린더 앱 아이콘 */
+.cal-icon-day {
+    position: absolute;
+    top: calc(var(--u) * 4);
+    width: 100%;
+    text-align: center;
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 14);
+    font-weight: 600;
+    color: #111;
+}
+.cal-icon-date {
+    position: absolute;
+    top: calc(var(--u) * 16);
+    width: 100%;
+    text-align: center;
+    font-size: calc(var(--u) * 38);
+    line-height: calc(var(--u) * 38);
+    font-weight: 300;
+    letter-spacing: calc(var(--u) * -1);
+    color: #111;
+}
+
+/* ===================== 검색 알약 ===================== */
+.home-search {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--u) * 126);
+    transform: translateX(-50%);
+    height: calc(var(--u) * 29);
+    padding: 0 calc(var(--u) * 11);
+    border-radius: calc(var(--u) * 15);
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 14);
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    font-family: inherit;
+}
+.home-search svg {
+    width: calc(var(--u) * 11);
+    height: calc(var(--u) * 11);
+}
+
+/* ===================== 독 ===================== */
+.home-dock {
+    position: absolute;
+    left: calc(var(--u) * 13);
+    right: calc(var(--u) * 13);
+    bottom: calc(var(--u) * 12);
+    height: calc(var(--u) * 96);
+    border-radius: calc(var(--u) * 36);
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-items: center;
+    padding: calc(var(--u) * 18) 0 0;
+    box-sizing: border-box;
+}
+
+/* ===================== 페이지 넘기기 ===================== */
+.home-pages {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+.home-pages::-webkit-scrollbar {
+    display: none;
+}
+.home-page {
+    position: relative;
+    flex: 0 0 100%;
+    height: 100%;
+    scroll-snap-align: start;
+}
+.home-grid.page-top {
+    top: calc(var(--u) * 77);
+}
+.home-dots {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--u) * 168);
+    transform: translateX(-50%);
+    display: flex;
+    gap: calc(var(--u) * 9);
+    z-index: 1;
+}
+.home-dot {
+    width: calc(var(--u) * 7);
+    height: calc(var(--u) * 7);
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.home-dot.active {
+    background-color: #fff;
+}
+.home-status,
+.home-search,
+.home-dock{
+  z-index: 1;
+}
+.home-status {
+    pointer-events: none;
+}
+
+/* 위젯 래퍼 */
+.widget-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 캘린더 위젯 기본 박스 (아이폰 순정 흰색 위젯 스타일) */
+.widget {
+    width: calc(var(--u) * 158);
+    height: calc(var(--u) * 158);
+    border-radius: calc(var(--u) * 23);
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #ffffff; /* 순정 캘린더 위젯 배경색 (흰색) */
+    color: #000000;
+    padding: calc(var(--u) * 14) calc(var(--u) * 14);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 요일 텍스트 */
+.widget-cal-day {
+    text-align: left;
+    font-size: calc(var(--u) * 13);
+    font-weight: 600;
+    color: #111111;
+    line-height: calc(var(--u) * 15);
+}
+
+/* 커다란 날짜 숫자 (20) */
+.widget-cal-date {
+    font-size: calc(var(--u) * 38);
+    font-weight: 500;
+    color: #000000;
+    line-height: calc(var(--u) * 44);
+    margin-top: calc(var(--u) * -2);
+    letter-spacing: -1px;
+}
+
+/* 하단 일정 이벤트 컨테이너 (연한 분홍 배경 박스) */
+.widget-cal-event-box {
+    background-color: #fdf2f2; /* 연한 분홍빛 카드 배경 */
+    border-radius: calc(var(--u) * 8);
+    padding: calc(var(--u) * 3) calc(var(--u) * 5);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 6);
+}
+
+/* 좌측 진한 분홍색 세로 바 포인트 */
+.widget-cal-bar {
+    width: calc(var(--u) * 3);
+    height: calc(var(--u) * 24);
+    background-color: #d15167; /* 붉은빛 감도는 진한 분홍 바 */
+    border-radius: calc(var(--u) * 2);
+    flex-shrink: 0;
+}
+
+/* 일정 텍스트 그룹 */
+.widget-cal-text-group {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* 일정 제목 (천사랑 3주년 ㅎㅎ) */
+.widget-cal-title {
+    font-size: calc(var(--u) * 11.5);
+    font-weight: 600;
+    color: #6b1f2b; /* 진한 자주/분홍빛 글씨 색상 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: calc(var(--u) * 14);
+}
+
+/* 일정 시간 (오후 4시 ~ 5시) */
+.widget-cal-time {
+    font-size: calc(var(--u) * 10.5);
+    font-weight: 500;
+    color: #8c4250; /* 조금 연한 자주/분홍빛 시간 글씨 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: calc(var(--u) * 13);
+}
+
+/* 위젯 하단 라벨 (캘린더) */
+.widget-label {
+    margin-top: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 16);
+    font-weight: 500;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* 날씨 위젯 메인 박스 (iOS 순정 푸른 하늘 그라데이션) */
+.main-widget-weather {
+    background: linear-gradient(180deg, #2b7bb9 0%, #4a91c3 50%, #75aed5 100%); /* 푸른 하늘 그라데이션 */
+    color: #ffffff;
+    padding: calc(var(--u) * 14) calc(var(--u) * 15);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* 상단: 지역명 및 위치 화살표 */
+.weather-location {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 17);
+    line-height: calc(var(--u) * 20);
+    letter-spacing: -0.4px;
+}
+
+.location-arrow {
+    width: calc(var(--u) * 13);
+    height: calc(var(--u) * 13);
+    transform: rotate(-30deg); /* 위치 서비스 화살표 각도 */
+}
+
+/* 온도 대표 숫자 */
+.weather-temp {
+    font-size: calc(var(--u) * 48);
+    font-weight: 300; /* 얇고 큰 폰트 스타일 */
+    line-height: calc(var(--u) * 48);
+    margin-top: calc(var(--u) * 2);
+    letter-spacing: -1.5px;
+}
+
+/* 하단 날씨 정보 세션 */
+.weather-bottom {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+}
+
+/* 구름/해 아이콘 */
+.weather-icon {
+    width: calc(var(--u) * 28);
+    height: calc(var(--u) * 22);
+    margin-bottom: calc(var(--u) * 2);
+}
+
+.weather-icon svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* 날씨 상태 설명 (부분적으로 흐림) */
+.weather-desc {
+    font-size: calc(var(--u) * 14.5);
+    line-height: calc(var(--u) * 18);
+    letter-spacing: -0.3px;
+}
+
+/* 최고 / 최저 온도 */
+.weather-range {
+    font-size: calc(var(--u) * 13.5);
+    font-weight: 500;
+    line-height: calc(var(--u) * 17);
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: -0.2px;
+}

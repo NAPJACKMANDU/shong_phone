@@ -1,0 +1,414 @@
+/* ===== 반응형 기준: 393px 폭 디자인을 화면 폭에 맞춰 비율 확대/축소 ===== */
+.kf-wrapper {
+    --u: calc(min(100vw, 430px) / 393);
+    position: relative;
+    width: 100%;
+    height: 100dvh;
+    min-height: calc(var(--u) * 852);
+    margin: 0 auto;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--ios-font, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif);
+    color: #111;
+    letter-spacing: -0.02em;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ===================== 상태바 ===================== */
+.kf-status {
+    position: relative;
+    flex: 0 0 auto;
+    height: calc(var(--u) * 50);
+}
+.kf-time {
+    position: absolute;
+    top: calc(var(--u) * 18);
+    left: calc(var(--u) * 44);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 17);
+    line-height: calc(var(--u) * 22);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+.kf-moon {
+    width: calc(var(--u) * 13);
+    height: calc(var(--u) * 13);
+}
+.kf-status-right {
+    position: absolute;
+    top: calc(var(--u) * 22);
+    right: calc(var(--u) * 32);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 6);
+    height: calc(var(--u) * 14);
+}
+.kf-signal {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 12);
+}
+.kf-net {
+    font-size: calc(var(--u) * 13);
+    font-weight: 600;
+    line-height: calc(var(--u) * 14);
+}
+.kf-battery {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    width: calc(var(--u) * 25);
+    height: calc(var(--u) * 13);
+    margin-right: calc(var(--u) * 3);
+    border-radius: calc(var(--u) * 4);
+    background-color: #30d158;
+    color: #fff;
+    font-size: calc(var(--u) * 10);
+    font-weight: 700;
+}
+.kf-battery::after {
+    content: "";
+    position: absolute;
+    right: calc(var(--u) * -3);
+    top: calc(var(--u) * 4);
+    width: calc(var(--u) * 2);
+    height: calc(var(--u) * 5);
+    border-radius: 0 calc(var(--u) * 2) calc(var(--u) * 2) 0;
+    background-color: rgba(0, 0, 0, 0.18);
+}
+.kf-battery svg {
+    width: calc(var(--u) * 5);
+    height: calc(var(--u) * 8);
+}
+
+/* ===================== 상단 헤더 ===================== */
+.kf-header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 34);
+    margin-top: calc(var(--u) * 21);
+    padding: 0 calc(var(--u) * 20) 0 calc(var(--u) * 16);
+}
+.kf-name {
+    margin-left: calc(var(--u) * 8);
+    font-size: calc(var(--u) * 18);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+}
+.kf-header-icons {
+    margin-left: auto;
+    display: flex;
+    gap: calc(var(--u) * 17);
+}
+.kf-icon-btn {
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.kf-icon-btn svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ===================== 친구 / 소식 탭 ===================== */
+.kf-tabs {
+    flex: 0 0 auto;
+    display: flex;
+    gap: calc(var(--u) * 6);
+    padding: 0 calc(var(--u) * 16);
+    margin-top: calc(var(--u) * 12);
+}
+.kf-tab-btn {
+    height: calc(var(--u) * 38);
+    padding: 0 calc(var(--u) * 16);
+    border: none;
+    border-radius: calc(var(--u) * 19);
+    background-color: #f2f2f2;
+    color: #707070;
+    font-family: inherit;
+    font-size: calc(var(--u) * 14);
+    font-weight: 500;
+}
+.kf-tab-btn.active {
+    background-color: #111;
+    color: #fff;
+}
+
+/* ===================== 스크롤 영역 ===================== */
+.kf-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: calc(var(--u) * 16) calc(var(--u) * 16) calc(var(--u) * 110);
+    scrollbar-width: none;
+}
+.kf-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* 광고 배너 */
+.kf-banner {
+    position: relative;
+    height: calc(var(--u) * 86);
+    margin-bottom: calc(var(--u) * 7);
+    border-radius: calc(var(--u) * 20);
+    background-color: #f3f3f3;
+    overflow: hidden;
+}
+.kf-banner-title {
+    position: absolute;
+    top: calc(var(--u) * 16);
+    left: calc(var(--u) * 25);
+    font-size: calc(var(--u) * 15);
+    line-height: calc(var(--u) * 20);
+    font-weight: 700;
+    color: #333;
+}
+.kf-banner-sub {
+    position: absolute;
+    top: calc(var(--u) * 37);
+    left: calc(var(--u) * 25);
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 18);
+    color: #777;
+}
+.kf-banner-small {
+    position: absolute;
+    top: calc(var(--u) * 58);
+    left: calc(var(--u) * 25);
+    font-size: calc(var(--u) * 7);
+    line-height: calc(var(--u) * 10);
+    color: #aaa;
+    letter-spacing: -0.01em;
+}
+.kf-banner-product {
+    position: absolute;
+    top: calc(var(--u) * 9);
+    left: calc(var(--u) * 251);
+    width: calc(var(--u) * 69);
+    height: calc(var(--u) * 77);
+    border-radius: calc(var(--u) * 4) calc(var(--u) * 4) 0 0;
+    background: linear-gradient(180deg, #2b3b55 0%, #1c2536 100%);
+}
+.kf-banner-product::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--u) * 8);
+    left: calc(var(--u) * 8);
+    right: calc(var(--u) * 8);
+    height: calc(var(--u) * 34);
+    border-radius: calc(var(--u) * 3);
+    background-color: #121a28;
+    border: 1px solid #3c4d6b;
+    box-sizing: border-box;
+}
+.kf-banner-ad {
+    position: absolute;
+    top: calc(var(--u) * 6);
+    right: calc(var(--u) * 7);
+    height: calc(var(--u) * 15);
+    padding: 0 calc(var(--u) * 5);
+    border: 1px solid #b5b5b5;
+    border-radius: calc(var(--u) * 8);
+    box-sizing: border-box;
+    font-size: calc(var(--u) * 8);
+    line-height: calc(var(--u) * 13);
+    font-weight: 700;
+    color: #9a9a9a;
+}
+.kf-banner-play {
+    position: absolute;
+    top: calc(var(--u) * 57);
+    left: calc(var(--u) * 321);
+    width: calc(var(--u) * 21);
+    height: calc(var(--u) * 21);
+    border-radius: 50%;
+    background-color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.kf-banner-play svg {
+    width: calc(var(--u) * 8);
+    height: calc(var(--u) * 8);
+}
+
+/* 접이식 목록 행 */
+.kf-row {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 53);
+    border-bottom: 1px solid #eee;
+    box-sizing: border-box;
+}
+.kf-row-title {
+    font-size: calc(var(--u) * 14);
+    font-weight: 500;
+    color: #111;
+}
+.kf-row-avatars {
+    margin-left: auto;
+    margin-right: calc(var(--u) * 16);
+    display: flex;
+}
+.kf-row-avatars > span {
+    display: block;
+    border-radius: calc(var(--u) * 9);
+    box-shadow: 0 0 0 calc(var(--u) * 2) #fff;
+    margin-left: calc(var(--u) * -3);
+    position: relative;
+}
+.kf-row-avatars > span:first-child {
+    margin-left: 0;
+}
+.kf-chevron {
+    width: calc(var(--u) * 14);
+    height: calc(var(--u) * 14);
+    color: #4a4a4a;
+    flex-shrink: 0;
+}
+.kf-row .kf-chevron,
+.kf-friends-head .kf-chevron {
+    margin-left: auto;
+    margin-right: calc(var(--u) * -1);
+}
+.kf-row-avatars + .kf-chevron {
+    margin-left: 0;
+}
+
+/* 친구 602 */
+.kf-friends-head {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 50);
+}
+.kf-seg {
+    display: flex;
+    align-items: center;
+    width: calc(var(--u) * 131);
+    height: calc(var(--u) * 32);
+    padding: calc(var(--u) * 4);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 16);
+    background-color: #f3f3f3;
+    margin-left: auto;
+    margin-right: calc(var(--u) * 16);
+}
+.kf-seg-btn {
+    height: calc(var(--u) * 24);
+    padding: 0;
+    border: none;
+    border-radius: calc(var(--u) * 12);
+    background: none;
+    color: #6b6b6b;
+    font-family: inherit;
+    font-size: calc(var(--u) * 12);
+    font-weight: 500;
+}
+.kf-seg-btn:first-child {
+    width: calc(var(--u) * 56);
+}
+.kf-seg-btn:last-child {
+    width: calc(var(--u) * 67);
+}
+.kf-seg-btn.active {
+    background-color: #fff;
+    color: #111;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.kf-friends-head .kf-chevron {
+    margin-left: 0;
+}
+
+/* 친구 목록 */
+.kf-friend {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 48);
+    margin-bottom: calc(var(--u) * 18);
+}
+.kf-friend-name {
+    margin-left: calc(var(--u) * 12);
+    font-size: calc(var(--u) * 15);
+    font-weight: 500;
+}
+.kf-friend-count {
+    color: #8a8a8a;
+    font-weight: 400;
+}
+
+/* ===================== 하단 탭바 ===================== */
+.kf-tabbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--u) * 82);
+    padding: calc(var(--u) * 17) calc(var(--u) * 11) 0;
+    box-sizing: border-box;
+    background-color: #fff;
+    display: flex;
+    z-index: 5;
+}
+.kf-tabitem {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    height: calc(var(--u) * 30);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #b9bec6;
+}
+.kf-tabitem.on {
+    color: #1b1b1d;
+}
+.kf-tabicon {
+    position: relative;
+    display: block;
+    height: calc(var(--u) * 24);
+}
+.kf-tabicon svg {
+    height: 100%;
+    width: auto;
+    display: block;
+}
+.kf-badge {
+    position: absolute;
+    top: calc(var(--u) * -3);
+    left: calc(50% + var(--u) * 4);
+    min-width: calc(var(--u) * 26);
+    height: calc(var(--u) * 16);
+    padding: 0 calc(var(--u) * 5);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 8);
+    background-color: #f4511e;
+    color: #fff;
+    font-style: normal;
+    font-size: calc(var(--u) * 11);
+    font-weight: 600;
+    line-height: calc(var(--u) * 16);
+    text-align: center;
+}
+.kf-dot {
+    position: absolute;
+    top: calc(var(--u) * -2);
+    left: calc(50% + var(--u) * 10);
+    width: calc(var(--u) * 5);
+    height: calc(var(--u) * 5);
+    border-radius: 50%;
+    background-color: #f4511e;
+}
