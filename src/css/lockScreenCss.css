@@ -1,0 +1,427 @@
+/* ===================== 글로벌 & 컨테이너 ===================== */
+:root {
+  --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.lock-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100dvh; /* 동적 뷰포트 높이 설정 */
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: #000;
+  font-family: var(--ios-font);
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+/* 배경 화면 설정 */
+.lock-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/lockscreen.jpg'); /* public/lockscreen.jpg 경로 확인 */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* ===================== 잠금화면 메인 ===================== */
+.lock-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  touch-action: none;
+  cursor: grab;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 24px 20px 24px;
+}
+
+.lock-screen:active {
+  cursor: grabbing;
+}
+
+/* --- 1. 상단 상태바 --- */
+.status-bar {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+  padding-top: 4px;
+}
+
+.status-carrier {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  padding-left: 4px;
+}
+
+.dynamic-island {
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 32px;
+  border-radius: 20px;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-right: 4px;
+}
+
+.status-5g {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.battery {
+  position: relative;
+  width: 25px;
+  height: 12px;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #000;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 12px;
+  text-align: center;
+}
+
+.battery::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 3.5px;
+  width: 2px;
+  height: 5px;
+  border-radius: 0 1px 1px 0;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* --- 2. 시계 & 날짜 --- */
+.time-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.lock-date {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: -2px;
+}
+
+.lock-time {
+  font-size: clamp(80px, 22vw, 102px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -2.5px;
+  color: rgba(255, 255, 255, 0.92);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* --- 3. 위젯 영역 --- */
+.widgets-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 12px;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.widget-item {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.widget-weather {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.widget-weather-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.widget-weather-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.938);
+  text-align: left;
+}
+
+.widget-weather-range {
+    font-size: 14px;
+    color: rgba(228, 228, 228, 0.925);
+}
+
+.widget-schedule {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 23px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.938);
+}
+
+/* --- 4. 하단 퀵 액션 버튼 --- */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+  margin-top: auto;
+}
+
+.lock-quick-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(40, 45, 35, 0.45);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease;
+}
+
+.lock-quick-btn:active {
+  transform: scale(0.92);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.lock-dnd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background-color: rgba(30, 35, 25, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.home-indicator-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 5vh;
+}
+
+.home-indicator {
+  width: 134px;
+  height: 5px;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+/* ===================== 암호 입력 화면 (iOS 순정 글래스모피즘 스타일) ===================== */
+.passcode-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 배경 사진이 은은하게 보이도록 불투명도를 낮추고 블러 적용 */
+  background-color: rgba(30, 30, 30, 0.35);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  color: #fff;
+  padding: 60px 20px 10px 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  box-sizing: border-box;
+}
+
+.passcode-screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.passcode-title {
+  font-size: 23px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.4;
+  margin-top: 3vh;
+  margin-bottom: 2.5vh;
+  letter-spacing: -0.2px;
+}
+
+.passcode-dots {
+  display: flex;
+  gap: clamp(17px, 4vw, 20px);
+  margin-bottom: 13vh;
+}
+
+.passcode-dots.shake {
+  animation: passcode-shake 0.4s;
+}
+
+.passcode-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  box-sizing: border-box;
+  transition: background-color 0.15s;
+}
+
+.passcode-dot.filled {
+  background-color: #fff;
+}
+
+/* 반응형 글래스모피즘 키패드 그리드 */
+.passcode-keypad {
+  display: grid;
+  margin-top: 20ox;
+  grid-template-columns: repeat(3, minmax(68px, 19vw));
+  gap: clamp(10px, 2vh, 16px) clamp(16px, 5vw, 22px);
+  justify-content: center;
+  width: 100%;
+  max-width: 320px;
+}
+
+.key-btn {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border-radius: 50%;
+  border: none;
+  /* 순정 아이폰의 반투명 유리알 버튼 느낌 */
+  background-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.key-btn:active {
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(0.95);
+}
+
+.key-btn.empty {
+  visibility: hidden;
+}
+
+.key-num {
+  font-size: clamp(28px, 7.5vw, 34px);
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+.key-letters {
+  font-size: clamp(8px, 2vw, 9.5px);
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.passcode-footer {
+  width: 100%;
+  max-width: 290px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding: 0 10px;
+}
+
+.passcode-footer-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: clamp(15px, 4vw, 14px);
+  font-weight: 400;
+  font-family: inherit;
+  padding: 10px;
+  cursor: pointer;
+}
+
+@keyframes passcode-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-12px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-8px); }
+  80% { transform: translateX(6px); }
+}
+
+/* ===================== 상단 상태바 고정 ===================== */
+.fixed-status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10; /* 가장 위에 고정되어 절대 사라지지 않음 */
+  padding: 4px 24px 0 24px;
+}
+
+/* ===================== 잠금화면 컨텐츠 (상태바 제외 영역) ===================== */
+.lock-screen-content {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  touch-action: none;
+  cursor: grab;
+  will-change: transform, opacity;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 56px 24px 20px 24px; /* 상단 상태바 공간(56px) 확보 */
+}
+
+.lock-screen-content:active {
+  cursor: grabbing;
+}
