@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import '../css/lockScreenCss.css'
 import 'pretendard/dist/web/static/pretendard.css'
+import { useNavigate } from 'react-router-dom';
 
 const PASSCODE = "1234"; // 4자리 비밀번호
 const SWIPE_THRESHOLD = 80;
@@ -19,9 +20,10 @@ const KEYS = [
 
 interface LockScreenProps {
   onSuccess?: () => void;
+  showStatusBar?: boolean;
 }
 
-export const LockScreen = ({ onSuccess }: LockScreenProps) => {
+export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps) => {
   const [showPasscode, setShowPasscode] = useState(false);
   const [dragY, setDragY] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -94,6 +96,7 @@ export const LockScreen = ({ onSuccess }: LockScreenProps) => {
     setShowPasscode(false);
   };
 
+  const navigate = useNavigate();
   return (
     <div
       className={`lock-wrapper${unlocking ? ' unlocking' : ''}`}
@@ -102,26 +105,27 @@ export const LockScreen = ({ onSuccess }: LockScreenProps) => {
       {/* 배경 사진 (공통) */}
       <div className="lock-bg" />
 
-      {/* ===== 1. 상단 상태바 (언제나 고정되어 사라지지 않음) ===== */}
-      <div className="status-bar fixed-status-bar">
-        <span className="status-carrier">LG U+</span>
-        <div className="dynamic-island">
-          <svg width="15" height="17" viewBox="0 0 15 17" fill="none">
-            <path d="M3.5 7V5a4 4 0 1 1 8 0v2" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-            <rect x="1" y="7" width="13" height="9" rx="5" fill="#fff" />
-          </svg>
+      {showStatusBar && (
+        <div className="status-bar fixed-status-bar">
+          <span className="status-carrier">LG U+</span>
+          <div className="dynamic-island">
+            <svg width="15" height="17" viewBox="0 0 15 17" fill="none">
+              <path d="M3.5 7V5a4 4 0 1 1 8 0v2" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+              <rect x="1" y="7" width="13" height="9" rx="5" fill="#fff" />
+            </svg>
+          </div>
+          <div className="status-right">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="#fff">
+              <rect x="0" y="7.5" width="3" height="4.5" rx="0.8" />
+              <rect x="5" y="5" width="3" height="7" rx="0.8" />
+              <rect x="10" y="2.5" width="3" height="9.5" rx="0.8" />
+              <rect x="15" y="0" width="3" height="12" rx="0.8" />
+            </svg>
+            <span className="status-5g">5G</span>
+            <div className="battery">79</div>
+          </div>
         </div>
-        <div className="status-right">
-          <svg width="18" height="12" viewBox="0 0 18 12" fill="#fff">
-            <rect x="0" y="7.5" width="3" height="4.5" rx="0.8" />
-            <rect x="5" y="5" width="3" height="7" rx="0.8" />
-            <rect x="10" y="2.5" width="3" height="9.5" rx="0.8" />
-            <rect x="15" y="0" width="3" height="12" rx="0.8" />
-          </svg>
-          <span className="status-5g">5G</span>
-          <div className="battery">79</div>
-        </div>
-      </div>
+      )}
 
       {/* ===== 2. 암호 입력 화면 (상태바 아래에 등장) ===== */}
       <div className={`passcode-screen ${showPasscode ? 'active' : ''}`}>
@@ -194,8 +198,8 @@ export const LockScreen = ({ onSuccess }: LockScreenProps) => {
             <div className="widget-weather-text">맑음</div>
             <div className="widget-weather-range">최고:22° 최저:12°</div>
           </div>
-          <div className="widget-item widget-schedule">
-            일정이 없습니다
+          <div className="widget-item widget-schedule" onClick={() => navigate('/homeScreen')}>
+            천사랑 4주년 ㅎㅎ
           </div>
         </div>
 

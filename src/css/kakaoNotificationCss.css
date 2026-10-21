@@ -1,0 +1,208 @@
+/* ===== 카카오톡 알림 (배경화면 위에 떠서 표시) =====
+   반응형 기준: 393px 폭 디자인을 화면 폭에 맞춰 비율 확대/축소 */
+.kn-root {
+    --u: calc(min(100vw, 430px) / 393);
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    overflow: hidden;
+    pointer-events: none;
+    font-family: var(--ios-font, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif);
+    letter-spacing: -0.02em;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* 펼쳤을 때 뒤 배경 흐림 */
+.kn-dim {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(24, 56, 110, 0.42);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.kn-root.expanded .kn-dim {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ===================== 카드 (공통 디자인) ===================== */
+.kn-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: calc(var(--u) * 66);
+    padding: 0 calc(var(--u) * 14);
+    border-radius: calc(var(--u) * 27);
+    background-color: rgba(143, 200, 255, 0.94);
+    color: #0d1f3c;
+}
+.kn-card.has-photo {
+    min-height: calc(var(--u) * 80);
+}
+.kn-avatar-wrap {
+    position: relative;
+    flex: 0 0 auto;
+    width: calc(var(--u) * 38);
+    height: calc(var(--u) * 38);
+}
+.kn-avatar {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.kn-badge {
+    position: absolute;
+    left: calc(var(--u) * 26);
+    top: calc(var(--u) * 25);
+    width: calc(var(--u) * 16);
+    height: calc(var(--u) * 16);
+    filter: drop-shadow(0 calc(var(--u) * 2) calc(var(--u) * 3) rgba(0, 0, 0, 0.2));
+}
+.kn-text {
+    flex: 1;
+    min-width: 0;
+    margin-left: calc(var(--u) * 12);
+    padding-right: calc(var(--u) * 62);
+}
+.kn-sender {
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 18);
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.kn-msg {
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 18);
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.kn-time {
+    position: absolute;
+    top: calc(var(--u) * 12);
+    right: calc(var(--u) * 18);
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 14);
+    color: #2b6cb8;
+    white-space: nowrap;
+}
+.kn-thumb {
+    position: absolute;
+    top: calc(var(--u) * 32);
+    right: calc(var(--u) * 18);
+    width: calc(var(--u) * 32);
+    height: calc(var(--u) * 32);
+    border-radius: calc(var(--u) * 7);
+    background: linear-gradient(160deg, #ebe8de 0%, #c9c4b4 45%, #8f9a86 100%);
+    object-fit: cover;
+}
+
+/* ===================== 상단에 뜨는 배너 ===================== */
+.kn-banner {
+    position: absolute;
+    top: calc(var(--u) * 56);
+    left: calc(var(--u) * 14);
+    right: calc(var(--u) * 14);
+    transform: translateY(calc(-100% - var(--u) * 64));
+    transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.08);
+    box-shadow: 0 calc(var(--u) * 8) calc(var(--u) * 24) rgba(10, 30, 70, 0.22);
+    border-radius: calc(var(--u) * 27);
+    touch-action: none;
+    cursor: pointer;
+}
+.kn-root.banner .kn-banner {
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.kn-root.expanded .kn-banner {
+    transform: translateY(calc(-100% - var(--u) * 64));
+}
+
+/* ===================== 펼친 알림 목록 ===================== */
+.kn-panel {
+    position: absolute;
+    top: calc(var(--u) * 56);
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transform: translateY(calc(var(--u) * -16));
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.kn-root.expanded .kn-panel {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.kn-header {
+    position: relative;
+    height: calc(var(--u) * 54);
+}
+.kn-title {
+    position: absolute;
+    top: calc(var(--u) * 16);
+    left: calc(var(--u) * 24);
+    font-size: calc(var(--u) * 19);
+    line-height: calc(var(--u) * 24);
+    font-weight: 500;
+    color: #fff;
+}
+.kn-fold {
+    position: absolute;
+    top: calc(var(--u) * 12);
+    right: calc(var(--u) * 56);
+    width: calc(var(--u) * 100);
+    height: calc(var(--u) * 33);
+    padding: 0 calc(var(--u) * 10) 0 calc(var(--u) * 8);
+    box-sizing: border-box;
+    border: none;
+    border-radius: calc(var(--u) * 17);
+    background-color: rgba(190, 222, 255, 0.55);
+    color: #3b78c0;
+    font-family: inherit;
+    font-size: calc(var(--u) * 12.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.kn-fold svg {
+    width: calc(var(--u) * 15);
+    height: calc(var(--u) * 15);
+}
+.kn-close {
+    position: absolute;
+    top: calc(var(--u) * 12);
+    right: calc(var(--u) * 14);
+    width: calc(var(--u) * 34);
+    height: calc(var(--u) * 34);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(160, 205, 250, 0.55);
+    color: #2f6fb8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.kn-close svg {
+    width: calc(var(--u) * 14);
+    height: calc(var(--u) * 14);
+}
+.kn-list {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 8);
+    padding: 0 calc(var(--u) * 14);
+    max-height: calc(100dvh - var(--u) * 130);
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.kn-list::-webkit-scrollbar {
+    display: none;
+}

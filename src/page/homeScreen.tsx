@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import '../css/homeScreenCss.css'
 import { useNavigate } from 'react-router-dom';
+import { KakaoStatusBar } from '../common/kakaoCommon'
 
 
 /* ===================== 앱 아이콘 (SVG, 60x60) ===================== */
@@ -92,23 +93,6 @@ const IconClock = () => (
     </svg>
 )
 
-const IconAppStore = () => (
-    <svg viewBox="0 0 60 60">
-        <defs>
-            <linearGradient id="as-g" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#32b8fb" />
-                <stop offset="1" stopColor="#1a68ee" />
-            </linearGradient>
-        </defs>
-        <rect width="60" height="60" fill="url(#as-g)" />
-        <g stroke="#fff" strokeWidth="4.6" strokeLinecap="round" fill="none">
-            <path d="M30 14 L45 43" />
-            <path d="M30 14 L17 40" />
-            <path d="M13 36 H47" />
-        </g>
-    </svg>
-)
-
 const IconMaps = () => (
     <svg viewBox="0 0 60 60">
         <rect width="60" height="60" fill="#f2dfe8" />
@@ -120,27 +104,6 @@ const IconMaps = () => (
         <circle cx="23" cy="37" r="15" fill="#fff" />
         <circle cx="23" cy="37" r="12" fill="#2f7bf5" />
         <path d="M23 28 L30 44 L23 40 L16 44 Z" fill="#fff" />
-    </svg>
-)
-
-const IconSettings = () => (
-    <svg viewBox="0 0 60 60">
-        <defs>
-            <linearGradient id="set-g" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#d9d9dc" />
-                <stop offset="1" stopColor="#8a8a8f" />
-            </linearGradient>
-        </defs>
-        <rect width="60" height="60" fill="url(#set-g)" />
-        <circle cx="30" cy="30" r="25" fill="none" stroke="#48484a" strokeWidth="4" strokeDasharray="3.1 3.1" />
-        <circle cx="30" cy="30" r="22" fill="#5a5a5d" />
-        <circle cx="30" cy="30" r="16" fill="#3a3a3c" stroke="#b0b0b5" strokeWidth="1.6" />
-        <g stroke="#c8c8cc" strokeWidth="1.5" strokeLinecap="round">
-            <line x1="30" y1="30" x2="30" y2="42" />
-            <line x1="30" y1="30" x2="19.6" y2="24" />
-            <line x1="30" y1="30" x2="40.4" y2="24" />
-        </g>
-        <circle cx="30" cy="30" r="3" fill="#3a3a3c" stroke="#c8c8cc" strokeWidth="1.2" />
     </svg>
 )
 
@@ -185,23 +148,6 @@ const IconMessages = () => (
         <rect width="60" height="60" fill="url(#msg-g)" />
         <ellipse cx="30" cy="28" rx="22" ry="14.5" fill="#fff" />
         <path d="M17 32 Q16 40 9 44 Q19 45 25 37 Z" fill="#fff" />
-    </svg>
-)
-
-const IconMusic = () => (
-    <svg viewBox="0 0 60 60">
-        <defs>
-            <linearGradient id="mu-g" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#fc5c75" />
-                <stop offset="1" stopColor="#e32a3a" />
-            </linearGradient>
-        </defs>
-        <rect width="60" height="60" fill="url(#mu-g)" />
-        <polygon points="24,15 45,10 45,18 24,23" fill="#fff" />
-        <rect x="22" y="15" width="3.2" height="25" fill="#fff" />
-        <rect x="42" y="10" width="3.2" height="25" fill="#fff" />
-        <ellipse cx="18.5" cy="40" rx="6.5" ry="5" fill="#fff" />
-        <ellipse cx="38.5" cy="35" rx="6.5" ry="5" fill="#fff" />
     </svg>
 )
 
@@ -355,12 +301,9 @@ const PAGE1_APPS: AppData[] = [
     { name: "메모", icon: <IconNotes /> },
     { name: "미리 알림", icon: <IconReminders /> },
     { name: "시계", icon: <IconClock /> },
-    { name: "App Store", icon: <IconAppStore /> },
     { name: "지도", icon: <IconMaps /> },
-    { name: "설정", icon: <IconSettings /> },
     { name: "카카오톡", icon: <IconKakaoTalk /> },
     { name: "Instagram", icon: <IconInstagram /> },
-    { name: "멜론", icon: <IconMelon /> },
     { name: "YouTube", icon: <IconYouTube /> },
     { name: "CGV", icon: <IconCGV /> },
 ];
@@ -402,11 +345,11 @@ const DOCK_APPS: AppData[] = [
     { name: "전화", icon: <IconPhone /> },
     { name: "Safari", icon: <IconSafari /> },
     { name: "메시지", icon: <IconMessages />, badge: 8 },
-    { name: "음악", icon: <IconMusic /> },
+    { name: "음악", icon: <IconMelon /> },
 ];
 
 /* ===================== 컴포넌트 ===================== */
-export const HomeScreen = () => {
+export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }) => {
     const homeRef = useRef<HTMLDivElement>(null);
     const pagerRef = useRef<HTMLDivElement>(null);
     const [page, setPage] = useState(0);
@@ -461,13 +404,16 @@ export const HomeScreen = () => {
     const handleAppClick = (appName: string) => {
         switch (appName) {
             case "카카오톡":
-                navigate("/KakaoChatList"); // 카카오톡을 누르면 이동할 경로
+                navigate("/KakaoChatList", { state: { animateScreenEnter: true } });
                 break;
             case "Instagram":
                 navigate("/instagram"); // 인스타그램을 누르면 이동할 경로
                 break;
-            case "설정":
-                navigate("/settings"); // 설정으로 이동
+            case "메모" :
+                navigate("/kakaoMemo");
+                break;
+            case "사진" :
+                navigate("/photosLibrary")
                 break;
             default:
                 // 그 외 앱은 일반 상세 페이지나 동적 경로로 이동 (예: /app/사진)
@@ -544,24 +490,7 @@ export const HomeScreen = () => {
             </svg>
 
             {/* 상태바 */}
-            <div className="home-status">
-                <span className="hs-time">1:22</span>
-                <div className="hs-right">
-                    <svg className="hs-signal" viewBox="0 0 18 12" fill="#fff">
-                        <rect x="0" y="8" width="3.2" height="4" rx="1" />
-                        <rect x="4.9" y="5.5" width="3.2" height="6.5" rx="1" />
-                        <rect x="9.8" y="3" width="3.2" height="9" rx="1" />
-                        <rect x="14.7" y="0" width="3.2" height="12" rx="1" />
-                    </svg>
-                    <svg className="hs-wifi" viewBox="0 0 18 13" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round">
-                        <path d="M1.2 4.6a11 11 0 0 1 15.6 0" />
-                        <path d="M4 7.6a7 7 0 0 1 10 0" />
-                        <path d="M6.7 10.2a3.2 3.2 0 0 1 4.6 0" />
-                        <circle cx="9" cy="12" r="0.8" fill="#fff" />
-                    </svg>
-                    <div className="hs-battery">73</div>
-                </div>
-            </div>
+            {showStatusBar && <KakaoStatusBar time="1:22" battery={73} variant="light" />}
 
             {/* 페이지 (좌우로 넘기기) */}
             <div className="home-pages" ref={pagerRef} onScroll={handleScroll}>
@@ -607,7 +536,7 @@ export const HomeScreen = () => {
                       <div className="widget-cal-event-box">
                           <div className="widget-cal-bar" />
                           <div className="widget-cal-text-group">
-                              <div className="widget-cal-title">천사랑 3주년 ㅎㅎ</div>
+                              <div className="widget-cal-title">천사랑 4주년 ㅎㅎ</div>
                               <div className="widget-cal-time">오전 12시 ~ 1시</div>
                           </div>
                       </div>

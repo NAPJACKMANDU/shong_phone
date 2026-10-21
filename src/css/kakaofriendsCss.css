@@ -1,0 +1,193 @@
+/* 친구 페이지 전용 (공통은 kakaoCommonCss.css) */
+.kf-wrapper {
+    height: 100dvh;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+}
+
+.kf-wrapper > .kk-scroll.kf-scroll {
+    flex: 0 0 auto;
+    min-height: 0;
+    overflow-y: visible;
+}
+
+.kf-name {
+    margin-left: calc(var(--u) * 8);
+    font-size: calc(var(--u) * 18);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+}
+
+.kf-scroll {
+    padding: calc(var(--u) * 16) calc(var(--u) * 16) calc(var(--u) * 70);
+}
+
+/* 광고 배너 */
+.kf-banner {
+    margin-bottom: calc(var(--u) * 7);
+}
+.kf-banner-title {
+    position: absolute;
+    top: calc(var(--u) * 16);
+    left: calc(var(--u) * 25);
+    font-size: calc(var(--u) * 15);
+    line-height: calc(var(--u) * 20);
+    font-weight: 700;
+    color: #333;
+}
+.kf-banner-sub {
+    position: absolute;
+    top: calc(var(--u) * 37);
+    left: calc(var(--u) * 25);
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 18);
+    color: #777;
+}
+.kf-banner-small {
+    position: absolute;
+    top: calc(var(--u) * 58);
+    left: calc(var(--u) * 25);
+    font-size: calc(var(--u) * 7);
+    line-height: calc(var(--u) * 10);
+    color: #aaa;
+    letter-spacing: -0.01em;
+}
+.kf-banner-product {
+    position: absolute;
+    top: calc(var(--u) * 9);
+    left: calc(var(--u) * 251);
+    width: calc(var(--u) * 69);
+    height: calc(var(--u) * 77);
+    border-radius: calc(var(--u) * 4) calc(var(--u) * 4) 0 0;
+    background: linear-gradient(180deg, #2b3b55 0%, #1c2536 100%);
+}
+.kf-banner-product::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--u) * 8);
+    left: calc(var(--u) * 8);
+    right: calc(var(--u) * 8);
+    height: calc(var(--u) * 34);
+    border-radius: calc(var(--u) * 3);
+    background-color: #121a28;
+    border: 1px solid #3c4d6b;
+    box-sizing: border-box;
+}
+.kf-banner-play {
+    position: absolute;
+    top: calc(var(--u) * 57);
+    left: calc(var(--u) * 321);
+    width: calc(var(--u) * 21);
+    height: calc(var(--u) * 21);
+    border-radius: 50%;
+    background-color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.kf-banner-play svg {
+    width: calc(var(--u) * 8);
+    height: calc(var(--u) * 8);
+}
+
+/* 접이식 목록 행 */
+.kf-row {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 40);
+    border-bottom: 1px solid #eee;
+    box-sizing: border-box;
+}
+.kf-row-title {
+    font-size: calc(var(--u) * 14);
+    font-weight: 500;
+    color: #111;
+}
+.kf-row-avatars {
+    justify-content: flex-end; 
+    display: flex;
+}
+.kf-row-avatars > span {
+    position: relative;
+    display: block;
+    line-height: 0;
+    border-radius: calc(var(--u) * 9);
+    box-shadow: 0 0 0 calc(var(--u) * 2) #fff;
+    margin-left: calc(var(--u) * -3);
+}
+.kf-row-avatars > span:first-child {
+    margin-left: 0;
+}
+.kf-chevron {
+    width: calc(var(--u) * 14);
+    height: calc(var(--u) * 14);
+    margin-right: calc(var(--u) * -2);
+    color: #4a4a4a;
+    flex-shrink: 0;
+}
+.kf-row > .kf-chevron:last-child {
+    margin-left: auto;
+}
+.kf-row-avatars + .kf-chevron {
+    margin-left: 0;
+}
+
+/* 친구 602 */
+.kf-friends-head {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 50);
+}
+.kf-seg {
+    display: flex;
+    align-items: center;
+    width: calc(var(--u) * 131);
+    height: calc(var(--u) * 32);
+    padding: calc(var(--u) * 4);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 16);
+    background-color: #f3f3f3;
+    margin-left: auto;
+    margin-right: calc(var(--u) * 16);
+}
+.kf-seg-btn {
+    height: calc(var(--u) * 24);
+    padding: 0;
+    border: none;
+    border-radius: calc(var(--u) * 12);
+    background: none;
+    color: #6b6b6b;
+    font-family: inherit;
+    font-size: calc(var(--u) * 12);
+    font-weight: 500;
+}
+.kf-seg-btn:first-child {
+    width: calc(var(--u) * 56);
+}
+.kf-seg-btn:last-child {
+    width: calc(var(--u) * 67);
+}
+.kf-seg-btn.active {
+    background-color: #fff;
+    color: #111;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* 친구 목록 */
+.kf-friend {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 48);
+    margin-bottom: calc(var(--u) * 15);
+}
+.kf-friend-name {
+    margin-left: calc(var(--u) * 12);
+    font-size: calc(var(--u) * 15);
+    font-weight: 500;
+}
+.kf-friend-count {
+    color: #8a8a8a;
+    font-weight: 400;
+}

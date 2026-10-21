@@ -1,0 +1,230 @@
+/* 더보기 페이지 전용 (공통은 kakaoCommonCss.css) */
+.kk-wrapper.km-wrapper {
+    height: 100dvh;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+}
+
+.kk-wrapper.km-wrapper > .kk-scroll.km-scroll {
+    flex: 0 0 auto;
+    min-height: 0;
+    overflow-y: visible;
+}
+
+.km-scroll {
+    padding: calc(var(--u) * 16) calc(var(--u) * 16) calc(var(--u) * 110);
+    background-color: #f5f5f5;
+    background-image: linear-gradient(to bottom, #fff 0, #f5f5f5 70px);
+    background-repeat: no-repeat;
+    background-size: 100% calc(var(--u) * 70);
+}
+
+/* 카카오페이 배너 */
+.km-pay {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 54);
+    padding: 0 calc(var(--u) * 19) 0 calc(var(--u) * 18);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 20);
+    background-color: #fee500;
+    color: #111;
+}
+.km-pay-logo {
+    width: calc(var(--u) * 14);
+    height: calc(var(--u) * 13);
+    margin-right: calc(var(--u) * 3);
+}
+.km-pay-text {
+    font-size: calc(var(--u) * 16);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 4px;
+}
+.km-pay-amount {
+    margin-left: calc(var(--u) * 8);
+    font-size: calc(var(--u) * 15);
+    font-weight: 500;
+}
+.km-pay-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    font-size: calc(var(--u) * 15);
+    font-weight: 500;
+}
+.km-pay-divider {
+    width: 1px;
+    height: calc(var(--u) * 13);
+    margin: 0 calc(var(--u) * 13);
+    background-color: rgba(0, 0, 0, 0.12);
+}
+.km-pay-scan {
+    width: calc(var(--u) * 15);
+    height: calc(var(--u) * 15);
+    margin-right: calc(var(--u) * 5);
+}
+
+/* 메뉴 카드 */
+.km-card {
+    margin-top: calc(var(--u) * 12);
+    padding: calc(var(--u) * 23) calc(var(--u) * 8) calc(var(--u) * 15);
+    border-radius: calc(var(--u) * 22);
+    background-color: #fff;
+}
+.km-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: calc(var(--u) * 21);
+}
+.km-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.km-ico {
+    position: relative;
+    width: calc(var(--u) * 28);
+    height: calc(var(--u) * 28);
+    color: #111;
+}
+.km-ico svg {
+    width: 100%;
+    height: 100%;
+}
+.km-ico i {
+    position: absolute;
+    top: calc(var(--u) * -5);
+    left: calc(var(--u) * 27);
+    width: calc(var(--u) * 5);
+    height: calc(var(--u) * 5);
+    border-radius: 50%;
+    background-color: #f4511e;
+}
+.km-label {
+    margin-top: calc(var(--u) * 6);
+    font-size: calc(var(--u) * 11.5);
+    line-height: calc(var(--u) * 16);
+    color: #222;
+    white-space: nowrap;
+}
+.km-pager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--u) * 5);
+    margin-top: calc(var(--u) * 17);
+}
+.km-pager span {
+    width: calc(var(--u) * 5);
+    height: calc(var(--u) * 5);
+    border-radius: 50%;
+    background-color: #c9c9c9;
+}
+.km-pager span.on {
+    width: calc(var(--u) * 14);
+    border-radius: calc(var(--u) * 3);
+    background-color: #222;
+}
+
+/* 광고 카드 (월세환급) */
+.km-ad {
+    position: relative;
+    height: calc(var(--u) * 225);
+    margin-top: calc(var(--u) * 13);
+    border-radius: calc(var(--u) * 20);
+    background-color: #fafafa;
+    overflow: hidden;
+}
+.km-ad-brand {
+    position: absolute;
+    top: calc(var(--u) * 29);
+    left: calc(var(--u) * 40);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 3);
+    font-size: calc(var(--u) * 9);
+    line-height: calc(var(--u) * 12);
+    font-weight: 700;
+    color: #111;
+}
+.km-ad-brand i {
+    width: calc(var(--u) * 10);
+    height: calc(var(--u) * 10);
+    border-radius: calc(var(--u) * 3);
+    background-color: #2f7bf5;
+}
+.km-ad-check {
+    position: absolute;
+    top: calc(var(--u) * 23);
+    left: 50%;
+    width: calc(var(--u) * 40);
+    height: calc(var(--u) * 40);
+    margin-left: calc(var(--u) * -20);
+    border-radius: 50%;
+    background-color: #d6f1e3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.km-ad-check svg {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 20);
+}
+.km-ad-title {
+    position: absolute;
+    top: calc(var(--u) * 69);
+    width: 100%;
+    text-align: center;
+    font-size: calc(var(--u) * 16);
+    line-height: calc(var(--u) * 22);
+    font-weight: 800;
+    color: #222;
+}
+.km-ad-sub {
+    position: absolute;
+    top: calc(var(--u) * 95);
+    width: 100%;
+    text-align: center;
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 18);
+    color: #8c8c8c;
+}
+.km-ad-amount {
+    position: absolute;
+    top: calc(var(--u) * 119);
+    width: 100%;
+    text-align: center;
+    font-size: calc(var(--u) * 20);
+    line-height: calc(var(--u) * 26);
+    font-weight: 800;
+    color: #2d4ad9;
+}
+.km-ad-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--u) * 45);
+    padding: 0 calc(var(--u) * 10);
+    box-sizing: border-box;
+    border-top: 1px solid #eee;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: calc(var(--u) * 15);
+    color: #222;
+}
+.km-ad-btn {
+    height: calc(var(--u) * 24);
+    padding: 0 calc(var(--u) * 11);
+    border: 1px solid #a9a9a9;
+    border-radius: calc(var(--u) * 12);
+    background: none;
+    color: #555;
+    font-family: inherit;
+    font-size: calc(var(--u) * 10.5);
+}

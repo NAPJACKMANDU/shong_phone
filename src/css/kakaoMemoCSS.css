@@ -1,0 +1,244 @@
+/* 메모 페이지 전용 (공통은 kakaoCommonCss.css) */
+.mm-wrapper {
+    background-color: #f2f2f7;
+}
+
+.kk-wrapper.mm-wrapper {
+    height: 100dvh;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+}
+
+/* ===================== 상단 헤더 ===================== */
+.mm-header {
+    position: relative;
+    flex: 0 0 auto;
+    height: calc(var(--u) * 44);
+    margin: calc(var(--u) * 7) calc(var(--u) * 16) 0;
+}
+.mm-round-btn {
+    position: absolute;
+    top: 0;
+    width: calc(var(--u) * 44);
+    height: calc(var(--u) * 44);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #fafafc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+.mm-round-btn.left {
+    left: 0;
+}
+.mm-round-btn.right {
+    right: 0;
+}
+.mm-round-btn svg {
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+}
+.mm-header-title {
+    position: absolute;
+    top: calc(var(--u) * 3);
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+.mm-header-title b {
+    display: block;
+    font-size: calc(var(--u) * 15);
+    line-height: calc(var(--u) * 19);
+    font-weight: 700;
+    color: #000;
+}
+.mm-header-title span {
+    display: block;
+    font-size: calc(var(--u) * 15);
+    line-height: calc(var(--u) * 19);
+    color: #8e8e93;
+}
+
+/* ===================== 스크롤 영역 ===================== */
+.mm-scroll {
+    flex: 0 0 auto;
+    min-height: 0;
+    overflow-y: visible;
+    padding: calc(var(--u) * 19) calc(var(--u) * 16) calc(var(--u) * 100);
+}
+
+/* 섹션 제목 */
+.mm-section-head {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 22);
+    margin: calc(var(--u) * 26.5) 0 calc(var(--u) * 10);
+}
+.mm-section-head:first-child {
+    margin-top: 6px;
+}
+.mm-section-title {
+    font-size: calc(var(--u) * 16);
+    font-weight: 700;
+    color: #000;
+}
+.mm-section-chevron {
+    margin-left: auto;
+    margin-right: calc(var(--u) * 17);
+    width: calc(var(--u) * 14);
+    height: calc(var(--u) * 14);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #e5b32a;
+    transition: transform 0.2s ease;
+}
+.mm-section-chevron.closed {
+    transform: rotate(-90deg);
+}
+.mm-section-chevron svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* 메모 카드 */
+.mm-card {
+    border-radius: calc(var(--u) * 24);
+    background-color: #fff;
+    overflow: hidden;
+}
+.mm-row {
+    position: relative;
+    height: calc(var(--u) * 53.3);
+    padding: 0 calc(var(--u) * 16) 0 calc(var(--u) * 28);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+}
+.mm-row:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--u) * 28);
+    right: calc(var(--u) * 16);
+    bottom: 0;
+    height: 1px;
+    background-color: #e8e8ec;
+}
+.mm-memo-title {
+    font-size: calc(var(--u) * 14);
+    line-height: calc(var(--u) * 17);
+    font-weight: 600;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mm-memo-sub {
+    display: flex;
+    margin-top: calc(var(--u) * 1);
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 17);
+    color: #8e8e93;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.mm-memo-date {
+    flex: 0 0 auto;
+}
+.mm-memo-preview {
+    margin-left: calc(var(--u) * 8);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mm-empty {
+    padding: calc(var(--u) * 60) 0;
+    text-align: center;
+    font-size: calc(var(--u) * 14);
+    color: #8e8e93;
+}
+
+/* ===================== 하단 흐림 + 검색/작성 ===================== */
+.mm-fade {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--u) * 140);
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(to top, #f2f2f7 22%, rgba(242, 242, 247, 0));
+}
+.mm-bottom {
+    position: fixed;
+    left: calc(var(--u) * 28);
+    right: calc(var(--u) * 28);
+    bottom: calc(var(--u) * 28);
+    z-index: 5;
+    display: flex;
+    gap: calc(var(--u) * 12);
+}
+.mm-search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 48);
+    padding: 0 calc(var(--u) * 23) 0 calc(var(--u) * 20);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 24);
+    background-color: #fafafc;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    color: #111;
+}
+.mm-search > svg {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 20);
+    flex: 0 0 auto;
+}
+.mm-search input {
+    flex: 1;
+    min-width: 0;
+    margin: 0 calc(var(--u) * 8) 0 calc(var(--u) * 10);
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-family: inherit;
+    font-size: calc(var(--u) * 14);
+    color: #111;
+}
+.mm-search input::placeholder {
+    color: #8e8e93;
+}
+.mm-mic {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 20);
+    flex: 0 0 auto;
+}
+.mm-compose {
+    flex: 0 0 auto;
+    width: calc(var(--u) * 48);
+    height: calc(var(--u) * 48);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #fafafc;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mm-compose svg {
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+}

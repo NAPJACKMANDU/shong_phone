@@ -1,52 +1,13 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import '../css/kakaofriends.css'
-
-// 라우터 경로 (프로젝트 라우터에 맞게 수정하세요)
-const PATH = {
-    friends: '/kakaoFriends',
-    chats: '/kakaoChatList',
-}
-
-/* ===================== 기본 프로필 ===================== */
-const PROFILE_COLORS = {
-    purple: ['#d9d5fc', '#b8b3f4'],
-    blue: ['#a6d5fa', '#82b9f2'],
-    teal: ['#b5ede5', '#89dbd0'],
-}
-type ProfileColor = keyof typeof PROFILE_COLORS
-
-const Profile = ({ size, color = 'purple' }: { size: number; color?: ProfileColor }) => {
-    const [top, bottom] = PROFILE_COLORS[color]
-    const id = `kf-profile-${color}`
-    return (
-        <svg viewBox="0 0 48 48"
-            style={{ width: `calc(var(--u) * ${size})`, height: `calc(var(--u) * ${size})`, display: 'block', flexShrink: 0 }}>
-            <defs>
-                <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stopColor={top} />
-                    <stop offset="1" stopColor={bottom} />
-                </linearGradient>
-            </defs>
-            <rect width="48" height="48" rx="17" fill={`url(#${id})`} />
-            <circle cx="24" cy="19.5" r="6.6" fill="#fff" fillOpacity="0.92" />
-            <path d="M12.5 36.5C12.5 30.5 17.5 28 24 28s11.5 2.5 11.5 8.5c0 1.5-1.2 2.3-2.5 2.3H15c-1.3 0-2.5-.8-2.5-2.3z"
-                fill="#fff" fillOpacity="0.92" />
-        </svg>
-    )
-}
+import { useState, useMemo } from 'react'
+import {
+    KakaoStatusBar, KakaoTabBar, KakaoProfile, KakaoAvatar, IconSearch, IconGear, lineProps,
+} from '../common/kakaoCommon.tsx'
+import '../css/kakaoFriendsCss.css'
+import { KAKAO_FRIENDS, getKakaoPerson } from '../data/kakaoData'
 
 /* ===================== 아이콘 ===================== */
-const stroke = { fill: 'none', stroke: 'currentColor', strokeWidth: 2.2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
-
-const IconSearch = () => (
-    <svg viewBox="0 0 24 24" {...stroke}>
-        <circle cx="10.8" cy="10.8" r="7.6" />
-        <path d="M16.6 16.6L21.5 21.5" />
-    </svg>
-)
 const IconAddFriend = () => (
-    <svg viewBox="0 0 24 24" {...stroke}>
+    <svg viewBox="0 0 24 24" {...lineProps}>
         <circle cx="9.5" cy="7.6" r="4.3" />
         <path d="M2.6 21c0-4.6 3.2-7 6.9-7 1.5 0 2.8.4 3.9 1" />
         <path d="M19 14v7M15.5 17.5h7" />
@@ -60,14 +21,18 @@ const IconGift = () => (
         <path d="M12 9C8 6.2 6.8 3.6 8.8 2.2c1.4-.9 2.8-.2 3.2 1 .4-1.2 1.8-1.9 3.2-1 2 1.4.8 4-3.2 6.8z" fill="#ff3b30" />
     </svg>
 )
-const IconGear = () => (
-    <svg viewBox="0 0 24 24" {...stroke} strokeWidth="2">
-        <circle cx="12" cy="12" r="3" />
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-    </svg>
-)
-const IconChevron = ({ up = false }: { up?: boolean }) => (
-    <svg className="kf-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+const IconChevron = ({ up = false, onClick }: { up?: boolean; onClick?: () => void }) => (
+    <svg 
+        className="kf-chevron" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="2.4" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+        onClick={onClick}
+        style={{ cursor: 'pointer' }}
+    >
         {up ? <polyline points="4 16 12 8 20 16" /> : <polyline points="4 8 12 16 20 8" />}
     </svg>
 )
@@ -91,178 +56,135 @@ const IconChannel = () => (
     </svg>
 )
 
-/* 하단 탭 아이콘 */
-const IconPerson = () => (
-    <svg viewBox="0 0 24 24" fill="currentColor">
-        <circle cx="12" cy="7.4" r="4.7" />
-        <path d="M3.3 20.4C3.3 16.3 7.2 14.4 12 14.4s8.7 1.9 8.7 6c0 1.2-.9 1.9-2 1.9H5.3c-1.1 0-2-.7-2-1.9z" />
-    </svg>
-)
-const IconChat = () => (
-    <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 3C6.5 3 2 6.6 2 11.2c0 2.7 1.5 5 3.9 6.5l-1 3.6c-.1.5.4.8.8.6l4.3-2.6c.6.1 1.3.1 2 .1 5.500 0 10-3.600 10-8.200S17.500 3 12 3z" />
-    </svg>
-)
-const IconChannelTab = () => (
-    <svg viewBox="0 0 28 24" fill="currentColor">
-        <ellipse cx="18" cy="10.4" rx="8" ry="6.8" />
-        <path d="M23.500 15l2 4-4.500-2.200z" />
-        <ellipse cx="10" cy="13.200" rx="8.600" ry="7.200" stroke="#fff" strokeWidth="1.600" />
-        <path d="M4.500 18L3 22.200l5-2.600z" stroke="#fff" strokeWidth="1.200" strokeLinejoin="round" />
-        <path d="M8 10.200l5 3-5 3z" fill="#fff" />
-    </svg>
-)
-const IconBag = () => (
-    <svg viewBox="0 0 24 24">
-        <path d="M7 8V6.600C7 4.400 9.200 3 12 3s5 1.400 5 3.600V8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <rect x="3.500" y="8" width="17" height="13.500" rx="3" fill="currentColor" />
-    </svg>
-)
-const IconMore = () => (
-    <svg viewBox="0 0 24 24" fill="currentColor">
-        <circle cx="3.500" cy="12" r="2.600" />
-        <circle cx="12" cy="12" r="2.600" />
-        <circle cx="20.500" cy="12" r="2.600" />
-    </svg>
-)
-
-/* ===================== 상태바 ===================== */
-const StatusBar = ({ time, network }: { time: string; network: string }) => (
-    <div className="kf-status">
-        <div className="kf-time">
-            <span>{time}</span>
-            <svg className="kf-moon" viewBox="0 0 24 24"><path d="M21 12.790A9 9 0 1 1 11.210 3 7 7 0 0 0 21 12.790z" fill="#111" /></svg>
-        </div>
-        <div className="kf-status-right">
-            <svg className="kf-signal" viewBox="0 0 20 12" fill="#111">
-                <rect x="0" y="8" width="3.600" height="4" rx="1" />
-                <rect x="5.400" y="5.300" width="3.600" height="6.700" rx="1" />
-                <rect x="10.800" y="2.600" width="3.600" height="9.400" rx="1" />
-                <rect x="16.200" y="0" width="3.600" height="12" rx="1" />
-            </svg>
-            <span className="kf-net">{network}</span>
-            <div className="kf-battery">
-                <span>97</span>
-                <svg viewBox="0 0 5 8" fill="#fff"><path d="M3.200 0L0 4.600h2L1.300 8 5 3.200H2.900z" /></svg>
-            </div>
-        </div>
-    </div>
-)
-
-/* ===================== 하단 탭바 ===================== */
-type TabKey = 'friends' | 'chats'
-
-const TabBar = ({ active, chatBadge, channelBadge }: { active: TabKey; chatBadge: number; channelBadge: number }) => {
-    const navigate = useNavigate()
-    return (
-        <div className="kf-tabbar">
-            <button className={`kf-tabitem ${active === 'friends' ? 'on' : ''}`} onClick={() => navigate(PATH.friends)}>
-                <span className="kf-tabicon"><IconPerson /></span>
-            </button>
-            <button className={`kf-tabitem ${active === 'chats' ? 'on' : ''}`} onClick={() => navigate(PATH.chats)}>
-                <span className="kf-tabicon"><IconChat /><i className="kf-badge">{chatBadge}</i></span>
-            </button>
-            <button className="kf-tabitem">
-                <span className="kf-tabicon"><IconChannelTab /><i className="kf-badge">{channelBadge}</i></span>
-            </button>
-            <button className="kf-tabitem">
-                <span className="kf-tabicon"><IconBag /></span>
-            </button>
-            <button className="kf-tabitem">
-                <span className="kf-tabicon"><IconMore /><i className="kf-dot" /></span>
-            </button>
-        </div>
-    )
-}
-
-/* ===================== 데이터 ===================== */
-const SECTIONS = [
-    { title: '업데이트 프로필', count: 15, avatars: false },
-    { title: '특별한 친구', count: 1, avatars: false },
-    { title: '생일인 친구', count: 4, avatars: true },
-    { title: '즐겨찾는 친구', count: 2, avatars: false },
-    { title: 'AI', count: 1, avatars: false },
-]
-
 /* ===================== 친구 페이지 ===================== */
 export const KakaoFriends = () => {
     const [sort, setSort] = useState<'name' | 'recent'>('name')
 
+    // 접힘/열림 상태
+    const [isBirthdayOpen, setIsBirthdayOpen] = useState(false)
+    const [isFavoriteOpen, setIsFavoriteOpen] = useState(false)
+    const [isFriendsOpen, setIsFriendsOpen] = useState(true)
+
+    const sortedFriends = useMemo(() => {
+        const list = [...KAKAO_FRIENDS];
+        if (sort === 'name') {
+            return list.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+        } else {
+            return list.sort((a, b) => b.createdAt - a.createdAt);
+        }
+    }, [sort]);
+
     return (
-        <div className="kf-wrapper">
-            <StatusBar time="4:26" network="5G" />
+        <div className="kk-wrapper kf-wrapper">
+            <KakaoStatusBar time="4:26" battery={97} />
 
             {/* 상단 헤더 */}
-            <div className="kf-header">
-                <Profile size={34} />
-                <span className="kf-name">남윤서</span>
-                <div className="kf-header-icons">
-                    <button className="kf-icon-btn"><IconSearch /></button>
-                    <button className="kf-icon-btn"><IconAddFriend /></button>
-                    <button className="kf-icon-btn"><IconGift /></button>
-                    <button className="kf-icon-btn"><IconGear /></button>
+            <div className="kk-header">
+                <KakaoProfile size={34} />
+                <span className="kf-name">정성찬</span>
+                <div className="kk-header-icons">
+                    <button className="kk-icon-btn"><IconSearch /></button>
+                    <button className="kk-icon-btn"><IconAddFriend /></button>
+                    <button className="kk-icon-btn"><IconGift /></button>
+                    <button className="kk-icon-btn"><IconGear /></button>
                 </div>
             </div>
 
-            {/* 친구 / 소식 */}
-            <div className="kf-tabs">
-                <button className="kf-tab-btn active">친구</button>
-                <button className="kf-tab-btn">소식</button>
+            {/* 친구 / 소식 탭 */}
+            <div className="kk-chips">
+                <button className="kk-chip active">친구</button>
+                <button className="kk-chip">소식</button>
             </div>
 
-            <div className="kf-scroll">
+            <div className="kk-scroll kf-scroll">
                 {/* 광고 배너 */}
-                <div className="kf-banner">
+                <div className="kk-banner kf-banner">
                     <div className="kf-banner-title">서로 다른 깊이로</div>
                     <div className="kf-banner-sub">원하던 나를 만나다, oligio xm</div>
                     <div className="kf-banner-small">의료기기 광고심의필: 조합-2026-33-037(유효기간 2029.09.21)</div>
                     <div className="kf-banner-product" />
-                    <div className="kf-banner-ad">AD</div>
+                    <div className="kk-ad-tag">AD</div>
                     <div className="kf-banner-play">
-                        <svg viewBox="0 0 8 8" fill="#fff"><path d="M1.500 0.500L7 4 1.500 7.500z" /></svg>
+                        <svg viewBox="0 0 8 8" fill="#fff"><path d="M1.5 0.5L7 4 1.5 7.5z" /></svg>
                     </div>
                 </div>
 
-                {/* 접이식 목록 */}
-                {SECTIONS.map((s) => (
-                    <div className="kf-row" key={s.title}>
-                        <span className="kf-row-title">{s.title} {s.count}</span>
-                        {s.avatars && (
-                            <div className="kf-row-avatars">
-                                <span><Profile size={24} color="blue" /></span>
-                                <span><Profile size={24} color="purple" /></span>
-                                <span><Profile size={24} color="teal" /></span>
-                            </div>
-                        )}
-                        <IconChevron />
+                {/* 2. 생일인 친구 */}
+                <div 
+                    className="kf-row" 
+                    onClick={() => setIsBirthdayOpen(!isBirthdayOpen)} 
+                    style={{ 
+                        cursor: 'pointer',
+                        borderBottom: isBirthdayOpen ? 'none' : '1px solid #f0f0f0' 
+                    }}
+                >
+                    <span className="kf-row-title">생일인 친구 1</span>
+                    <IconChevron up={isBirthdayOpen} />
+                </div>
+                {isBirthdayOpen && (
+                    <div className="kf-friend">
+                        <KakaoProfile size={48} color="purple" />
+                        <span className="kf-friend-name">과대</span>
                     </div>
-                ))}
+                )}
 
-                {/* 친구 602 */}
-                <div className="kf-friends-head">
-                    <span className="kf-row-title">친구 602</span>
+                {/* 3. 즐겨찾는 친구 */}
+                <div 
+                    className="kf-row" 
+                    onClick={() => setIsFavoriteOpen(!isFavoriteOpen)} 
+                    style={{ 
+                        cursor: 'pointer',
+                        borderBottom: isFavoriteOpen ? 'none' : '1px solid #f0f0f0' 
+                    }}
+                >
+                    <span className="kf-row-title">즐겨찾는 친구 1</span>
+                    <IconChevron up={isFavoriteOpen} />
+                </div>
+                {isFavoriteOpen && (
+                    <div className="kf-friend">
+                        <KakaoAvatar {...getKakaoPerson('antony')} size={48} />
+                        <span className="kf-friend-name">{getKakaoPerson('antony').name}</span>
+                    </div>
+                )}
+
+                {/* 4. 친구 목록 헤더 */}
+                <div 
+                    className="kf-friends-head"
+                    style={{ 
+                        borderBottom: isFriendsOpen ? 'none' : '1px solid #f0f0f0' 
+                    }}
+                >
+                    <span className="kf-row-title">친구 {KAKAO_FRIENDS.length}</span>
                     <div className="kf-seg">
                         <button className={`kf-seg-btn ${sort === 'name' ? 'active' : ''}`} onClick={() => setSort('name')}>가나다순</button>
                         <button className={`kf-seg-btn ${sort === 'recent' ? 'active' : ''}`} onClick={() => setSort('recent')}>친구추가순</button>
                     </div>
-                    <IconChevron up />
+                    <IconChevron up={isFriendsOpen} onClick={() => setIsFriendsOpen(!isFriendsOpen)} />
                 </div>
 
-                <div className="kf-friend">
-                    <IconRecommend />
-                    <span className="kf-friend-name">추천친구 <span className="kf-friend-count">68</span></span>
-                </div>
-                <div className="kf-friend">
-                    <IconChannel />
-                    <span className="kf-friend-name">채널 <span className="kf-friend-count">62</span></span>
-                </div>
-                <div className="kf-friend">
-                    <Profile size={48} color="teal" />
-                    <span className="kf-friend-name">ㄱ.Nㅏ경 🌸</span>
-                </div>
+                {/* 전체 친구 리스트 */}
+                {isFriendsOpen && (
+                    <>
+                        <div className="kf-friend">
+                            <IconRecommend />
+                            <span className="kf-friend-name">추천친구 <span className="kf-friend-count">68</span></span>
+                        </div>
+                        <div className="kf-friend">
+                            <IconChannel />
+                            <span className="kf-friend-name">채널 <span className="kf-friend-count">62</span></span>
+                        </div>
+
+                        {sortedFriends.map((friend) => (
+                            <div className="kf-friend" key={friend.id}>
+                                <KakaoAvatar {...friend} size={48} />
+                                <span className="kf-friend-name">{friend.name}</span>
+                            </div>
+                        ))}
+                    </>
+                )}
             </div>
 
-            <TabBar active="friends" chatBadge={567} channelBadge={330} />
+            <KakaoTabBar active="friends" />
         </div>
     )
 }

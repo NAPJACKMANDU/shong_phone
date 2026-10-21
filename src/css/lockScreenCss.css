@@ -1,8 +1,4 @@
 /* ===================== 글로벌 & 컨테이너 ===================== */
-:root {
-  --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif
-}
-
 * {
   box-sizing: border-box;
 }
@@ -31,7 +27,6 @@
   margin: 0 auto;
   overflow: hidden;
   background-color: #000;
-  font-family: var(--ios-font);
   user-select: none;
   -webkit-user-select: none;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
