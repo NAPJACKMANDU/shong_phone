@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
-import '../css/photosCommonCss.css'
+import '../css/photo/photosCommonCss.css'
 
 // 라우터 경로 (프로젝트 라우터에 맞게 수정하세요)
 export const PHOTOS_PATH = {
@@ -71,11 +71,11 @@ export const PhotosTabBar = ({ active }: { active: 'library' | 'collections' }) 
     return (
         <div className="pc-tabbar">
             <div className="pc-tabs">
-                <button className={`pc-tab ${active === 'library' ? 'on' : ''}`} onClick={() => navigate(PHOTOS_PATH.library)}>
+                <button className={`pc-tab ${active === 'library' ? 'on' : ''}`} onClick={() => navigate('/photosLibrary')}>
                     <IconLibrary />
                     <span>보관함</span>
                 </button>
-                <button className={`pc-tab ${active === 'collections' ? 'on' : ''}`} onClick={() => navigate(PHOTOS_PATH.collections)}>
+                <button className={`pc-tab ${active === 'collections' ? 'on' : ''}`} onClick={() => navigate('/photosCollections')}>
                     <IconCollections />
                     <span>모음</span>
                 </button>

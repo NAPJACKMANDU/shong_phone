@@ -1,0 +1,264 @@
+/* CGV 홈 페이지 전용 (공통은 cgvCommonCss.css / kakaoCommonCss.css) */
+.ch-wrapper {
+    background: linear-gradient(to bottom, #fff 0, #fff calc(var(--u) * 161), #f6f6f6 calc(var(--u) * 161));
+}
+.ch-scroll {
+    padding-bottom: calc(var(--u) * 120);
+}
+
+/* ===================== 상단 칩 ===================== */
+.ch-chips {
+    display: flex;
+    gap: calc(var(--u) * 6);
+    padding-left: calc(var(--u) * 15);
+    margin-top: calc(var(--u) * 7);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.ch-chips::-webkit-scrollbar {
+    display: none;
+}
+.ch-chip {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+    height: calc(var(--u) * 40);
+    padding: 0 calc(var(--u) * 17);
+    border: none;
+    border-radius: calc(var(--u) * 20);
+    background-color: #f1f1f1;
+    color: #555;
+    font-family: inherit;
+    font-size: calc(var(--u) * 14);
+    font-weight: 500;
+    white-space: nowrap;
+}
+.ch-chip.on {
+    background-color: #111;
+    color: #fff;
+    font-size: calc(var(--u) * 15);
+    font-weight: 800;
+}
+.ch-chip svg {
+    width: calc(var(--u) * 21);
+    height: calc(var(--u) * 21);
+}
+
+/* ===================== 배너 ===================== */
+.ch-banner {
+    position: relative;
+    height: calc(var(--u) * 130);
+    background: linear-gradient(180deg, #fff 0%, #f6f6f6 100%);
+}
+.ch-banner-sub {
+    position: absolute;
+    top: calc(var(--u) * 29);
+    left: calc(var(--u) * 24);
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 18);
+    color: #222;
+}
+.ch-banner-title {
+    position: absolute;
+    top: calc(var(--u) * 49);
+    left: calc(var(--u) * 24);
+    font-size: calc(var(--u) * 17);
+    line-height: calc(var(--u) * 24);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #000;
+}
+.ch-banner-btn {
+    position: absolute;
+    top: calc(var(--u) * 86);
+    left: calc(var(--u) * 24);
+    height: calc(var(--u) * 30);
+    padding: 0 calc(var(--u) * 17);
+    border: 1px solid #333;
+    border-radius: calc(var(--u) * 15);
+    background: none;
+    color: #111;
+    font-family: inherit;
+    font-size: calc(var(--u) * 12.5);
+}
+.ch-banner-art {
+    position: absolute;
+    top: calc(var(--u) * 22);
+    left: calc(var(--u) * 277);
+    width: calc(var(--u) * 101);
+    height: calc(var(--u) * 100);
+}
+
+/* ===================== 무비차트 탭 ===================== */
+.ch-tabs {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 17);
+    height: calc(var(--u) * 40);
+    padding: 0 calc(var(--u) * 20);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.ch-tabs::-webkit-scrollbar {
+    display: none;
+}
+.ch-tab {
+    position: relative;
+    flex: 0 0 auto;
+    height: calc(var(--u) * 40);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    font-family: inherit;
+    font-size: calc(var(--u) * 14);
+    line-height: calc(var(--u) * 40);
+    font-weight: 500;
+    white-space: nowrap;
+}
+.ch-tab.on {
+    font-size: calc(var(--u) * 15);
+    font-weight: 800;
+}
+.ch-tab.on::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--u) * 5);
+    height: calc(var(--u) * 2);
+    background-color: #111;
+}
+.ch-tabs-div {
+    flex: 0 0 auto;
+    width: 1px;
+    height: calc(var(--u) * 14);
+    margin: 0 calc(var(--u) * -8) 0 calc(var(--u) * -4);
+    background-color: #ddd;
+}
+.ch-all {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 3);
+    color: #999;
+    font-size: calc(var(--u) * 13);
+    white-space: nowrap;
+}
+.ch-all svg {
+    width: calc(var(--u) * 8);
+    height: calc(var(--u) * 12);
+}
+
+/* ===================== 포스터 캐러셀 ===================== */
+.ch-carousel {
+    position: relative;
+    height: calc(var(--u) * 362);
+    margin-top: calc(var(--u) * 15);
+    overflow: hidden;
+}
+.ch-track {
+    position: absolute;
+    top: 0;
+    left: calc(var(--u) * -173);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 8);
+}
+.ch-card {
+    position: relative;
+    flex: 0 0 auto;
+    width: calc(var(--u) * 234);
+    height: calc(var(--u) * 334);
+    border-radius: calc(var(--u) * 20);
+    cursor: pointer;
+}
+.ch-card.main {
+    width: calc(var(--u) * 254);
+    height: calc(var(--u) * 362);
+    box-shadow: 0 calc(var(--u) * 10) calc(var(--u) * 24) rgba(0, 0, 0, 0.18);
+    cursor: default;
+}
+.ch-rank {
+    position: absolute;
+    left: calc(var(--u) * 16);
+    bottom: calc(var(--u) * 20);
+    font-size: calc(var(--u) * 58);
+    line-height: 1;
+    font-weight: 900;
+    font-style: italic;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.ch-fx {
+    position: absolute;
+    right: calc(var(--u) * 10);
+    bottom: calc(var(--u) * 30);
+    height: calc(var(--u) * 20);
+    padding: 0 calc(var(--u) * 6);
+    border-radius: calc(var(--u) * 4);
+    background-color: rgba(40, 50, 40, 0.82);
+    color: #fff;
+    font-size: calc(var(--u) * 12);
+    font-weight: 800;
+    line-height: calc(var(--u) * 20);
+}
+.ch-heart {
+    position: absolute;
+    top: calc(var(--u) * 10);
+    right: calc(var(--u) * 10);
+    width: calc(var(--u) * 36);
+    height: calc(var(--u) * 36);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ch-heart svg {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 18);
+}
+.ch-ad-tag {
+    position: absolute;
+    top: calc(var(--u) * 9);
+    right: calc(var(--u) * 7);
+    height: calc(var(--u) * 18);
+    padding: 0 calc(var(--u) * 9);
+    border-radius: calc(var(--u) * 9);
+    background-color: rgba(255, 255, 255, 0.55);
+    color: #555;
+    font-size: calc(var(--u) * 11);
+    font-weight: 700;
+    line-height: calc(var(--u) * 18);
+}
+.ch-ad-art {
+    position: absolute;
+    left: calc(var(--u) * 26);
+    bottom: calc(var(--u) * 20);
+    width: calc(var(--u) * 120);
+    height: calc(var(--u) * 150);
+    border-radius: calc(var(--u) * 10);
+    background: repeating-linear-gradient(105deg, #e5182a 0 calc(var(--u) * 14), #fff calc(var(--u) * 14) calc(var(--u) * 24));
+}
+
+/* ===================== 영화 제목 ===================== */
+.ch-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--u) * 6);
+    margin-top: calc(var(--u) * 10);
+    padding: 0 calc(var(--u) * 20);
+    font-size: calc(var(--u) * 16);
+    line-height: calc(var(--u) * 22);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #111;
+}

@@ -1,0 +1,252 @@
+/* 대화방 페이지 전용 (공통은 imessageCommonCss.css / kakaoCommonCss.css) */
+.ic-wrapper {
+    padding-top: 0;
+    background-color: #fff;
+}
+
+/* ===================== 메시지 영역 ===================== */
+.ic-messages {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--u) * 110) calc(var(--u) * 16) calc(var(--u) * 130);
+    box-sizing: border-box;
+    scrollbar-width: none;
+}
+.ic-messages::-webkit-scrollbar {
+    display: none;
+}
+.ic-messages > * {
+    flex: 0 0 auto;
+}
+
+/* 말풍선 */
+.ic-bubble {
+    position: relative;
+    max-width: calc(var(--u) * 270);
+    padding: calc(var(--u) * 9.5) calc(var(--u) * 14.5);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 20);
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 17.5);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+.ic-bubble.break {
+    word-break: break-all;
+}
+.ic-bubble.narrow {
+    max-width: calc(var(--u) * 180);
+}
+.ic-bubble.me {
+    align-self: flex-end;
+    color: #fff;
+}
+.ic-bubble.other {
+    align-self: flex-start;
+    color: #000;
+}
+.ic-bubble.c-sms { background-color: #62b0f5; }
+.ic-bubble.c-imsg { background-color: #3c8df6; }
+.ic-bubble.c-green { background-color: #6dd170; }
+.ic-bubble.c-gray { background-color: #e9e9eb; }
+.ic-bubble u {
+    text-decoration-thickness: 1px;
+    text-underline-offset: calc(var(--u) * 3);
+}
+
+/* 말풍선 꼬리 (페이지 배경이 흰색이라 흰색으로 가려서 만듦) */
+.ic-bubble.tail::before,
+.ic-bubble.tail::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: calc(var(--u) * 20);
+}
+.ic-bubble.me.tail::before {
+    right: calc(var(--u) * -7);
+    width: calc(var(--u) * 20);
+    background: inherit;
+    border-bottom-left-radius: calc(var(--u) * 16) calc(var(--u) * 14);
+}
+.ic-bubble.me.tail::after {
+    right: calc(var(--u) * -26);
+    width: calc(var(--u) * 26);
+    background: #fff;
+    border-bottom-left-radius: calc(var(--u) * 10);
+}
+.ic-bubble.other.tail::before {
+    left: calc(var(--u) * -7);
+    width: calc(var(--u) * 20);
+    background: inherit;
+    border-bottom-right-radius: calc(var(--u) * 16) calc(var(--u) * 14);
+}
+.ic-bubble.other.tail::after {
+    left: calc(var(--u) * -26);
+    width: calc(var(--u) * 26);
+    background: #fff;
+    border-bottom-right-radius: calc(var(--u) * 10);
+}
+
+/* 가운데 안내 글 */
+.ic-caption {
+    align-self: center;
+    text-align: center;
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 13);
+    color: #8e8e93;
+}
+.ic-caption span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--u) * 3);
+}
+.ic-caption svg {
+    width: calc(var(--u) * 9);
+    height: calc(var(--u) * 11);
+}
+.ic-stamp {
+    align-self: center;
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 16);
+    color: #8e8e93;
+}
+.ic-stamp b {
+    font-weight: 600;
+}
+.ic-receipt {
+    align-self: flex-end;
+    margin-right: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 14);
+    color: #8e8e93;
+}
+
+/* ===================== 상단 (뒤로 / 상대방 / 영상통화) ===================== */
+.ic-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--u) * 150);
+    z-index: 10;
+    pointer-events: none;
+}
+.ic-top > * {
+    pointer-events: auto;
+}
+.ic-back {
+    position: absolute;
+    top: calc(var(--u) * 59);
+    left: calc(var(--u) * 16);
+    width: calc(var(--u) * 84);
+    height: calc(var(--u) * 44);
+    padding: 0 0 0 calc(var(--u) * 12);
+    box-sizing: border-box;
+    border: none;
+    border-radius: calc(var(--u) * 22);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 8);
+    color: #111;
+}
+.ic-back svg {
+    width: calc(var(--u) * 16);
+    height: calc(var(--u) * 20);
+}
+.ic-back-count {
+    min-width: calc(var(--u) * 33);
+    height: calc(var(--u) * 19);
+    padding: 0 calc(var(--u) * 6);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 10);
+    background-color: #1c1c1e;
+    color: #fff;
+    font-size: calc(var(--u) * 13);
+    font-weight: 700;
+    line-height: calc(var(--u) * 19);
+    text-align: center;
+}
+.ic-center-avatar {
+    position: absolute;
+    top: calc(var(--u) * 59);
+    left: 50%;
+    margin-left: calc(var(--u) * -30);
+    line-height: 0;
+}
+.ic-name {
+    position: absolute;
+    top: calc(var(--u) * 114);
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(var(--u) * 32);
+    padding: 0 calc(var(--u) * 13) 0 calc(var(--u) * 17);
+    border: none;
+    border-radius: calc(var(--u) * 16);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 5);
+    font-family: inherit;
+    font-size: calc(var(--u) * 15);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #000;
+    white-space: nowrap;
+}
+.ic-name svg {
+    width: calc(var(--u) * 7);
+    height: calc(var(--u) * 12);
+    color: #b0b0b6;
+}
+.ic-video {
+    position: absolute;
+    top: calc(var(--u) * 59);
+    right: calc(var(--u) * 16);
+}
+
+/* ===================== 하단 입력창 ===================== */
+.ic-input {
+    position: fixed;
+    left: calc(var(--u) * 28);
+    right: calc(var(--u) * 28);
+    bottom: calc(var(--u) * 28);
+    height: calc(var(--u) * 40);
+    z-index: 10;
+    display: flex;
+    gap: calc(var(--u) * 12);
+}
+.ic-plus {
+    flex: 0 0 auto;
+    width: calc(var(--u) * 40);
+    height: calc(var(--u) * 40);
+}
+.ic-plus svg {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 20);
+}
+.ic-field {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 calc(var(--u) * 16);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 20);
+}
+.ic-field input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-family: inherit;
+    font-size: calc(var(--u) * 15);
+    color: #111;
+}
+.ic-field input::placeholder {
+    color: #8e8e93;
+}

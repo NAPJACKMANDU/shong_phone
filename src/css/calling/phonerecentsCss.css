@@ -1,0 +1,59 @@
+/* 최근 통화 페이지 전용 (공통은 phoneCommonCss.css / imessageCommonCss.css / kakaoCommonCss.css) */
+.pr-search {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 37);
+    margin: calc(var(--u) * 10) calc(var(--u) * 16) 0;
+    padding: 0 calc(var(--u) * 16) 0 calc(var(--u) * 14);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 19);
+    background-color: #efeff1;
+    color: #111;
+}
+.pr-search > svg {
+    width: calc(var(--u) * 17);
+    height: calc(var(--u) * 17);
+    flex: 0 0 auto;
+}
+.pr-search input {
+    flex: 1;
+    min-width: 0;
+    margin: 0 calc(var(--u) * 8) 0 calc(var(--u) * 9);
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-family: inherit;
+    font-size: calc(var(--u) * 15);
+    color: #111;
+}
+.pr-search input::placeholder {
+    color: #8e8e93;
+}
+
+.pr-list {
+    margin-top: calc(var(--u) * 17);
+}
+.pr-row {
+    height: calc(var(--u) * 74);
+}
+.pr-row .ph-body {
+    margin-left: calc(var(--u) * 10);
+}
+.pr-name-emoji {
+    font-size: calc(var(--u) * 16);
+    line-height: calc(var(--u) * 20);
+}
+.pr-time {
+    flex: 0 0 auto;
+    margin-left: calc(var(--u) * 8);
+    font-size: calc(var(--u) * 12);
+    color: #8e8e93;
+    white-space: nowrap;
+}
+.pr-empty {
+    padding: calc(var(--u) * 60) 0;
+    text-align: center;
+    font-size: calc(var(--u) * 14);
+    color: #8e8e93;
+}

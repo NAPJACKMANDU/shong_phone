@@ -1,0 +1,67 @@
+/* 보관함 페이지 전용 CSS */
+.pl-wrapper {
+    --kk-fg: #222;
+    --kk-battery-text: #222;
+    padding-top: 0;
+    background-color: #fff;
+}
+
+/* 스크롤이 맨 위에 있을 때 상단 헤더 영역 흰색 바탕 처리 */
+.pl-wrapper.is-top .pc-header {
+    background-color: #fff;
+    transition: background-color 0.2s ease;
+}
+
+/* 만약 PhotosHeader 컴포넌트 내부 클래스를 직접 제어해야 한다면 아래와 같이 조절 가능합니다 */
+.pl-wrapper.is-top {
+    --kk-fg: #222;
+}
+
+.pl-wrapper > .kk-status {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+}
+
+.pl-grid {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(var(--u) * 1.7);
+    align-content: start;
+    padding-bottom: calc(var(--u) * 100);
+    scrollbar-width: none;
+}
+
+/* 사진이 상단 헤더(제목 영역) 뒤에 파묻히지 않도록 헤더 높이만큼 상단 여백 부여 */
+.pl-grid-spacer {
+    grid-column: span 3;
+    height: calc(var(--u) * 45); /* 헤더 높이에 맞춰 조절하세요 */
+}
+
+.pl-grid::-webkit-scrollbar {
+    display: none;
+}
+.pl-tile {
+    height: calc(var(--u) * 130);
+    cursor: pointer;
+}
+.pl-tile.tall {
+    height: calc(var(--u) * 232);
+}
+
+/* 부제목 스타일 */
+.pl-sync {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+}
+.pl-sync .chev {
+    width: calc(var(--u) * 12);
+    height: calc(var(--u) * 12);
+    margin-left: calc(var(--u) * -1);
+}

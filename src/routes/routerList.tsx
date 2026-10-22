@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import {
+    CGVHOME_PATH,
+    CGVMORE_PATH,
+    CGVWATCHED_PATH,
     HOMESCREEN_PATH,
     KAKAOCHATLIST_PATH,
     KAKAOCHATROOM_PATH,
@@ -8,18 +11,33 @@ import {
     KAKAOMEMO_PATH,
     KAKAOMORE_PATH,
     MAIN_PATH,
-    PhotosLibrary_PATH
+    MESSAGESCHAT_PATH,
+    MESSAGESLIST_PATH,
+    PHONEFAVORITES_PATH,
+    PHONERECENTS_PATH,
+    PHONEVOICEMAIL_PATH,
+    PHOTOSCOLLECTIONS_PATH,
+    PHOTOSLIBRARY_PATH
 } from "./index.ts"
 import LockScreen from "../page/lockScreen.tsx"
 import HomeScreen from "../page/homeScreen.tsx"
-import KakaoChatList from "../page/kakaochatlist.tsx"
-import KakaoFriends from "../page/kakaofriends.tsx"
-import KakaoChatRoom from "../page/kakaoChatRoom.tsx"
-import KakaoMore from "../page/kakaoMore.tsx"
-import KakaoNotification from "../page/kakaoNotification.tsx"
-import type { KakaoNoticeMsg } from "../page/kakaoNotification.tsx"
-import KakaoMemo from "../page/kakaoMemo.tsx"
-import PhotosLibrary from "../page/photosLibrary.tsx"
+import KakaoChatList from "../page/kakaoTalk/kakaochatlist.tsx"
+import KakaoFriends from "../page/kakaoTalk/kakaofriends.tsx"
+import KakaoChatRoom from "../page/kakaoTalk/kakaoChatRoom.tsx"
+import KakaoMore from "../page/kakaoTalk/kakaoMore.tsx"
+import KakaoNotification from "../page/kakaoTalk/kakaoNotification.tsx"
+import type { KakaoNoticeMsg } from "../page/kakaoTalk/kakaoNotification.tsx"
+import KakaoMemo from "../page/memo/kakaoMemo.tsx"
+import PhotosLibrary from "../page/photo/photosLibrary.tsx"
+import PhotosCollections from "../page/photo/photosCollections.tsx"
+import CgvHome from "../page/cgv/cgvHome.tsx"
+import CgvMore from "../page/cgv/cgvmore.tsx"
+import CgvWatched from "../page/cgv/cgvwatched.tsx"
+import MessagesList from "../page/message/messageslist.tsx"
+import MessagesChat from "../page/message/messageschat.tsx"
+import PhoneFavorites from "../page/calling/phonefavorites.tsx"
+import PhoneRecents from "../page/calling/phonerecents.tsx"
+import PhoneVoicemail from "../page/calling/phonevoicemail.tsx"
 
 export const RouterSetting = () => {
     const [unlocked, setUnlocked] = useState(false)
@@ -119,7 +137,16 @@ export const RouterSetting = () => {
                         <Route path={`${KAKAOCHATROOM_PATH()}/:chatId?`} element={<KakaoChatRoom/>}></Route>
                         <Route path={KAKAOMORE_PATH()} element={<KakaoMore/>}></Route>
                         <Route path={KAKAOMEMO_PATH()} element={<KakaoMemo/>}></Route>
-                        <Route path={PhotosLibrary_PATH()} element={<PhotosLibrary/>}></Route>
+                        <Route path={PHOTOSLIBRARY_PATH()} element={<PhotosLibrary/>}></Route>
+                        <Route path={PHOTOSCOLLECTIONS_PATH()} element={<PhotosCollections/>}></Route>
+                        <Route path={CGVHOME_PATH()} element={<CgvHome/>}></Route>
+                        <Route path={CGVMORE_PATH()} element={<CgvMore/>}></Route>
+                        <Route path={CGVWATCHED_PATH()} element={<CgvWatched/>}></Route>
+                        <Route path={MESSAGESLIST_PATH()} element={<MessagesList/>}></Route>
+                        <Route path={MESSAGESCHAT_PATH()} element={<MessagesChat/>}></Route>
+                        <Route path={PHONEFAVORITES_PATH()} element={<PhoneFavorites/>}></Route>
+                        <Route path={PHONERECENTS_PATH()} element={<PhoneRecents/>}></Route>
+                        <Route path={PHONEVOICEMAIL_PATH()} element={<PhoneVoicemail/>}></Route>
                     </Routes>
                 </>
             )}

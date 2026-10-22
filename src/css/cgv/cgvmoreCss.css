@@ -1,0 +1,255 @@
+/* CGV 더보기(마이) 페이지 전용 (공통은 cgvCommonCss.css / kakaoCommonCss.css) */
+.cm-wrapper {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    background-color: #fff;
+}
+.cm-scroll {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    padding-bottom: calc(var(--u) * 130);
+}
+
+/* ===================== 인사 / 프로필 ===================== */
+.cm-profile {
+    position: relative;
+    height: calc(var(--u) * 93);
+    margin-top: calc(var(--u) * 3);
+    padding: 0 calc(var(--u) * 18) 0 calc(var(--u) * 25);
+}
+.cm-name {
+    font-size: calc(var(--u) * 20);
+    line-height: calc(var(--u) * 28);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #000;
+}
+.cm-grade {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+    margin-top: calc(var(--u) * 10);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #222;
+    font-family: inherit;
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 20);
+}
+.cm-grade svg {
+    width: calc(var(--u) * 7);
+    height: calc(var(--u) * 12);
+}
+.cm-avatar {
+    position: absolute;
+    top: calc(var(--u) * 9);
+    right: calc(var(--u) * 18);
+    width: calc(var(--u) * 60);
+    height: calc(var(--u) * 60);
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cm-avatar svg {
+    width: calc(var(--u) * 26);
+    height: calc(var(--u) * 26);
+}
+
+/* ===================== 등급 진행 바 ===================== */
+.cm-bar {
+    height: calc(var(--u) * 20);
+    margin: 0 calc(var(--u) * 15);
+    border-radius: calc(var(--u) * 10);
+    background-color: #444;
+    overflow: hidden;
+}
+.cm-bar-fill {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: calc(var(--u) * 13);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 10);
+    background: linear-gradient(90deg, #ff8a50 0%, #ff5a5f 55%, #ff3d6a 100%);
+    color: #fff;
+    font-size: calc(var(--u) * 14);
+    font-weight: 800;
+}
+.cm-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: calc(var(--u) * 3) calc(var(--u) * 18) 0;
+    font-size: calc(var(--u) * 12.5);
+    line-height: calc(var(--u) * 16);
+    color: #999;
+}
+
+/* ===================== 포인트 카드 ===================== */
+.cm-card {
+    margin: calc(var(--u) * 23) calc(var(--u) * 15) 0;
+    padding: 0 calc(var(--u) * 16);
+    border-radius: calc(var(--u) * 26);
+    background-color: #f4f4f4;
+}
+.cm-card-top {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 56);
+    border-bottom: 1px solid #e3e3e3;
+    font-size: calc(var(--u) * 15);
+    color: #111;
+}
+.cm-cj {
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+    margin-right: calc(var(--u) * 8);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, #f4f4f4 0 36%, transparent 38%),
+        conic-gradient(#c850f0, #f0509a, #ff9a50, #4ab0f0, #5a8af0, #c850f0);
+}
+.cm-card-top b {
+    margin-left: auto;
+    font-size: calc(var(--u) * 16);
+    font-weight: 800;
+}
+.cm-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: calc(var(--u) * 19) 0 calc(var(--u) * 21);
+    text-align: center;
+}
+.cm-card-val {
+    height: calc(var(--u) * 24);
+    font-size: calc(var(--u) * 18);
+    line-height: calc(var(--u) * 24);
+    font-weight: 800;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cm-card-val svg {
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 20);
+    color: #444;
+}
+.cm-card-label {
+    margin-top: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 13.5);
+    line-height: calc(var(--u) * 18);
+    color: #8a8a8a;
+    white-space: nowrap;
+}
+
+/* ===================== 최근 이용 / 메뉴 ===================== */
+.cm-h2 {
+    margin: calc(var(--u) * 30) calc(var(--u) * 15) 0;
+    font-size: calc(var(--u) * 16);
+    line-height: calc(var(--u) * 22);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+.cm-recent {
+    margin: calc(var(--u) * 12) calc(var(--u) * 15) 0;
+    min-height: calc(var(--u) * 37);
+}
+.cm-recent-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--u) * 8);
+    height: calc(var(--u) * 37);
+    padding: 0 calc(var(--u) * 14) 0 calc(var(--u) * 17);
+    border: 1px solid #e3e3e3;
+    border-radius: calc(var(--u) * 19);
+    font-size: calc(var(--u) * 14);
+    color: #222;
+}
+.cm-recent-chip button {
+    width: calc(var(--u) * 12);
+    height: calc(var(--u) * 12);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #555;
+}
+.cm-recent-chip svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.cm-sub {
+    margin: calc(var(--u) * 38) calc(var(--u) * 20) 0;
+    font-size: calc(var(--u) * 14);
+    line-height: calc(var(--u) * 20);
+    color: #8a8a8a;
+}
+.cm-menu {
+    display: grid;
+    grid-template-columns: calc(var(--u) * 180) 1fr;
+    margin-top: calc(var(--u) * 14);
+    padding: 0 calc(var(--u) * 20);
+}
+.cm-menu button {
+    height: calc(var(--u) * 42);
+    padding: 0;
+    border: none;
+    background: none;
+    text-align: left;
+    font-family: inherit;
+    font-size: calc(var(--u) * 15);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #000;
+}
+
+/* ===================== 하단 광고 ===================== */
+.cm-ad {
+    position: relative;
+    height: calc(var(--u) * 100);
+    margin: calc(var(--u) * -2) calc(var(--u) * 15) 0;
+    border-radius: calc(var(--u) * 22);
+    background-color: #fde465;
+    overflow: hidden;
+}
+.cm-ad-text {
+    position: absolute;
+    top: calc(var(--u) * 13);
+    left: calc(var(--u) * 24);
+    font-size: calc(var(--u) * 14);
+    line-height: calc(var(--u) * 24);
+    color: #222;
+}
+.cm-ad-text b {
+    display: block;
+    font-weight: 800;
+}
+.cm-ad-tag {
+    position: absolute;
+    top: calc(var(--u) * 8);
+    right: calc(var(--u) * 8);
+    height: calc(var(--u) * 16);
+    padding: 0 calc(var(--u) * 8);
+    border-radius: calc(var(--u) * 8);
+    background-color: rgba(255, 255, 255, 0.55);
+    color: #555;
+    font-size: calc(var(--u) * 10);
+    font-weight: 700;
+    line-height: calc(var(--u) * 16);
+}
+.cm-ad-art {
+    position: absolute;
+    left: calc(var(--u) * 227);
+    top: calc(var(--u) * 30);
+    width: calc(var(--u) * 126);
+    height: calc(var(--u) * 70);
+    background: #e5182a;
+    border-radius: calc(var(--u) * 6) calc(var(--u) * 6) 0 0;
+}

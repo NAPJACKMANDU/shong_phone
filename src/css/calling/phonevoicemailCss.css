@@ -1,0 +1,117 @@
+/* 음성 메시지 페이지 전용 (공통은 phoneCommonCss.css / imessageCommonCss.css / kakaoCommonCss.css) */
+
+/* 이동통신사 음성 사서함 카드 */
+.pv-carrier {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(var(--u) * 49);
+    margin: calc(var(--u) * 14) calc(var(--u) * 16) 0;
+    padding: 0 calc(var(--u) * 12) 0 calc(var(--u) * 16);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 25);
+    background-color: #f4f4f4;
+}
+.pv-carrier b {
+    font-size: calc(var(--u) * 13);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #000;
+}
+.pv-call {
+    height: calc(var(--u) * 24);
+    padding: 0 calc(var(--u) * 14);
+    border: none;
+    border-radius: calc(var(--u) * 12);
+    background-color: #e4e4e7;
+    color: #2f7bf2;
+    font-family: inherit;
+    font-size: calc(var(--u) * 12.5);
+}
+
+/* 음성 메시지 목록 */
+.pv-list {
+    margin-top: calc(var(--u) * 6);
+}
+.pv-row {
+    height: calc(var(--u) * 74);
+}
+.pv-row .ph-body {
+    position: relative;
+    margin-left: calc(var(--u) * 10);
+    border-bottom: none;
+}
+.pv-row:not(.last) .ph-body::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--u) * 4);
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: #e3e3e6;
+}
+.pv-trans {
+    margin-top: calc(var(--u) * 1);
+    font-size: calc(var(--u) * 12.5);
+    line-height: calc(var(--u) * 15);
+    color: #8e8e93;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    word-break: break-all;
+}
+.pv-badge {
+    display: inline-block;
+    height: calc(var(--u) * 11);
+    margin-right: calc(var(--u) * 5);
+    padding: 0 calc(var(--u) * 3);
+    border-radius: calc(var(--u) * 2);
+    background-color: #b5b5ba;
+    color: #fff;
+    font-size: calc(var(--u) * 8);
+    font-weight: 700;
+    line-height: calc(var(--u) * 11);
+    vertical-align: calc(var(--u) * 1);
+}
+.pv-date {
+    flex: 0 0 auto;
+    margin-left: calc(var(--u) * 8);
+    text-align: right;
+    font-size: calc(var(--u) * 12.5);
+    line-height: calc(var(--u) * 15);
+    color: #111;
+    white-space: nowrap;
+}
+.pv-date span {
+    display: block;
+    color: #8e8e93;
+}
+.pv-row .ph-info {
+    margin-left: calc(var(--u) * 11);
+}
+
+/* 삭제된 음성 메시지 */
+.pv-deleted {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 48);
+    margin: 0 calc(var(--u) * 16);
+    border-bottom: 1px solid #e3e3e6;
+    font-size: calc(var(--u) * 14);
+    color: #111;
+    cursor: pointer;
+}
+.pv-deleted em {
+    margin-left: auto;
+    font-style: normal;
+    font-size: calc(var(--u) * 14);
+    color: #8e8e93;
+}
+.pv-deleted svg {
+    width: calc(var(--u) * 7);
+    height: calc(var(--u) * 13);
+    margin-left: calc(var(--u) * 9);
+    margin-right: calc(var(--u) * 2);
+    color: #b0b0b6;
+}

@@ -41,10 +41,6 @@
 .lock-bg {
   position: absolute;
   inset: 0;
-  background-image: url('../img/image.png'); /* public/lockscreen.jpg 경로 확인 */
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
   z-index: 0;
 }
 

@@ -1,0 +1,213 @@
+/* ===== 전화 앱 공통 CSS (최근 통화 / 즐겨찾기 / 음성 메시지 모두 사용) =====
+   --u 와 상태바는 카카오 공통(kakaoCommonCss.css), 하얀 유리 버튼·흐림 효과는
+   아이메시지 공통(imessageCommonCss.css)을 같이 씁니다. */
+
+.ph-wrapper {
+    height: 100dvh;
+    min-height: 0;
+    padding-top: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    background-color: #fff;
+}
+
+.ph-wrapper > .kk-status {
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+}
+
+/* ===================== 상단 버튼 줄 ===================== */
+.ph-top {
+    position: absolute;
+    top: calc(var(--u) * 59);
+    left: calc(var(--u) * 16);
+    right: calc(var(--u) * 16);
+    z-index: 12;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+}
+.ph-top > * {
+    pointer-events: auto;
+}
+
+/* 가운데 분류 버튼 (모두 | 부재중 전화) */
+.ph-seg {
+    position: absolute;
+    left: 50%;
+    top: calc(var(--u) * -2);
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    width: calc(var(--u) * 173);
+    height: calc(var(--u) * 48);
+    padding: 0 calc(var(--u) * 3);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 24);
+}
+.ph-seg-btn {
+    height: calc(var(--u) * 40);
+    padding: 0;
+    border: none;
+    border-radius: calc(var(--u) * 20);
+    background: none;
+    color: #111;
+    font-family: inherit;
+    font-size: calc(var(--u) * 15);
+}
+.ph-seg-btn:first-child {
+    width: calc(var(--u) * 79);
+}
+.ph-seg-btn:last-child {
+    width: calc(var(--u) * 88);
+}
+.ph-seg-btn.on {
+    background-color: #ebebed;
+}
+
+/* ===================== 스크롤 영역 / 큰 제목 ===================== */
+.ph-scroll {
+    position: relative;
+    flex: 0 0 auto;
+    width: 100%;
+    overflow: visible;
+    padding: calc(var(--u) * 120) 0 calc(var(--u) * 100);
+    box-sizing: border-box;
+}
+.ph-title {
+    margin: 0 calc(var(--u) * 17);
+    font-size: calc(var(--u) * 27);
+    line-height: calc(var(--u) * 36);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #000;
+}
+
+/* ===================== 목록 한 줄 ===================== */
+.ph-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 calc(var(--u) * 16);
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.ph-avatar {
+    flex: 0 0 auto;
+    line-height: 0;
+}
+.ph-body {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e3e3e6;
+}
+.ph-text {
+    flex: 1;
+    min-width: 0;
+}
+.ph-name {
+    display: block;
+    font-size: calc(var(--u) * 13.5);
+    line-height: calc(var(--u) * 20);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ph-name.red {
+    color: #e8453c;
+}
+.ph-sub {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 16);
+    color: #8e8e93;
+    white-space: nowrap;
+}
+.ph-sub svg {
+    width: calc(var(--u) * 11);
+    height: calc(var(--u) * 11);
+    flex: 0 0 auto;
+}
+
+/* 정보(i) 버튼 */
+.ph-info {
+    flex: 0 0 auto;
+    width: calc(var(--u) * 38);
+    height: calc(var(--u) * 38);
+    margin-left: calc(var(--u) * 8);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #f2f2f4;
+    color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ph-info svg {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 20);
+}
+
+/* ===================== 하단 떠 있는 탭바 ===================== */
+.ph-tabbar {
+    position: fixed;
+    left: calc(var(--u) * 21);
+    right: calc(var(--u) * 21);
+    bottom: calc(var(--u) * 21);
+    height: calc(var(--u) * 62);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    padding: 0 calc(var(--u) * 4);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 31);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 70%);
+    
+}
+.ph-tab {
+    flex: 0 0 auto;
+    width: calc(var(--u) * 74);
+    height: calc(var(--u) * 54);
+    padding: calc(var(--u) * 7) 0 0;
+    box-sizing: border-box;
+    border: none;
+    border-radius: calc(var(--u) * 27);
+    background: none;
+    color: #111;
+    font-family: inherit;
+    font-size: calc(var(--u) * 11);
+    font-weight: 500;
+    line-height: calc(var(--u) * 14);
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+}
+.ph-tab + .ph-tab {
+    margin-left: calc(var(--u) * -8);
+}
+.ph-tab.wide {
+    width: calc(var(--u) * 78);
+}
+.ph-tab svg {
+    height: calc(var(--u) * 23);
+    width: auto;
+    display: block;
+}
+.ph-tab.on {
+    background-color: rgba(120, 120, 128, 0.14);
+    color: #2f7bf2;
+}

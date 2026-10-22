@@ -1,0 +1,66 @@
+/* ===== 아이메시지 공통 CSS (메시지 목록 / 대화방 모두 사용) =====
+   --u 와 상태바는 카카오 공통(kakaoCommonCss.css)의 .kk-wrapper 를 그대로 사용합니다. */
+
+/* 하얀 유리 버튼 */
+.im-glass {
+    background-color: rgba(250, 250, 252, 0.92);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+.im-round {
+    width: calc(var(--u) * 44);
+    height: calc(var(--u) * 44);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.im-round svg {
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+    display: block;
+}
+.im-pill {
+    height: calc(var(--u) * 44);
+    padding: 0 calc(var(--u) * 17);
+    border: none;
+    border-radius: calc(var(--u) * 22);
+    color: #111;
+    font-family: inherit;
+    font-size: calc(var(--u) * 15);
+    font-weight: 500;
+}
+
+/* 위 / 아래 흐림 */
+.im-topfade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--u) * 125);
+    z-index: 8;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.96) 45%, rgba(255, 255, 255, 0));
+}
+.im-bottomfade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--u) * 130);
+    z-index: 8;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 70%);
+}
+
+/* 마이크 아이콘 (검색창 / 입력창에서 같이 씀) */
+.im-mic {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 20);
+    flex: 0 0 auto;
+    color: #8e8e93;
+}

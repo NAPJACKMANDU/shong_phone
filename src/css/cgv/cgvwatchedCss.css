@@ -1,0 +1,205 @@
+/* CGV '내가 본 영화' 페이지 전용 (공통은 cgvCommonCss.css / kakaoCommonCss.css) */
+.cw-wrapper {
+    background-color: #f5f5f5;
+}
+
+/* ===================== 상단 바 (뒤로 / 홈 / 제목) ===================== */
+.cw-appbar {
+    position: relative;
+    flex: 0 0 auto;
+    height: calc(var(--u) * 107);
+    margin-top: calc(var(--u) * -52);
+    padding-top: calc(var(--u) * 58);
+    box-sizing: border-box;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+}
+.cw-icon-btn {
+    position: relative;
+    z-index: 1;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cw-icon-btn.back {
+    width: calc(var(--u) * 12);
+    height: calc(var(--u) * 20);
+    margin-left: calc(var(--u) * 17);
+}
+.cw-icon-btn.home {
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+    margin-left: calc(var(--u) * 23);
+}
+.cw-icon-btn svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.cw-appbar-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(var(--u) * 58);
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(var(--u) * 16);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #000;
+}
+
+/* ===================== 기간 선택 ===================== */
+.cw-range {
+    position: relative;
+    flex: 0 0 auto;
+    height: calc(var(--u) * 40);
+    margin-top: calc(var(--u) * 19);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--u) * 7);
+    font-size: calc(var(--u) * 15.5);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #111;
+}
+.cw-range-prev {
+    position: absolute;
+    left: calc(var(--u) * 16);
+    top: 50%;
+    width: calc(var(--u) * 10);
+    height: calc(var(--u) * 16);
+    margin-top: calc(var(--u) * -8);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+}
+.cw-range-prev svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.cw-range-cal {
+    width: calc(var(--u) * 19);
+    height: calc(var(--u) * 19);
+}
+
+/* ===================== 영화 카드 ===================== */
+.cw-scroll {
+    padding: calc(var(--u) * 7) calc(var(--u) * 15) calc(var(--u) * 40);
+}
+.cw-card {
+    position: relative;
+    margin-bottom: calc(var(--u) * 16);
+    padding: calc(var(--u) * 20);
+    border-radius: calc(var(--u) * 26);
+    background-color: #fff;
+}
+.cw-top {
+    display: flex;
+}
+.cw-poster {
+    flex: 0 0 auto;
+    width: calc(var(--u) * 60);
+    height: calc(var(--u) * 84);
+    border-radius: calc(var(--u) * 6);
+}
+.cw-info {
+    flex: 1;
+    min-width: 0;
+    margin-left: calc(var(--u) * 12);
+    padding-right: calc(var(--u) * 30);
+}
+.cw-title {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 5);
+    height: calc(var(--u) * 20);
+    font-size: calc(var(--u) * 13);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #000;
+}
+.cw-title span {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.cw-date {
+    height: calc(var(--u) * 20);
+    font-size: calc(var(--u) * 12.5);
+    line-height: calc(var(--u) * 20);
+    color: #888;
+    white-space: nowrap;
+}
+.cw-theater {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 6);
+    height: calc(var(--u) * 20);
+    margin-top: calc(var(--u) * 2);
+    font-size: calc(var(--u) * 12.5);
+    color: #888;
+    white-space: nowrap;
+}
+.cw-sep {
+    width: 1px;
+    height: calc(var(--u) * 12);
+    background-color: #ccc;
+}
+.cw-tag {
+    display: inline-block;
+    height: calc(var(--u) * 20);
+    margin-top: calc(var(--u) * 4);
+    padding: 0 calc(var(--u) * 5);
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 11.5);
+    line-height: calc(var(--u) * 18);
+    color: #777;
+}
+.cw-menu {
+    position: absolute;
+    top: calc(var(--u) * 28);
+    right: calc(var(--u) * 28);
+    width: calc(var(--u) * 4);
+    padding: 0;
+    border: none;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 4);
+}
+.cw-menu i {
+    width: calc(var(--u) * 4);
+    height: calc(var(--u) * 4);
+    border-radius: 50%;
+    background-color: #333;
+}
+.cw-review {
+    margin-top: calc(var(--u) * 18);
+    height: calc(var(--u) * 54);
+    border: none;
+    border-radius: calc(var(--u) * 8);
+    background-color: #fef8f6;
+    color: #222;
+    font-family: inherit;
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 19);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}

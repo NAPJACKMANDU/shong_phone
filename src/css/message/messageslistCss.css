@@ -1,0 +1,201 @@
+/* 메시지 목록 페이지 전용 (공통은 imessageCommonCss.css / kakaoCommonCss.css) */
+.il-wrapper {
+    background-color: #fff;
+}
+
+/* ===================== 상단 버튼 ===================== */
+.il-header {
+    position: absolute;
+    top: calc(var(--u) * 59);
+    left: calc(var(--u) * 16);
+    right: calc(var(--u) * 16);
+    z-index: 12;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+.il-header button {
+    pointer-events: auto;
+}
+
+/* ===================== 스크롤 영역 ===================== */
+.il-scroll {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    padding: calc(var(--u) * 120) 0 calc(var(--u) * 110);
+    scrollbar-width: none;
+}
+.il-scroll::-webkit-scrollbar {
+    display: none;
+}
+.il-title {
+    margin: 0 calc(var(--u) * 17);
+    font-size: calc(var(--u) * 27);
+    line-height: calc(var(--u) * 36);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #000;
+}
+
+/* 이름 및 사진 공유 카드 */
+.il-share {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 65);
+    margin: calc(var(--u) * 9) calc(var(--u) * 16) 0;
+    padding: 0 calc(var(--u) * 17) 0 calc(var(--u) * 11);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 33);
+    background-color: #f4f4f4;
+}
+.il-share-text {
+    margin-left: calc(var(--u) * 10);
+    flex: 1;
+}
+.il-share-text b {
+    display: block;
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 18);
+    font-weight: 700;
+    color: #000;
+}
+.il-share-text span {
+    display: block;
+    margin-top: calc(var(--u) * -1);
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 17);
+    color: #6e6e73;
+}
+.il-chev {
+    width: calc(var(--u) * 7);
+    height: calc(var(--u) * 13);
+    color: #8e8e93;
+    flex: 0 0 auto;
+    margin-right: 5px;
+}
+
+/* ===================== 대화 목록 ===================== */
+.il-list {
+    margin-top: calc(var(--u) * 7.3);
+}
+.il-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 73.7);
+    padding-left: calc(var(--u) * 26);
+    cursor: pointer;
+}
+.il-dot {
+    position: absolute;
+    left: calc(var(--u) * 7);
+    top: 50%;
+    width: calc(var(--u) * 11);
+    height: calc(var(--u) * 11);
+    margin-top: calc(var(--u) * -5.5);
+    border-radius: 50%;
+    background-color: #3478f6;
+}
+.il-body {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    margin-left: calc(var(--u) * 12);
+    padding: calc(var(--u) * 12) calc(var(--u) * 20) 0 0;
+    box-sizing: border-box;
+    border-bottom: 1px solid #e3e3e6;
+}
+.il-name {
+    display: block;
+    height: calc(var(--u) * 20);
+    font-size: calc(var(--u) * 16);
+    line-height: calc(var(--u) * 20);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: calc(var(--u) * 80);
+}
+.il-time {
+    position: absolute;
+    top: calc(var(--u) * 12);
+    right: calc(var(--u) * 20);
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 20);
+    color: #8e8e93;
+    white-space: nowrap;
+}
+.il-body .il-chev {
+    position: absolute;
+    top: calc(var(--u) * 16);
+    right: 0;
+    width: calc(var(--u) * 6);
+    height: calc(var(--u) * 11);
+}
+.il-preview {
+    margin-top: calc(var(--u) * -2);
+    padding-right: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 14);
+    line-height: calc(var(--u) * 16);
+    color: #8e8e93;
+    white-space: pre-line;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+/* ===================== 하단 검색 / 새 메시지 ===================== */
+.il-bar {
+    position: fixed;
+    left: calc(var(--u) * 28);
+    right: calc(var(--u) * 28);
+    bottom: calc(var(--u) * 28);
+    z-index: 10;
+    display: flex;
+    gap: calc(var(--u) * 12);
+}
+.il-search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 48);
+    padding: 0 calc(var(--u) * 23) 0 calc(var(--u) * 20);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 24);
+    color: #111;
+}
+.il-search > svg:first-child {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 20);
+    flex: 0 0 auto;
+}
+.il-search input {
+    flex: 1;
+    min-width: 0;
+    margin: 0 calc(var(--u) * 8) 0 calc(var(--u) * 10);
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-family: inherit;
+    font-size: calc(var(--u) * 14);
+    color: #111;
+}
+.il-search input::placeholder {
+    color: #8e8e93;
+}
+.il-compose {
+    flex: 0 0 auto;
+    width: calc(var(--u) * 48);
+    height: calc(var(--u) * 48);
+}
+.il-compose svg {
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+}

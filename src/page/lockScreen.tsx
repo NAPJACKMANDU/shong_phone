@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import '../css/lockScreenCss.css'
 import 'pretendard/dist/web/static/pretendard.css'
 import { useNavigate } from 'react-router-dom';
+import { HomeWallpaper } from '../common/homeWallpaper'
 
 const PASSCODE = "1234"; // 4자리 비밀번호
 const SWIPE_THRESHOLD = 80;
@@ -103,7 +104,7 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
       onTransitionEnd={handleUnlockTransitionEnd}
     >
       {/* 배경 사진 (공통) */}
-      <div className="lock-bg" />
+      <HomeWallpaper className="lock-bg" />
 
       {showStatusBar && (
         <div className="status-bar fixed-status-bar">

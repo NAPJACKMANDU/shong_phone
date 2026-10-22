@@ -1,0 +1,28 @@
+/* 즐겨찾기 페이지 전용 (공통은 phoneCommonCss.css / imessageCommonCss.css / kakaoCommonCss.css) */
+.pf-list {
+    margin-top: calc(var(--u) * -3.5);
+}
+.pf-row {
+    height: calc(var(--u) * 73);
+}
+.pf-row .ph-body {
+    margin-left: calc(var(--u) * 12);
+}
+.pf-row .ph-info {
+    width: calc(var(--u) * 41);
+    height: calc(var(--u) * 41);
+    margin-left: 0;
+}
+.pf-row .ph-sub {
+    gap: calc(var(--u) * 5);
+    font-size: calc(var(--u) * 12);
+}
+.pf-row .ph-sub svg {
+    width: calc(var(--u) * 15);
+    height: calc(var(--u) * 15);
+    color: #b9b9be;
+}
+.pf-plus svg {
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+}

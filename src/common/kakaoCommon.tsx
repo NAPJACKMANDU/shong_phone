@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 import { useSyncExternalStore } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getKakaoUnreadTotal, subscribeToKakaoUnread } from '../data/kakaoData'
-import '../css/kakaoCommonCss.css'
+import '../css/kakaoTalk/kakaoCommonCss.css'
 
 // 라우터 경로 (프로젝트 라우터에 맞게 수정하세요)
 export const KAKAO_PATH = {
