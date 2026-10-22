@@ -29,8 +29,7 @@ const IconLock = () => (
     </svg>
 )
 
-/* ===================== 메시지 데이터 =====================
-   mt : 바로 위 항목과의 간격(px). 사진과 똑같이 보이게 맞춘 값이에요. */
+/* ===================== 메시지 데이터 ===================== */
 type Item =
     | { id: number; kind: 'bubble'; from: 'me' | 'other'; color: 'sms' | 'imsg' | 'green' | 'gray'; text: ReactNode; tail?: boolean; narrow?: boolean; breakAll?: boolean; mt: number; anchor?: boolean }
     | { id: number; kind: 'caption'; lines: ReactNode[]; mt: number }
