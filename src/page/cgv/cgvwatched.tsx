@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { CgvPoster, AgeBadge, CGV_PATH } from '../../common/cgvCommon.tsx'
-import '../../css/cgv/cgvWatchedCss.css'
+import '../../css/cgv/cgvwatchedCss.css'
 
 /* ===================== 아이콘 ===================== */
 const IconBack = () => (

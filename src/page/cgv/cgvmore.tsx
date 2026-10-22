@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { CgvTopbar, CgvTabBar, CGV_PATH } from '../../common/cgvCommon.tsx'
-import '../../css/cgv/cgvMoreCss.css'
+import '../../css/cgv/cgvmoreCss.css'
 
 /* ===================== 아이콘 ===================== */
 const IconChevronRight = () => (
