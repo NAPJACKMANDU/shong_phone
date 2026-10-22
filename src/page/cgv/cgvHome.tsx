@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { CgvTopbar, CgvTabBar, CgvPoster, AgeBadge } from '../../common/cgvCommon.tsx'
-import '../../css/cgv/cgvHomeCss.css'
+import '../../css/cgv/cgvhomeCss.css'
 
 /* ===================== 아이콘 / 그림 ===================== */
 const IconClapper = () => (
