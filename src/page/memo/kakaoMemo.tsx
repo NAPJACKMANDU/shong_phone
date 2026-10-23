@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { KakaoStatusBar, IconSearch, lineProps } from '../../common/kakaoCommon.tsx'
 import { MEMOS, SECTION_DEFS, TOTAL_COUNT, MEMO_PATH, memoTitle, memoPreview } from '../../data/memoData.ts'
-import '../../css/memo/kakaoMemoCss.css'
+import '../../css/memo/kakaoMemoCSS.css'
 
 /* ===================== 아이콘 ===================== */
 const IconBack = () => (
