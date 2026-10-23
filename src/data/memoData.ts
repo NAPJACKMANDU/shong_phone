@@ -70,7 +70,7 @@ export const MEMOS: Memo[] = [
     { id: 8, section: 'month', date: '2026. 10. 3.', stamp: '2026년 10월 3일 오후 10:02', body: '이노시톨\n역애' },
     {
         id: 9, section: 'month', date: '2026. 10. 1.', stamp: '2026년 10월 1일 오후 8:40',
-        body: '송 헤테로라 톤 여자인 줄 알고 데리고 갔으면 좋겠다\n키가 지인짜 크네 농구해? 아니면 배구하나 싶어서 물어봤는데 둘 다 아니래',
+        body: '냐냥',
     },
     { id: 10, section: 'month', date: '2026. 9. 30.', stamp: '2026년 9월 30일 오후 12:55', body: '얘들아 희정이가 의자 없는데 여기 앉잖다' },
     { id: 11, section: 'month', date: '2026. 9. 29.', stamp: '2026년 9월 29일 오후 7:33', body: '장보기 목록\n우유\n계란\n식빵' },

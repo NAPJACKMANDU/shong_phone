@@ -83,7 +83,7 @@ export const KakaoChatRoom = () => {
         if (chatId) markKakaoChatRead(chatId)
         const box = boxRef.current
         if (!box) return
-        box.scrollTop = chatId === 'shotaro-group' ? 0 : box.scrollHeight
+        box.scrollTop = box.scrollHeight
     }, [chatId])
 
     if (!chat) {
