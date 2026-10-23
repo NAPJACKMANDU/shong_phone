@@ -73,34 +73,34 @@ const MapArt = () => (
 
 /* ===================== 데이터 =====================
    src 에 사진 주소를 넣으면 그 사진이, 비워두면 bg 색이 보여요. */
-interface Memory { id: number; title: string; sub: string; bg: string; src?: string; play?: boolean }
-interface Tile { id: number; label?: ReactNode; two?: boolean; bg: string; src?: string; heart?: boolean; map?: boolean }
+interface Memory { id: number; title: string; sub: string; bg?: string; src?: string; play?: boolean }
+interface Tile { id: number; label?: ReactNode; two?: boolean; bg?: string; src?: string; heart?: boolean; map?: boolean }
 
 const MEMORIES: Memory[] = [
-    { id: 1, title: '여행', sub: '지난 수년간', play: true, bg: 'linear-gradient(160deg,#d3cbb9 0%,#a7a193 45%,#74705f 100%)' },
-    { id: 2, title: '인물 사진', sub: '2025년', bg: 'linear-gradient(150deg,#ececec 0%,#4a4a4a 55%,#0c0c0c 100%)' },
-    { id: 3, title: '행복한 추억', sub: '2024년', bg: 'linear-gradient(150deg,#ececec 0%,#4a4a4a 55%,#0c0c0c 100%)' },
+    { id: 1, title: '여행', sub: '지난 수년간', play: true, src:'/photo-thumbs/81.jpg' },
+    { id: 2, title: '인물 사진', sub: '2025년', src:'/photo-thumbs/162.jpg' },
+    { id: 3, title: '행복한 추억', sub: '2024년', src:'/photo-thumbs/105.jpg' },
 ]
 
 const PINNED: Tile[] = [
-    { id: 1, label: '즐겨찾기', heart: true, bg: 'linear-gradient(170deg,#a8bfd6 0%,#6f89a5 60%,#4d6580 100%)' },
-    { id: 2, label: <>최근 저장된<br />항목</>, two: true, bg: 'linear-gradient(170deg,#e0e3e8 0%,#a4a9b0 55%,#6f747b 100%)' },
-    { id: 3, label: '지도', map: true, bg: '#bcdcec' },
-    { id: 4, bg: 'linear-gradient(170deg,#c9d4c3,#8ea08b)' },
+    { id: 1, label: '즐겨찾기', heart: true,src:'/photo-thumbs/227.jpg' },
+    { id: 2, label: <>최근 저장된<br />항목</>, two: true, src:'/photo-thumbs/233.jpg'  },
+    { id: 3, label: '지도', map: true, bg: '#bcdcec' }
 ]
 
 const ALBUMS: Tile[] = [
-    { id: 1, label: '앤톤', bg: 'linear-gradient(160deg,#c7cdd0 0%,#8d9598 55%,#5e6568 100%)' },
-    { id: 2, label: '뉴저지', bg: 'linear-gradient(170deg,#b3b3ab 0%,#78786f 55%,#4f4f48 100%)' },
-    { id: 3, label: '일본', bg: 'linear-gradient(170deg,#9aa0a6 0%,#5d646b 60%,#3b4046 100%)' },
-    { id: 4,  label: '파리', bg: 'linear-gradient(170deg,#e4e6ea,#b8bcc3)' },
+    { id: 1, label: '앤톤',src:'/photo-thumbs/214.jpg'},
+    { id: 2, label: '뉴저지', src:'/photo-thumbs/205.jpg' },
+    { id: 3, label: '일본', src:'/photo-thumbs/130.jpg' },
+    { id: 4,  label: '상하이', src:'/photo-thumbs/107.jpg' },
 ]
 
 const PEOPLE: Tile[] = [
-    { id: 1, bg: 'linear-gradient(170deg,#f1e1a9,#c9b27a)' },
-    { id: 2, bg: 'linear-gradient(170deg,#e0d0bf,#a89580)' },
-    { id: 3, bg: 'linear-gradient(170deg,#7d8f77,#51634d)' },
-    { id: 4, bg: 'linear-gradient(170deg,#d5deee,#a9b8d1)' },
+    { id: 1, src:'/photo-thumbs/166.jpg'},
+    { id: 2, src:'/photo-thumbs/39.jpg' },
+    { id: 3, src:'/photo-thumbs/234.jpg' },
+    { id: 4, src:'/photo-thumbs/187.jpg' },
+
 ]
 
 /* ===================== 섹션 머리글 ===================== */

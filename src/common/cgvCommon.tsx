@@ -147,7 +147,15 @@ export const CgvPoster = ({
     src, bg, className = '', style, children,
 }: { src?: string; bg?: string; className?: string; style?: CSSProperties; children?: ReactNode }) => (
     <div className={`cg-poster ${className}`} style={{ ...(bg ? { background: bg } : {}), ...style }}>
-        {src && <img src={src} alt="" />}
+        {src && (
+            <img
+                src={src.startsWith('cgv/') ? src.replace(/^cgv\/(.+)\.[^.]+$/, '/cgv-thumbs/$1.jpg') : src}
+                alt=""
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+            />
+        )}
         {children}
     </div>
 )

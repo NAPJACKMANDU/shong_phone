@@ -143,21 +143,21 @@ const IconKakaoTalk = () => (
     <svg viewBox="0 0 60 60" style={{ width: '100%', height: '100%', display: 'block' }}>
         {/* iOS 앱 아이콘 스타일의 둥근 모서리 배경 */}
         <rect width="60" height="60" rx="13.5" fill="#fee500" />
-        
+
         {/* 카카오톡 말풍선 본체 */}
         <ellipse cx="30" cy="27.5" rx="21" ry="16.5" fill="#3b1e1e" />
-        
+
         {/* 말풍선 꼬리 (왼쪽 아래로 자연스럽게 뾰족한 형태) */}
         <path d="M17 38 L12 47.5 L23 41.5 Z" fill="#3b1e1e" />
-        
+
         {/* 중앙 'TALK' 텍스트 */}
-        <text 
-            x="30" 
-            y="32" 
-            textAnchor="middle" 
-            fontSize="12.5" 
-            fontWeight="800" 
-            letterSpacing="-0.5" 
+        <text
+            x="30"
+            y="32"
+            textAnchor="middle"
+            fontSize="12.5"
+            fontWeight="800"
+            letterSpacing="-0.5"
             fill="#fee500"
             fontFamily="system-ui, -apple-system, sans-serif"
         >
@@ -167,46 +167,46 @@ const IconKakaoTalk = () => (
 )
 
 const IconInstagram = () => (
-  <svg viewBox="0 0 60 60" style={{ width: '100%', height: '100%', display: 'block' }}>
-    <defs>
-      {/* Officieel Instagram kleurverloop van linksonder naar rechtsboven */}
-      <linearGradient id="ig-gradient" x1="0.15" y1="0.85" x2="0.85" y2="0.15">
-        <stop offset="0%" stopColor="#ffd600" />
-        <stop offset="25%" stopColor="#ff7a00" />
-        <stop offset="50%" stopColor="#ff0069" />
-        <stop offset="75%" stopColor="#d300c5" />
-        <stop offset="100%" stopColor="#7638fa" />
-      </linearGradient>
-    </defs>
+    <svg viewBox="0 0 60 60" style={{ width: '100%', height: '100%', display: 'block' }}>
+        <defs>
+            {/* Officieel Instagram kleurverloop van linksonder naar rechtsboven */}
+            <linearGradient id="ig-gradient" x1="0.15" y1="0.85" x2="0.85" y2="0.15">
+                <stop offset="0%" stopColor="#ffd600" />
+                <stop offset="25%" stopColor="#ff7a00" />
+                <stop offset="50%" stopColor="#ff0069" />
+                <stop offset="75%" stopColor="#d300c5" />
+                <stop offset="100%" stopColor="#7638fa" />
+            </linearGradient>
+        </defs>
 
-    {/* Afgeronde achtergrond (App Icon vorm) */}
-    <rect width="60" height="60" rx="13.5" fill="url(#ig-gradient)" />
+        {/* Afgeronde achtergrond (App Icon vorm) */}
+        <rect width="60" height="60" rx="13.5" fill="url(#ig-gradient)" />
 
-    {/* Witte buitenste afgeronde vierkant */}
-    <rect
-      x="11.5"
-      y="11.5"
-      width="37"
-      height="37"
-      rx="10.5"
-      fill="none"
-      stroke="#fff"
-      strokeWidth="3.6"
-    />
+        {/* Witte buitenste afgeronde vierkant */}
+        <rect
+            x="11.5"
+            y="11.5"
+            width="37"
+            height="37"
+            rx="10.5"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="3.6"
+        />
 
-    {/* Centrale camera-cirkel */}
-    <circle
-      cx="30"
-      cy="30"
-      r="8.8"
-      fill="none"
-      stroke="#fff"
-      strokeWidth="3.6"
-    />
+        {/* Centrale camera-cirkel */}
+        <circle
+            cx="30"
+            cy="30"
+            r="8.8"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="3.6"
+        />
 
-    {/* Flitser stip */}
-    <circle cx="40.5" cy="19.5" r="2.2" fill="#fff" />
-  </svg>
+        {/* Flitser stip */}
+        <circle cx="40.5" cy="19.5" r="2.2" fill="#fff" />
+    </svg>
 );
 
 const IconMelon = () => (
@@ -387,7 +387,7 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
         }
     };
 
-// 앱 클릭 시 실행될 이동 함수
+    // 앱 클릭 시 실행될 이동 함수
     const handleAppClick = (appName: string) => {
         switch (appName) {
             case "카카오톡":
@@ -396,38 +396,41 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
             case "Instagram":
                 navigate("/instagram"); // 인스타그램을 누르면 이동할 경로
                 break;
-            case "메모" :
+            case "메모":
                 navigate("/kakaoMemo");
                 break;
-            case "사진" :
+            case "사진":
                 navigate("/photosLibrary")
                 break;
-            case "CGV" :
+            case "CGV":
                 navigate("/cgvHome")
+                break;
+            case "캘린더":
+                navigate("/calendarmain")
                 break;
         }
     };
 
     // 앱 클릭 시 실행될 이동 함수
-        const handleBottomAppClick = (appName: string) => {
-            switch (appName) {
-                case "전화":
-                    navigate("/phonerecents");
-                    break;
-                case "Safari":
-                    navigate("/instagram"); // 인스타그램을 누르면 이동할 경로
-                    break;
-                case "메시지" :
-                    navigate("/messageslist");
-                    break;
-        };  
+    const handleBottomAppClick = (appName: string) => {
+        switch (appName) {
+            case "전화":
+                navigate("/phonerecents");
+                break;
+            case "Safari":
+                navigate("/instagram"); // 인스타그램을 누르면 이동할 경로
+                break;
+            case "메시지":
+                navigate("/messageslist");
+                break;
+        };
     }
     const activePage = Math.min(page, layout.pages.length - 1);
 
     const renderApps = (list: AppData[]) =>
         list.map((app) => (
-            <div 
-                key={app.name} 
+            <div
+                key={app.name}
                 className="app-item"
                 onClick={() => handleAppClick(app.name)} // 3. onClick 이벤트 연결
                 style={{ cursor: 'pointer' }} // 마우스 올렸을 때 손가락 모양으로 변경
@@ -453,70 +456,70 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
 
             {/* 페이지 (좌우로 넘기기) */}
             <div className="home-pages" ref={pagerRef} onScroll={handleScroll}>
-            <div className="home-page">
-            {/* 위젯 */}
-            <div className="home-widgets">
-                <div className="widget-wrap">
-        <div className="widget main-widget-weather">
-            {/* 상단: 지역명 + 위치 화살표 */}
-            <div className="weather-location">
-                <span>서울특별시</span>
-                <svg className="location-arrow" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M21 3L3 10.53v.98l6.84 2.65L12.49 21h.98L21 3z" />
-                </svg>
-            </div>
+                <div className="home-page">
+                    {/* 위젯 */}
+                    <div className="home-widgets">
+                        <div className="widget-wrap">
+                            <div className="widget main-widget-weather">
+                                {/* 상단: 지역명 + 위치 화살표 */}
+                                <div className="weather-location">
+                                    <span>서울특별시</span>
+                                    <svg className="location-arrow" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M21 3L3 10.53v.98l6.84 2.65L12.49 21h.98L21 3z" />
+                                    </svg>
+                                </div>
 
-            {/* 대표 온도 */}
-            <div className="weather-temp">21°</div>
+                                {/* 대표 온도 */}
+                                <div className="weather-temp">21°</div>
 
-            {/* 하단: 날씨 아이콘 & 설명 & 최고/최저 온도 */}
-            <div className="weather-bottom">
-                <div className="weather-icon">
-                    {/* 구름 뒤 해 아이콘 (부분적으로 흐림) */}
-                    <svg viewBox="0 0 32 32" fill="none">
-                        <circle cx="21" cy="11" r="4.5" fill="#FFD60A" />
-                        <path d="M21 3.5v2M21 16.5v2M28.5 11h-2M15.5 11h-2M26.3 5.7l-1.4 1.4M17.1 14.9l-1.4 1.4M26.3 16.3l-1.4-1.4M17.1 7.1l-1.4-1.4" stroke="#FFD60A" strokeWidth="1.8" strokeLinecap="round" />
-                        <path d="M10 24.5a5.5 5.5 0 0110.8-1.5 4 4 0 013.2 3.9c0 2.3-1.8 4.1-4 4.1H10a5.5 5.5 0 010-11z" fill="#FFFFFF" />
-                    </svg>
-                </div>
-                <div className="weather-desc">부분적으로 흐림</div>
-                <div className="weather-range">최고:21° 최저:11°</div>
-            </div>
-        </div>
-        <span className="widget-label">날씨</span>
-    </div>
-                {/* 캘린더 위젯 */}
-              <div className="widget-wrap">
-                  <div className="widget widget-calendar">
-                      <div className="widget-cal-day">화요일</div>
-                      <div className="widget-cal-date">20</div>
-                      
-                      {/* 하단 일정 블록 (분홍색 포인트 바 + 텍스트) */}
-                      <div className="widget-cal-event-box">
-                          <div className="widget-cal-bar" />
-                          <div className="widget-cal-text-group">
-                              <div className="widget-cal-title">천사랑 4주년 ㅎㅎ</div>
-                              <div className="widget-cal-time">오전 12시 ~ 1시</div>
-                          </div>
-                      </div>
-                  </div>
-                  <span className="widget-label">캘린더</span>
-              </div>
-            </div>
+                                {/* 하단: 날씨 아이콘 & 설명 & 최고/최저 온도 */}
+                                <div className="weather-bottom">
+                                    <div className="weather-icon">
+                                        {/* 구름 뒤 해 아이콘 (부분적으로 흐림) */}
+                                        <svg viewBox="0 0 32 32" fill="none">
+                                            <circle cx="21" cy="11" r="4.5" fill="#FFD60A" />
+                                            <path d="M21 3.5v2M21 16.5v2M28.5 11h-2M15.5 11h-2M26.3 5.7l-1.4 1.4M17.1 14.9l-1.4 1.4M26.3 16.3l-1.4-1.4M17.1 7.1l-1.4-1.4" stroke="#FFD60A" strokeWidth="1.8" strokeLinecap="round" />
+                                            <path d="M10 24.5a5.5 5.5 0 0110.8-1.5 4 4 0 013.2 3.9c0 2.3-1.8 4.1-4 4.1H10a5.5 5.5 0 010-11z" fill="#FFFFFF" />
+                                        </svg>
+                                    </div>
+                                    <div className="weather-desc">부분적으로 흐림</div>
+                                    <div className="weather-range">최고:21° 최저:11°</div>
+                                </div>
+                            </div>
+                            <span className="widget-label">날씨</span>
+                        </div>
+                        {/* 캘린더 위젯 */}
+                        <div className="widget-wrap" onClick={() => navigate('/calendarmain')}>
+                            <div className="widget widget-calendar">
+                                <div className="widget-cal-day">화요일</div>
+                                <div className="widget-cal-date">20</div>
 
-            {/* 앱 아이콘 */}
-            <div className="home-grid">
-                {renderApps(layout.pages[0] ?? [])}
-            </div>
-            </div>
+                                {/* 하단 일정 블록 (분홍색 포인트 바 + 텍스트) */}
+                                <div className="widget-cal-event-box">
+                                    <div className="widget-cal-bar" />
+                                    <div className="widget-cal-text-group">
+                                        <div className="widget-cal-title">천사랑 4주년 ㅎㅎ</div>
+                                        <div className="widget-cal-time">오전 12시 ~ 1시</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span className="widget-label">캘린더</span>
+                        </div>
+                    </div>
 
-            {layout.pages.slice(1).map((apps, index) => (
-                <div className="home-page" key={index + 1}>
-                    <div className="home-grid page-top">
-                        {renderApps(apps)}
+                    {/* 앱 아이콘 */}
+                    <div className="home-grid">
+                        {renderApps(layout.pages[0] ?? [])}
                     </div>
                 </div>
-            ))}
+
+                {layout.pages.slice(1).map((apps, index) => (
+                    <div className="home-page" key={index + 1}>
+                        <div className="home-grid page-top">
+                            {renderApps(apps)}
+                        </div>
+                    </div>
+                ))}
             </div>
 
             {/* 페이지 점 */}
@@ -530,7 +533,7 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
             <div className="home-dock">
                 {DOCK_APPS.map((app) => (
                     <div key={app.name} className="app-icon-wrap"
-                     onClick={() => handleBottomAppClick(app.name)} >
+                        onClick={() => handleBottomAppClick(app.name)} >
                         <div className="app-icon">{app.icon}</div>
                         {app.badge ? <span className="app-badge">{app.badge}</span> : null}
                     </div>

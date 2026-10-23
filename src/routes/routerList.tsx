@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import {
+    CALENDARMAIN_PATH,
     CGVHOME_PATH,
     CGVMORE_PATH,
     CGVWATCHED_PATH,
@@ -40,6 +41,7 @@ import PhoneFavorites from "../page/calling/phonefavorites.tsx"
 import PhoneRecents from "../page/calling/phonerecents.tsx"
 import PhoneVoicemail from "../page/calling/phonevoicemail.tsx"
 import KakaoMemoRoom from "../page/memo/kakaomemoroom.tsx"
+import CalendarMain from "../page/calendar/calendarmain.tsx"
 
 export const RouterSetting = () => {
     const [unlocked, setUnlocked] = useState(false)
@@ -117,9 +119,9 @@ export const RouterSetting = () => {
                 <div className="screen-stage">
                     <HomeScreen showStatusBar={false} />
                     <LockScreen
-                        onSuccess={() => {
+                        onSuccess={(destination) => {
                             setUnlocked(true)
-                            navigate(HOMESCREEN_PATH()) // 잠금 해제 후 홈 화면으로 이동
+                            navigate(destination ?? HOMESCREEN_PATH())
                         }}
                         showStatusBar={false}
                     />
@@ -151,6 +153,7 @@ export const RouterSetting = () => {
                         <Route path={PHONEFAVORITES_PATH()} element={<PhoneFavorites/>}></Route>
                         <Route path={PHONERECENTS_PATH()} element={<PhoneRecents/>}></Route>
                         <Route path={PHONEVOICEMAIL_PATH()} element={<PhoneVoicemail/>}></Route>
+                        <Route path={CALENDARMAIN_PATH()} element={<CalendarMain/>}></Route>
                     </Routes>
                 </>
             )}

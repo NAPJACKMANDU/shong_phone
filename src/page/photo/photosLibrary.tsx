@@ -25,11 +25,12 @@ export const PhotosLibrary = () => {
 
         const header = grid.parentElement?.querySelector('.pc-header')
         const headerBottom = header?.getBoundingClientRect().bottom ?? 0
-        const visibleTile = Array.from(grid.querySelectorAll('.pl-tile')).find((tile) => {
+        const tiles = Array.from(grid.querySelectorAll('.pl-tile'))
+        const visibleTile = tiles.find((tile) => {
             const bounds = tile.getBoundingClientRect()
             return bounds.bottom > headerBottom && bounds.top < grid.getBoundingClientRect().bottom
         })
-        const index = visibleTile ? Array.from(grid.children).indexOf(visibleTile) : -1
+        const index = visibleTile ? tiles.indexOf(visibleTile) : -1
         if (index >= 0) setVisibleDate(PHOTOS[index].date)
     }
 
@@ -53,8 +54,14 @@ export const PhotosLibrary = () => {
             <div className="pl-grid" ref={gridRef} onScroll={updateVisibleDate}>
                 {/* 헤더 영역 뒤로 사진이 가리지 않도록 상단 빈 공간 */}
                 <div className="pl-grid-spacer" />
-                {PHOTOS.map((p) => (
-                    <PhotoBox key={p.id} src={p.src} bg={p.bg} className={`pl-tile ${p.tall ? 'tall' : ''}`} />
+                {PHOTOS.map((p, index) => (
+                    <PhotoBox
+                        key={p.id}
+                        src={p.src}
+                        bg={p.bg}
+                        loading={index >= PHOTOS.length - 18 ? 'eager' : 'lazy'}
+                        className={`pl-tile ${p.tall ? 'tall' : ''}`}
+                    />
                 ))}
             </div>
 

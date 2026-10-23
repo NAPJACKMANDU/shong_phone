@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import '../css/lockScreenCss.css'
 import 'pretendard/dist/web/static/pretendard.css'
-import { useNavigate } from 'react-router-dom';
 import { HomeWallpaper } from '../common/homeWallpaper'
 
 const PASSCODE = "1234"; // 4자리 비밀번호
@@ -20,7 +19,7 @@ const KEYS = [
 ];
 
 interface LockScreenProps {
-  onSuccess?: () => void;
+  onSuccess?: (destination?: string) => void;
   showStatusBar?: boolean;
 }
 
@@ -31,6 +30,7 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
   const [pin, setPin] = useState("");
   const [shake, setShake] = useState(false);
   const [unlocking, setUnlocking] = useState(false);
+  const [postUnlockDestination, setPostUnlockDestination] = useState<string | null>(null);
   const startY = useRef<number | null>(null);
 
   /* ---------- 위로 밀기 제스처 ---------- */
@@ -50,6 +50,7 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
   const handlePointerUp = () => {
     if (startY.current === null || showPasscode) return;
     if (dragY < -SWIPE_THRESHOLD) {
+      setPostUnlockDestination(null);
       setShowPasscode(true);
     }
     startY.current = null;
@@ -60,6 +61,7 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     if (showPasscode) return;
     if (e.deltaY > 30) {
+      setPostUnlockDestination(null);
       setShowPasscode(true);
     }
   };
@@ -86,7 +88,7 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
 
   const handleUnlockTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget && e.propertyName === 'transform' && unlocking) {
-      onSuccess?.();
+      onSuccess?.(postUnlockDestination ?? undefined);
     }
   };
 
@@ -94,10 +96,10 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
 
   const handleCancel = () => {
     setPin("");
+    setPostUnlockDestination(null);
     setShowPasscode(false);
   };
 
-  const navigate = useNavigate();
   return (
     <div
       className={`lock-wrapper${unlocking ? ' unlocking' : ''}`}
@@ -199,7 +201,14 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
             <div className="widget-weather-text">맑음</div>
             <div className="widget-weather-range">최고:22° 최저:12°</div>
           </div>
-          <div className="widget-item widget-schedule" onClick={() => navigate('/homeScreen')}>
+          <div
+            className="widget-item widget-schedule"
+            onClick={() => {
+              setPostUnlockDestination('/calendarmain');
+              setPin("");
+              setShowPasscode(true);
+            }}
+          >
             천사랑 4주년 ㅎㅎ
           </div>
         </div>

@@ -1,0 +1,303 @@
+/* 캘린더 페이지 전용 (--u 와 상태바는 kakaoCommonCss.css 의 .kk-wrapper 를 사용) */
+.cal-wrapper {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    background-color: #fff;
+}
+
+/* ===================== 스크롤 되는 달력 ===================== */
+.cal-scroll {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    padding: calc(var(--u) * 181) 0 calc(var(--u) * 60);
+    box-sizing: border-box;
+    scrollbar-width: none;
+}
+
+.cal-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* 달 이름 줄 (예: 11월) */
+.cal-month {
+    height: calc(var(--u) * 24.8);
+    padding-left: calc(var(--u) * 10);
+    padding-top: 15px;
+}
+
+.cal-month span {
+    display: block;
+    margin-top: calc(var(--u) * -8);
+    font-size: calc(var(--u) * 17);
+    line-height: calc(var(--u) * 20);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #000;
+}
+
+/* 한 주 줄 */
+.cal-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    height: calc(var(--u) * 119.2);
+    box-sizing: border-box;
+    border-top: 1px solid #dedee2;
+}
+
+.cal-cell {
+    min-width: 0;
+    padding-top: calc(var(--u) * 7.8);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.cal-num {
+    align-self: center;
+    width: calc(var(--u) * 39);
+    height: calc(var(--u) * 39);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(var(--u) * 17);
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+}
+
+.cal-cell.weekend .cal-num {
+    color: #8e8e93;
+    font-weight: 600;
+}
+
+.cal-cell.today .cal-num {
+    background-color: #e8453c;
+    color: #fff;
+    font-weight: 700;
+}
+
+.cal-events {
+    margin-top: calc(var(--u) * 7.2);
+}
+
+/* 일정 표시 (알약) */
+.cal-ev {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 3);
+    height: calc(var(--u) * 15.5);
+    margin: 0 calc(var(--u) * 2) calc(var(--u) * 3);
+    padding: 0 calc(var(--u) * 3);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 8);
+    font-size: calc(var(--u) * 10.5);
+    font-weight: 500;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.cal-ev span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+.cal-ev.holiday {
+    background-color: #eadbf3;
+    color: #6b3a86;
+}
+
+.cal-ev.event {
+    background-color: #f8dde2;
+    color: #7a2438;
+}
+
+.cal-ev i {
+    flex: 0 0 auto;
+    width: calc(var(--u) * 11);
+    height: calc(var(--u) * 11);
+    border-radius: 50%;
+    background-color: #b45cd3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cal-ev i svg {
+    width: calc(var(--u) * 7);
+    height: calc(var(--u) * 7);
+}
+
+/* ===================== 위쪽 고정 영역 ===================== */
+.cal-sticky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--u) * 181);
+    z-index: 10;
+    background-color: #fff;
+    border-bottom: 1px solid #d8d8dc;
+    box-sizing: border-box;
+}
+
+.cal-title {
+    position: absolute;
+    top: calc(var(--u) * 118);
+    left: calc(var(--u) * 20);
+    font-size: calc(var(--u) * 28);
+    line-height: calc(var(--u) * 40);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #000;
+}
+
+.cal-weekdays {
+    position: absolute;
+    top: calc(var(--u) * 161);
+    left: 0;
+    right: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 20);
+    font-weight: 500;
+    color: #222;
+}
+
+.cal-weekdays span:first-child,
+.cal-weekdays span:last-child {
+    color: #9a9a9f;
+}
+
+/* 위 버튼 */
+.cal-top {
+    position: absolute;
+    top: calc(var(--u) * 59);
+    left: calc(var(--u) * 16);
+    right: calc(var(--u) * 16);
+    z-index: 12;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cal-glass {
+    background-color: #fafafc;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    color: #111;
+}
+
+.cal-back {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 10);
+    width: calc(var(--u) * 108);
+    height: calc(var(--u) * 44);
+    padding: 0 0 0 calc(var(--u) * 14);
+    box-sizing: border-box;
+    border: none;
+    border-radius: calc(var(--u) * 22);
+    font-family: inherit;
+    font-size: calc(var(--u) * 16);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+}
+
+.cal-back svg {
+    width: calc(var(--u) * 14);
+    height: calc(var(--u) * 20);
+}
+
+.cal-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(var(--u) * 161);
+    height: calc(var(--u) * 44);
+    padding: 0 calc(var(--u) * 15) 0 calc(var(--u) * 14);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 22);
+}
+
+.cal-tools button {
+    width: calc(var(--u) * 26);
+    height: calc(var(--u) * 26);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cal-tools svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ===================== 아래 흐림 + 버튼 ===================== */
+.cal-bottomfade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--u) * 130);
+    z-index: 8;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 78%);
+}
+
+.cal-bottom {
+    position: fixed;
+    left: calc(var(--u) * 28);
+    right: calc(var(--u) * 28);
+    bottom: calc(var(--u) * 28);
+    z-index: 12;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cal-today-btn {
+    width: calc(var(--u) * 62);
+    height: calc(var(--u) * 48);
+    padding: 0;
+    border: none;
+    border-radius: calc(var(--u) * 24);
+    font-family: inherit;
+    font-size: calc(var(--u) * 16);
+    font-weight: 500;
+}
+
+.cal-views {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: calc(var(--u) * 127);
+    height: calc(var(--u) * 48);
+    border-radius: calc(var(--u) * 24);
+}
+
+.cal-views button {
+    width: calc(var(--u) * 28);
+    height: calc(var(--u) * 28);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cal-views svg {
+    width: 100%;
+    height: 100%;
+}
