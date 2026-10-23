@@ -1,8 +1,15 @@
 /* CGV 홈 페이지 전용 (공통은 cgvCommonCss.css / kakaoCommonCss.css) */
 .ch-wrapper {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
     background: linear-gradient(to bottom, #fff 0, #fff calc(var(--u) * 161), #f6f6f6 calc(var(--u) * 161));
 }
 .ch-scroll {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
     padding-bottom: calc(var(--u) * 120);
 }
 
@@ -157,6 +164,7 @@
     height: calc(var(--u) * 362);
     margin-top: calc(var(--u) * 15);
     overflow: hidden;
+    touch-action: pan-y;
 }
 .ch-track {
     position: absolute;
@@ -166,6 +174,7 @@
     display: flex;
     align-items: center;
     gap: calc(var(--u) * 8);
+    will-change: transform;
 }
 .ch-card {
     position: relative;
@@ -180,6 +189,10 @@
     height: calc(var(--u) * 362);
     box-shadow: 0 calc(var(--u) * 10) calc(var(--u) * 24) rgba(0, 0, 0, 0.18);
     cursor: default;
+}
+.ch-card-spacer {
+    visibility: hidden;
+    pointer-events: none;
 }
 .ch-rank {
     position: absolute;

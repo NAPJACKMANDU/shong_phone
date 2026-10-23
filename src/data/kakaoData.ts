@@ -146,7 +146,6 @@ export const KAKAO_CHATS: KakaoChat[] = [
         isGroup: true,
         message: '다들 내일 시간 되십니까?',
         time: '어제',
-        unread: 10,
     },
     {
         id: 'shotaro-group',

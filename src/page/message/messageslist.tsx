@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { KakaoStatusBar, IconSearch, lineProps } from '../../common/kakaoCommon.tsx'
 import { MsgAvatar, IconMic, IMESSAGE_PATH } from '../../common/imessagecommon.tsx'
+import { lastMessageText, THREADS } from '../../data/messagesdata.ts'
 import '../../css/message/messageslistCss.css'
 
 /* ===================== 아이콘 ===================== */
@@ -22,28 +23,6 @@ const IconCompose = () => (
     </svg>
 )
 
-/* ===================== 데이터 ===================== */
-interface Thread {
-    id: number
-    name: string
-    letter?: string   // 있으면 이름 첫 글자 프로필, 없으면 기본 프로필
-    time: string
-    preview: string   // 줄바꿈(\n)으로 두 줄까지
-    unread?: boolean
-}
-
-const THREADS: Thread[] = [
-    { id: 1, name: '+82 1544-7199', time: '오후 7:14', unread: true, preview: '[Web발신]\n(광고)[무신사] 지금 필요한 플리스 & 부츠 할인 소식...' },
-    { id: 2, name: '엄망이', letter: '엄', time: '어제', preview: '웅!!!' },
-    { id: 3, name: '+82 1588-1600', time: '어제', unread: true, preview: '[Web발신]\n(광고)NH농협은행(1661-3000)  [★NH펀드케어★ 출시…' },
-    { id: 4, name: '+82 10-1234-5678', time: '어제', unread: true, preview: '[Web발신][CJ대한통운_배송완료]' },
-    { id: 5, name: '+82 2-6990-9815', time: '월요일', preview: '[Web발신]\n[CJ올리브영 서류전형 결과발표]...' },
-    { id: 6, name: '+82 1644-3702', time: '월요일', unread: true, preview: '[Web발신]\nBAND 로그인 인증번호:000000...' },
-    { id: 7, name: '+82 2-6956-3713', time: '월요일', unread: true, preview: '[Web발신]\n[메리츠증권] 본인확인 인증번호 [000000]' },
-    { id: 8, name: '아빠', time: '토요일', unread: true, preview: 'ㅋㅋㅋㅋㅋ' },
-    { id: 9, name: '+82 1544-1555', time: '토요일', preview: '[Web발신]\n[안내] 서비스 이용 안내' },
-]
-
 /* ===================== 메시지 목록 페이지 ===================== */
 export const MessagesList = () => {
     const navigate = useNavigate()
@@ -51,8 +30,11 @@ export const MessagesList = () => {
 
     const threads = useMemo(() => {
         const q = query.trim().toLowerCase()
-        if (!q) return THREADS
-        return THREADS.filter((t) => t.name.toLowerCase().includes(q) || t.preview.toLowerCase().includes(q))
+        const previews = THREADS.map((thread) => ({ thread, preview: lastMessageText(thread) }))
+        if (!q) return previews
+        return previews.filter(({ thread, preview }) =>
+            thread.name.toLowerCase().includes(q) || preview.toLowerCase().includes(q),
+        )
     }, [query])
 
     return (
@@ -71,15 +53,15 @@ export const MessagesList = () => {
                 </div>
 
                 <div className="il-list">
-                    {threads.map((t) => (
-                        <div className="il-row" key={t.id} onClick={() => navigate(IMESSAGE_PATH.chat)}>
-                            {t.unread && <i className="il-dot" />}
-                            <MsgAvatar size={45} letter={t.letter} />
+                    {threads.map(({ thread, preview }) => (
+                        <div className="il-row" key={thread.id} onClick={() => navigate(`${IMESSAGE_PATH.chat}?id=${thread.id}`)}>
+                            {thread.unreadCount > 0 && <i className="il-dot" />}
+                            <MsgAvatar size={45} letter={thread.letter} />
                             <div className="il-body">
-                                <span className="il-name">{t.name}</span>
-                                <span className="il-time">{t.time}</span>
+                                <span className="il-name">{thread.name}</span>
+                                <span className="il-time">{thread.time}</span>
                                 <IconChevron />
-                                <div className="il-preview">{t.preview}</div>
+                                <div className="il-preview">{preview}</div>
                             </div>
                         </div>
                     ))}

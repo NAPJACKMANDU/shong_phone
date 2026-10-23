@@ -63,19 +63,6 @@ const IconNotes = () => (
     </svg>
 )
 
-const IconReminders = () => (
-    <svg viewBox="0 0 60 60">
-        <rect width="60" height="60" fill="#fff" />
-        {[{ y: 15, c: '#2f7bf5' }, { y: 30, c: '#f0453a' }, { y: 45, c: '#f5a031' }].map((r) => (
-            <g key={r.c}>
-                <circle cx="11.5" cy={r.y} r="6" fill="none" stroke={r.c} strokeWidth="1.6" />
-                <circle cx="11.5" cy={r.y} r="3.8" fill={r.c} />
-                <line x1="22" y1={r.y} x2="53" y2={r.y} stroke="#c8c8cc" strokeWidth="1" />
-            </g>
-        ))}
-    </svg>
-)
-
 const IconClock = () => (
     <svg viewBox="0 0 60 60">
         <rect width="60" height="60" fill="#111" />
@@ -300,7 +287,6 @@ const PAGE1_APPS: AppData[] = [
     { name: "사진", icon: <IconPhotos /> },
     { name: "카메라", icon: <IconCamera /> },
     { name: "메모", icon: <IconNotes /> },
-    { name: "미리 알림", icon: <IconReminders /> },
     { name: "시계", icon: <IconClock /> },
     { name: "지도", icon: <IconMaps /> },
     { name: "카카오톡", icon: <IconKakaoTalk /> },

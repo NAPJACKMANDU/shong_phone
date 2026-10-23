@@ -11,7 +11,8 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    padding: calc(var(--u) * 110) calc(var(--u) * 16) calc(var(--u) * 130);
+    /* 위쪽 여백 167.5: 맨 위로 올리면 첫 안내 글이 사진처럼 상대방 이름 아래에 와요 */
+    padding: calc(var(--u) * 167.5) calc(var(--u) * 16) calc(var(--u) * 130);
     box-sizing: border-box;
     scrollbar-width: none;
 }
@@ -25,7 +26,7 @@
 /* 말풍선 */
 .ic-bubble {
     position: relative;
-    max-width: calc(var(--u) * 270);
+    max-width: calc(var(--u) * 272);
     padding: calc(var(--u) * 9.5) calc(var(--u) * 14.5);
     box-sizing: border-box;
     border-radius: calc(var(--u) * 20);
@@ -52,9 +53,21 @@
 .ic-bubble.c-imsg { background-color: #3c8df6; }
 .ic-bubble.c-green { background-color: #6dd170; }
 .ic-bubble.c-gray { background-color: #e9e9eb; }
+.ic-bubble b {
+    font-weight: 700;
+}
 .ic-bubble u {
     text-decoration-thickness: 1px;
     text-underline-offset: calc(var(--u) * 3);
+}
+.ic-link {
+    color: #0a6cf5;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: calc(var(--u) * 2);
+}
+.ic-bubble.me .ic-link {
+    color: #fff;
 }
 
 /* 말풍선 꼬리 (페이지 배경이 흰색이라 흰색으로 가려서 만듦) */
@@ -108,14 +121,18 @@
     width: calc(var(--u) * 9);
     height: calc(var(--u) * 11);
 }
+.ic-caption-stamp {
+    line-height: calc(var(--u) * 15);
+}
+.ic-caption-stamp b,
+.ic-stamp b {
+    font-weight: 600;
+}
 .ic-stamp {
     align-self: center;
     font-size: calc(var(--u) * 12);
     line-height: calc(var(--u) * 16);
     color: #8e8e93;
-}
-.ic-stamp b {
-    font-weight: 600;
 }
 .ic-receipt {
     align-self: flex-end;

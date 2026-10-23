@@ -1,0 +1,163 @@
+/* 메모룸(메모 안) 페이지 전용 (공통은 kakaoCommonCss.css) */
+.mr-wrapper {
+    padding-top: 0;
+    height: 100dvh;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    background-color: #fff;
+}
+
+/* ===================== 글 영역 ===================== */
+.mr-scroll {
+    position: relative;
+    flex: 0 0 auto;
+    padding: calc(var(--u) * 114) calc(var(--u) * 26) calc(var(--u) * 150);
+    box-sizing: border-box;
+    overflow: visible;
+}
+.mr-stamp {
+    margin: 0 calc(var(--u) * -26);
+    text-align: center;
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 16);
+    color: #8e8e93;
+}
+.mr-body {
+    margin-top: calc(var(--u) * 2.3);
+    font-size: calc(var(--u) * 13.5);
+    line-height: calc(var(--u) * 23.3);
+    color: #111;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    user-select: text;
+    -webkit-user-select: text;
+}
+.mr-link {
+    color: #d9a81f;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: calc(var(--u) * 3);
+}
+
+/* ===================== 상단 버튼 ===================== */
+.mr-topfade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--u) * 118);
+    z-index: 8;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.96) 50%, rgba(255, 255, 255, 0));
+}
+.mr-top {
+    position: fixed;
+    top: calc(var(--u) * 59);
+    left: calc(var(--u) * 16);
+    right: calc(var(--u) * 16);
+    z-index: 12;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+.mr-top > * {
+    pointer-events: auto;
+}
+.mr-glass {
+    background-color: #fafafc;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    color: #111;
+}
+.mr-round {
+    width: calc(var(--u) * 44);
+    height: calc(var(--u) * 44);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mr-round svg {
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+}
+.mr-pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(var(--u) * 101);
+    height: calc(var(--u) * 44);
+    padding: 0 calc(var(--u) * 14) 0 calc(var(--u) * 16);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 22);
+}
+.mr-pill button {
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mr-pill svg {
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+}
+
+/* ===================== 하단 도구 모음 ===================== */
+.mr-fade {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--u) * 140);
+    z-index: 8;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 70%);
+}
+.mr-bar {
+    position: fixed;
+    left: calc(var(--u) * 28);
+    right: calc(var(--u) * 28);
+    bottom: calc(var(--u) * 28);
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+}
+.mr-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(var(--u) * 165);
+    height: calc(var(--u) * 48);
+    padding: 0 calc(var(--u) * 14);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 24);
+}
+.mr-tools button {
+    width: calc(var(--u) * 28);
+    height: calc(var(--u) * 28);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mr-tools svg {
+    width: calc(var(--u) * 26);
+    height: calc(var(--u) * 26);
+}
+.mr-compose {
+    width: calc(var(--u) * 48);
+    height: calc(var(--u) * 48);
+}
+.mr-compose svg {
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+}

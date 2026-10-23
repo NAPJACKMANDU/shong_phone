@@ -97,7 +97,7 @@ export const CgvMore = () => {
 
                 {/* 최근 이용 */}
                 <div className="cm-h2">최근 이용</div>
-                <div className="cm-recent">
+                <div className="cm-recent" onClick={() => navigate('/cgvWatched')}>
                     {showRecent && (
                         <span className="cm-recent-chip">
                             내가 본 영화

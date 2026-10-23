@@ -9,6 +9,7 @@ import {
     KAKAOCHATROOM_PATH,
     KAKAOFRIENDS_PATH,
     KAKAOMEMO_PATH,
+    KAKAOMEMOROOM_PATH,
     KAKAOMORE_PATH,
     MAIN_PATH,
     MESSAGESCHAT_PATH,
@@ -38,6 +39,7 @@ import MessagesChat from "../page/message/messageschat.tsx"
 import PhoneFavorites from "../page/calling/phonefavorites.tsx"
 import PhoneRecents from "../page/calling/phonerecents.tsx"
 import PhoneVoicemail from "../page/calling/phonevoicemail.tsx"
+import KakaoMemoRoom from "../page/memo/kakaomemoroom.tsx"
 
 export const RouterSetting = () => {
     const [unlocked, setUnlocked] = useState(false)
@@ -137,6 +139,8 @@ export const RouterSetting = () => {
                         <Route path={`${KAKAOCHATROOM_PATH()}/:chatId?`} element={<KakaoChatRoom/>}></Route>
                         <Route path={KAKAOMORE_PATH()} element={<KakaoMore/>}></Route>
                         <Route path={KAKAOMEMO_PATH()} element={<KakaoMemo/>}></Route>
+                        <Route path={KAKAOMEMOROOM_PATH()} element={<KakaoMemoRoom/>}></Route>
+                        <Route path={PHONEVOICEMAIL_PATH()} element={<PhoneVoicemail/>}></Route>
                         <Route path={PHOTOSLIBRARY_PATH()} element={<PhotosLibrary/>}></Route>
                         <Route path={PHOTOSCOLLECTIONS_PATH()} element={<PhotosCollections/>}></Route>
                         <Route path={CGVHOME_PATH()} element={<CgvHome/>}></Route>

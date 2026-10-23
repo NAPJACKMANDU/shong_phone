@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { CgvTopbar, CgvTabBar, CgvPoster, AgeBadge } from '../../common/cgvCommon.tsx'
 import '../../css/cgv/cgvhomeCss.css'
@@ -50,17 +50,16 @@ interface Movie {
     fx?: string
     ad?: boolean
     src?: string
-    bg: string
+    bg?: string
 }
 
 const MOVIES: Movie[] = [
-    { id: 0, ad: true, bg: '#fde465' },
+    { id: 0, title: 'CGV ON DEMAND', ad: true, bg: '#fde465' },
     {
-        id: 1, title: '극장판 치이카와-인어 섬의 비밀', age: 'ALL', rank: 1, fx: '4DX',
-        bg: 'linear-gradient(180deg,#2f8fd0 0%,#43b0c2 45%,#7ec26a 75%,#4f9a45 100%)',
+        id: 1, title: '극장판 치이카와-인어 섬의 비밀', age: 'ALL', rank: 1, fx: '4DX', src:'cgv/cihikaawa.jpg'
     },
-    { id: 2, title: '다음 영화', age: '12', rank: 2, bg: 'linear-gradient(170deg,#6a4a3a 0%,#b98a6a 55%,#d8b08a 100%)' },
-    { id: 3, title: '세 번째 영화', age: '15', rank: 3, bg: 'linear-gradient(170deg,#243447 0%,#4a6a8a 100%)' },
+    { id: 2, title: '실낙원', age: '15', rank: 2, src: 'cgv/sillakwon.jpg' },
+    { id: 3, title: '수능, 출제의 비밀', age: '12', rank: 3, src: 'cgv/suneung.jpg' },
 ]
 
 const CHIPS = ['이벤트/혜택', 'KBO 포스트시즌', '단체관람']
@@ -70,12 +69,16 @@ const TABS = ['무비차트', '현재상영작', '상영예정', 'ICECON']
 export const CgvHome = () => {
     const [index, setIndex] = useState(1)
     const [tab, setTab] = useState('무비차트')
+    const [dragOffset, setDragOffset] = useState(0)
+    const [isAnimating, setIsAnimating] = useState(false)
+    const swipeStart = useRef<{ x: number; y: number } | null>(null)
+    const pendingDirection = useRef<number | null>(null)
 
     const prev = MOVIES[index - 1]
     const curr = MOVIES[index]
     const next = MOVIES[index + 1]
 
-    const renderCard = (m: Movie | undefined, main: boolean, goTo: number) => {
+    const renderCard = (m: Movie | undefined, main: boolean) => {
         if (!m) return null
         return (
             <CgvPoster
@@ -89,9 +92,33 @@ export const CgvHome = () => {
                 {m.rank && <span className="ch-rank">{m.rank}</span>}
                 {main && m.fx && <span className="ch-fx">{m.fx}</span>}
                 {main && !m.ad && <button className="ch-heart"><IconHeart /></button>}
-                {!main && <div style={{ position: 'absolute', inset: 0 }} onClick={() => setIndex(goTo)} />}
             </CgvPoster>
         )
+    }
+
+    const handleSwipeEnd = (x: number, y: number) => {
+        const start = swipeStart.current
+        swipeStart.current = null
+        if (!start) return
+
+        const deltaX = x - start.x
+        const deltaY = y - start.y
+        const direction = deltaX < 0 ? 1 : -1
+        const nextIndex = index + direction
+        if (
+            Math.abs(deltaX) < 40 ||
+            Math.abs(deltaX) <= Math.abs(deltaY) ||
+            nextIndex < 0 ||
+            nextIndex >= MOVIES.length
+        ) {
+            setIsAnimating(true)
+            setDragOffset(0)
+            return
+        }
+
+        pendingDirection.current = direction
+        setIsAnimating(true)
+        setDragOffset(direction * -252)
     }
 
     return (
@@ -125,21 +152,55 @@ export const CgvHome = () => {
                 </div>
 
                 {/* 포스터 캐러셀 (가운데가 크게) */}
-                <div className="ch-carousel">
-                    <div className="ch-track">
-                        {renderCard(prev, false, index - 1)}
-                        {renderCard(curr, true, index)}
-                        {renderCard(next, false, index + 1)}
+                <div
+                    className="ch-carousel"
+                    onPointerDown={(event) => {
+                        if (event.pointerType === 'mouse' && event.button !== 0) return
+                        pendingDirection.current = null
+                        setIsAnimating(false)
+                        swipeStart.current = { x: event.clientX, y: event.clientY }
+                        event.currentTarget.setPointerCapture(event.pointerId)
+                    }}
+                    onPointerMove={(event) => {
+                        const start = swipeStart.current
+                        if (start) setDragOffset(event.clientX - start.x)
+                    }}
+                    onPointerUp={(event) => handleSwipeEnd(event.clientX, event.clientY)}
+                    onPointerCancel={() => {
+                        swipeStart.current = null
+                        pendingDirection.current = null
+                        setIsAnimating(true)
+                        setDragOffset(0)
+                    }}
+                >
+                    <div
+                        className="ch-track"
+                        style={{
+                            transform: `translateX(${dragOffset}px)`,
+                            transition: isAnimating ? 'transform 260ms cubic-bezier(0.22, 0.61, 0.36, 1)' : 'none',
+                        }}
+                        onTransitionEnd={(event) => {
+                            if (event.propertyName !== 'transform') return
+                            const direction = pendingDirection.current
+                            if (direction !== null) {
+                                setIndex((current) => current + direction)
+                                pendingDirection.current = null
+                            }
+                            setDragOffset(0)
+                            setIsAnimating(false)
+                        }}
+                    >
+                        {prev ? renderCard(prev, false) : <div className="ch-card ch-card-spacer" aria-hidden="true" />}
+                        {renderCard(curr, true)}
+                        {renderCard(next, false)}
                     </div>
                 </div>
 
                 {/* 영화 제목 */}
-                {curr?.title && (
-                    <div className="ch-title-row">
-                        <span>{curr.title}</span>
-                        {curr.age && <AgeBadge age={curr.age} />}
-                    </div>
-                )}
+                <div className="ch-title-row">
+                    <span>{curr?.title}</span>
+                    {curr?.age && <AgeBadge age={curr.age} />}
+                </div>
             </div>
 
             <CgvTabBar active="home" expanded />

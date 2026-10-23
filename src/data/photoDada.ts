@@ -343,7 +343,7 @@ const PHOTO_SOURCES = [
     '/78.jpg',
     '/79.jpg',
     '/80.jpg',
-    '/81.jpeg',
+    '/81.jpg',
 ]
 
 const startDate = Date.UTC(2022, 3, 2)

@@ -68,8 +68,8 @@
 /* ===================== 스크롤 영역 ===================== */
 .mm-scroll {
     flex: 0 0 auto;
-    min-height: 0;
-    overflow-y: visible;
+    min-height: auto;
+    overflow: visible;
     padding: calc(var(--u) * 19) calc(var(--u) * 16) calc(var(--u) * 100);
 }
 

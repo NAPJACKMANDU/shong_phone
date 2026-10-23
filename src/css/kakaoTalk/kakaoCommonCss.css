@@ -22,7 +22,7 @@
 
 /* ===================== 상태바 (공통) ===================== */
 .kk-status {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;

@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { KakaoStatusBar, lineProps } from '../../common/kakaoCommon.tsx'
 import { MsgAvatar, IconMic, IconChevronLeft } from '../../common/imessagecommon.tsx'
+import { getThread, UNREAD_TOTAL } from '../../data/messagesdata.ts'
+import type { ChatItem } from '../../data/messagesdata.ts'
 import '../../css/message/messageschatCss.css'
 
 /* ===================== 아이콘 ===================== */
@@ -29,52 +31,73 @@ const IconLock = () => (
     </svg>
 )
 
-/* ===================== 메시지 데이터 ===================== */
-type Item =
-    | { id: number; kind: 'bubble'; from: 'me' | 'other'; color: 'sms' | 'imsg' | 'green' | 'gray'; text: ReactNode; tail?: boolean; narrow?: boolean; breakAll?: boolean; mt: number; anchor?: boolean }
-    | { id: number; kind: 'caption'; lines: ReactNode[]; mt: number }
-    | { id: number; kind: 'stamp'; day: string; time: string; mt: number }
-    | { id: number; kind: 'receipt'; text: string; mt: number }
+/* ===================== 글자 꾸미기 =====================
+   **굵게**  __밑줄__  http 주소(자동 링크) */
+const TOKEN = /(\*\*.+?\*\*|__.+?__|https?:\/\/[^\s]+)/g
 
-const ITEMS: Item[] = [
-    { id: 1, kind: 'bubble', from: 'other', color: 'gray', text: 'ㅇㅋㅇㅋ', tail: true, mt: 0 },
-    { id: 2, kind: 'bubble', from: 'me', color: 'sms', text: '웅완선', tail: true, mt: 10 },
-    { id: 3, kind: 'bubble', from: 'other', color: 'gray', text: '그럼 이따 봐', tail: true, mt: 10 },
-    { id: 4, kind: 'bubble', from: 'me', color: 'sms', text: '오케잉', tail: true, mt: 10, anchor: true },
-    { id: 5, kind: 'bubble', from: 'me', color: 'sms', text: '이차오빠임???', mt: 10 },
-    { id: 6, kind: 'bubble', from: 'me', color: 'sms', text: 'ㅋㅅㅋㅅㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱㅋㄱ', tail: true, breakAll: true, mt: 5 },
-    { id: 7, kind: 'caption', lines: ['문자 메시지 • SMS', '암호화되지 않음'], mt: 13.5 },
-    { id: 8, kind: 'stamp', day: '8월 10일 (월)', time: '오후 12:32', mt: 13.5 },
-    {
-        id: 9, kind: 'bubble', from: 'other', color: 'gray', tail: true, narrow: true, mt: 6,
-        text: <>{'  ★ 매너콜 ★\n[통화중] 상황에서 고객님께 걸려온 전화입니다.\n08/10 '}<u>오후 12:32</u></>,
-    },
-    { id: 10, kind: 'stamp', day: '10월 8일 (목)', time: '오후 5:43', mt: 12.7 },
-    { id: 11, kind: 'bubble', from: 'me', color: 'green', text: '나 사무실들어옴!! ㅠ', tail: true, mt: 6.3 },
-    { id: 12, kind: 'caption', lines: ['iMessage', <span key="l"><IconLock />암호화됨</span>], mt: 14.5 },
-    { id: 13, kind: 'bubble', from: 'other', color: 'gray', text: '아 오키오키', mt: 7.5 },
-    { id: 14, kind: 'bubble', from: 'other', color: 'gray', text: <>모이는 시간 <u>8시</u>??</>, mt: 5 },
-    { id: 15, kind: 'bubble', from: 'other', color: 'gray', text: '몇시인지 알려주면 가서 웨이팅 하고 있을게', tail: true, mt: 5 },
-    { id: 16, kind: 'bubble', from: 'me', color: 'imsg', text: <><u>7시40분</u>!!</>, tail: true, mt: 11 },
-    { id: 17, kind: 'receipt', text: '읽음: 2026. 10. 8.', mt: 3 },
-    { id: 18, kind: 'bubble', from: 'other', color: 'gray', text: '오키오키!!', tail: true, mt: 6 },
-]
+const renderRich = (text: string): ReactNode[] =>
+    text.split(TOKEN).filter(Boolean).map((part, i) => {
+        if (part.startsWith('**')) return <b key={i}>{part.slice(2, -2)}</b>
+        if (part.startsWith('__')) return <u key={i}>{part.slice(2, -2)}</u>
+        if (/^https?:\/\//.test(part)) {
+            return <a key={i} className="ic-link" href={part} onClick={(e) => e.preventDefault()}>{part}</a>
+        }
+        return part
+    })
 
-/* ===================== 대화방 페이지 ===================== */
+/* ===================== 간격 / 말풍선 꼬리 자동 계산 =====================
+   사진과 똑같이 보이게 맞춘 간격(px)이에요. */
+interface Row {
+    item: ChatItem
+    mt: number
+    tail: boolean
+}
+
+const layoutRows = (items: ChatItem[]): Row[] =>
+    items.map((item, i) => {
+        const prev = items[i - 1]
+        const next = items[i + 1]
+        let mt = 0
+
+        if (prev) {
+            if (item.kind === 'bubble') {
+                if (prev.kind === 'bubble') mt = prev.from === item.from && !item.newGroup ? 5 : 10
+                else if (prev.kind === 'stamp') mt = 6
+                else if (prev.kind === 'caption') mt = 7.5
+                else mt = 6 // 읽음 표시 다음
+            } else if (item.kind === 'caption') {
+                mt = 14
+            } else if (item.kind === 'stamp') {
+                mt = prev.kind === 'caption' ? 13.5 : 12.7
+            } else {
+                mt = 3 // 읽음 표시
+            }
+        }
+
+        // 같은 사람이 바로 이어서 보낸 말풍선이 없으면 꼬리를 달아요
+        const tail =
+            item.kind === 'bubble' &&
+            !(next && next.kind === 'bubble' && next.from === item.from && !next.newGroup)
+
+        return { item, mt, tail }
+    })
+
+/* ===================== 대화방 페이지 =====================
+   주소 뒤에 ?id=대화방번호 를 붙여서 들어와요.  예) /messagesChat?id=3 */
 export const MessagesChat = () => {
     const navigate = useNavigate()
+    const [params] = useSearchParams()
+    const thread = getThread(Number(params.get('id')))
     const boxRef = useRef<HTMLDivElement>(null)
-    const anchorRef = useRef<HTMLDivElement>(null)
     const [text, setText] = useState('')
 
-    // 처음 화면: '오케잉' 말풍선이 위에서 116px 지점에 오도록 스크롤
+    const rows = useMemo(() => layoutRows(thread.items), [thread])
+
+    // 처음에는 가장 아래(최근 메시지)로, 위로 끝까지 올리면 처음 안내 글이 보여요
     useEffect(() => {
         const box = boxRef.current
-        const anchor = anchorRef.current
-        if (!box || !anchor) return
-        const u = box.clientWidth / 393
-        box.scrollTop = anchor.offsetTop - 116 * u
-    }, [])
+        if (box) box.scrollTop = box.scrollHeight
+    }, [thread.id])
 
     const gap = (mt: number) => ({ marginTop: `calc(var(--u) * ${mt})` })
 
@@ -82,34 +105,38 @@ export const MessagesChat = () => {
         <div className="kk-wrapper ic-wrapper">
             {/* 메시지 목록 */}
             <div className="ic-messages" ref={boxRef}>
-                {ITEMS.map((it) => {
-                    if (it.kind === 'bubble') {
+                {rows.map(({ item, mt, tail }, i) => {
+                    if (item.kind === 'bubble') {
+                        const color = item.from === 'other' ? 'gray' : (item.color ?? thread.meColor)
                         return (
                             <div
-                                key={it.id}
-                                ref={it.anchor ? anchorRef : undefined}
-                                className={`ic-bubble ${it.from} c-${it.color} ${it.tail ? 'tail' : ''} ${it.narrow ? 'narrow' : ''} ${it.breakAll ? 'break' : ''}`}
-                                style={gap(it.mt)}
+                                key={i}
+                                className={`ic-bubble ${item.from} c-${color} ${tail ? 'tail' : ''} ${item.narrow ? 'narrow' : ''} ${item.breakAll ? 'break' : ''}`}
+                                style={gap(mt)}
                             >
-                                {it.text}
+                                {renderRich(item.text)}
                             </div>
                         )
                     }
-                    if (it.kind === 'caption') {
+                    if (item.kind === 'caption') {
                         return (
-                            <div key={it.id} className="ic-caption" style={gap(it.mt)}>
-                                {it.lines.map((l, i) => <div key={i}>{l}</div>)}
+                            <div key={i} className="ic-caption" style={gap(mt)}>
+                                {item.lines.map((l, j) => <div key={j}>{l}</div>)}
+                                {item.lock && <div><span><IconLock />{item.lock}</span></div>}
+                                {item.stamp && (
+                                    <div className="ic-caption-stamp"><b>{item.stamp.day}</b> {item.stamp.time}</div>
+                                )}
                             </div>
                         )
                     }
-                    if (it.kind === 'stamp') {
+                    if (item.kind === 'stamp') {
                         return (
-                            <div key={it.id} className="ic-stamp" style={gap(it.mt)}>
-                                <b>{it.day}</b> {it.time}
+                            <div key={i} className="ic-stamp" style={gap(mt)}>
+                                <b>{item.day}</b> {item.time}
                             </div>
                         )
                     }
-                    return <div key={it.id} className="ic-receipt" style={gap(it.mt)}>{it.text}</div>
+                    return <div key={i} className="ic-receipt" style={gap(mt)}>{item.text}</div>
                 })}
             </div>
 
@@ -118,25 +145,30 @@ export const MessagesChat = () => {
             <div className="ic-top">
                 <button className="ic-back im-glass" onClick={() => navigate(-1)}>
                     <IconChevronLeft />
-                    <span className="ic-back-count">517</span>
+                    <span className="ic-back-count">{UNREAD_TOTAL - thread.unreadCount}</span>
                 </button>
-                <div className="ic-center-avatar"><MsgAvatar size={60} /></div>
+                <div className="ic-center-avatar"><MsgAvatar size={60} letter={thread.letter} /></div>
                 <button className="ic-name im-glass">
-                    서정호 오빠
+                    {thread.name}
                     <IconSmallChevron />
                 </button>
                 <button className="ic-video im-round im-glass"><IconVideo /></button>
             </div>
 
             {/* 카카오 공통 상태바 */}
-            <KakaoStatusBar time="10:00" battery={25} />
+            <KakaoStatusBar time="1:58" battery={89} />
 
             {/* 하단 흐림 + 입력창 */}
             <div className="im-bottomfade" />
             <div className="ic-input">
                 <button className="ic-plus im-round im-glass"><IconPlus /></button>
                 <label className="ic-field im-glass">
-                    <input type="text" placeholder="iMessage" value={text} onChange={(e) => setText(e.target.value)} />
+                    <input
+                        type="text"
+                        placeholder={thread.meColor === 'imsg' ? 'iMessage' : '문자 메시지 • RCS'}
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                    />
                     <IconMic />
                 </label>
             </div>
