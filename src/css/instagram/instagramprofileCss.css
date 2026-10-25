@@ -1,0 +1,266 @@
+/* 인스타그램 프로필 페이지 전용 (공통은 instagramCommonCss.css / kakaoCommonCss.css) */
+
+/* ===================== 위쪽 줄 ===================== */
+.ip-name {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 6);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    font-family: inherit;
+    white-space: nowrap;
+}
+.ip-name b {
+    font-size: calc(var(--u) * 20);
+    line-height: calc(var(--u) * 26);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+.ip-name .lock {
+    width: calc(var(--u) * 12);
+    height: calc(var(--u) * 15);
+}
+.ip-name .chev {
+    width: calc(var(--u) * 11);
+    height: calc(var(--u) * 8);
+    margin-top: calc(var(--u) * 3);
+}
+.ip-name i {
+    width: calc(var(--u) * 8);
+    height: calc(var(--u) * 8);
+    margin-left: calc(var(--u) * 3);
+    border-radius: 50%;
+    background-color: #f0323c;
+}
+
+/* ===================== 스크롤 영역 ===================== */
+.ip-scroll {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    padding: calc(var(--u) * 110) 0 calc(var(--u) * 140);
+    scrollbar-width: none;
+}
+.ip-scroll::-webkit-scrollbar {
+    display: none;
+}
+.ip-info {
+    position: relative;
+    height: calc(var(--u) * 254);
+    border-bottom: 1px solid #dbdbdb;
+    box-sizing: border-box;
+}
+
+/* 프로필 사진 + 생각 말풍선 */
+.ip-avatar {
+    position: absolute;
+    left: calc(var(--u) * 16);
+    top: calc(var(--u) * 21);
+    line-height: 0;
+}
+.ip-avatar-plus {
+    position: absolute;
+    left: calc(var(--u) * 80);
+    top: calc(var(--u) * 83);
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+    border-radius: 50%;
+    background-color: #262626;
+    border: calc(var(--u) * 2) solid #fff;
+    box-sizing: border-box;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ip-avatar-plus svg {
+    width: calc(var(--u) * 13);
+    height: calc(var(--u) * 13);
+}
+.ip-note {
+    position: absolute;
+    left: calc(var(--u) * 17);
+    top: calc(var(--u) * 3);
+    width: calc(var(--u) * 84);
+    height: calc(var(--u) * 37);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 19);
+    background-color: #fff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: calc(var(--u) * 10.5);
+    line-height: calc(var(--u) * 12);
+    color: #737373;
+    z-index: 2;
+}
+.ip-note::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--u) * 28);
+    bottom: calc(var(--u) * -4);
+    width: calc(var(--u) * 10);
+    height: calc(var(--u) * 10);
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.ip-note::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--u) * 36);
+    bottom: calc(var(--u) * -17);
+    width: calc(var(--u) * 6);
+    height: calc(var(--u) * 6);
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+/* 게시물 / 팔로워 / 팔로잉 */
+.ip-stat {
+    position: absolute;
+    top: calc(var(--u) * 40);
+}
+.ip-stat b {
+    display: block;
+    font-size: calc(var(--u) * 17);
+    line-height: calc(var(--u) * 22);
+    font-weight: 700;
+    color: #111;
+}
+.ip-stat span {
+    display: block;
+    font-size: calc(var(--u) * 14);
+    line-height: calc(var(--u) * 18);
+    color: #262626;
+}
+
+/* 배너 추가 */
+.ip-banner-btn {
+    position: absolute;
+    left: calc(var(--u) * 16);
+    top: calc(var(--u) * 130);
+    height: calc(var(--u) * 24);
+    padding: 0 calc(var(--u) * 10) 0 calc(var(--u) * 8);
+    border: 1px solid #dbdbdb;
+    border-radius: calc(var(--u) * 12);
+    background: none;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+    font-family: inherit;
+    font-size: calc(var(--u) * 12);
+    color: #737373;
+}
+.ip-banner-btn svg {
+    width: calc(var(--u) * 12);
+    height: calc(var(--u) * 12);
+}
+
+/* 프로필 편집 / 공유 */
+.ip-actions {
+    position: absolute;
+    left: calc(var(--u) * 16);
+    right: calc(var(--u) * 16);
+    top: calc(var(--u) * 166);
+    height: calc(var(--u) * 31);
+    display: flex;
+    gap: calc(var(--u) * 6);
+}
+.ip-actions button {
+    border: none;
+    border-radius: calc(var(--u) * 10);
+    background-color: #efeff3;
+    color: #111;
+    font-family: inherit;
+    font-size: calc(var(--u) * 13.5);
+    font-weight: 600;
+}
+.ip-actions button.wide {
+    flex: 1;
+}
+.ip-actions button.icon {
+    width: calc(var(--u) * 32);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ip-actions button.icon svg {
+    width: calc(var(--u) * 18);
+    height: calc(var(--u) * 18);
+}
+
+/* 탭 (격자 / 리포스트 / 태그) */
+.ip-tabs {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--u) * 44);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.ip-tab {
+    position: relative;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #8e8e93;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ip-tab.on {
+    color: #111;
+}
+.ip-tab svg {
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+}
+.ip-tab.on::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--u) * -1);
+    width: calc(var(--u) * 64);
+    height: calc(var(--u) * 2);
+    margin-left: calc(var(--u) * -32);
+    background-color: #111;
+}
+
+/* ===================== 사진 격자 ===================== */
+.ip-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 1px;
+}
+.ip-tile {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+}
+.ip-tile > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.ip-multi {
+    position: absolute;
+    top: calc(var(--u) * 8);
+    right: calc(var(--u) * 8);
+    width: calc(var(--u) * 17);
+    height: calc(var(--u) * 17);
+    color: #fff;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}

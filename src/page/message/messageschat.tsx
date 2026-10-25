@@ -156,7 +156,7 @@ export const MessagesChat = () => {
             </div>
 
             {/* 카카오 공통 상태바 */}
-            <KakaoStatusBar time="1:58" battery={89} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 하단 흐림 + 입력창 */}
             <div className="im-bottomfade" />

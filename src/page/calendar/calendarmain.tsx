@@ -206,7 +206,7 @@ export const CalendarMain = () => {
             </div>
 
             {/* 카카오 공통 상태바 */}
-            <KakaoStatusBar time="1:48" battery={53} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 아래 흐림 + 오늘 / 보기 버튼 */}
             <div className="cal-bottomfade" />

@@ -136,7 +136,7 @@ export const KakaoMore = () => {
 
     return (
         <div className="kk-wrapper km-wrapper">
-            <KakaoStatusBar time="8:45" battery={71} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 타이틀 + 아이콘 */}
             <div className="kk-header">

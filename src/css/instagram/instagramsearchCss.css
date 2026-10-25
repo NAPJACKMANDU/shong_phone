@@ -1,0 +1,168 @@
+/* 인스타그램 검색 페이지 전용 (공통은 instagramCommonCss.css / kakaoCommonCss.css) */
+
+/* ===================== 위쪽 검색창 ===================== */
+.is-head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--u) * 118);
+    z-index: 20;
+    background-color: #fff;
+    border-bottom: 1px solid #ececec;
+    box-sizing: border-box;
+}
+.is-top {
+    position: absolute;
+    top: calc(var(--u) * 66);
+    left: calc(var(--u) * 16);
+    right: calc(var(--u) * 13);
+    height: calc(var(--u) * 44);
+    display: flex;
+    gap: calc(var(--u) * 13);
+}
+.is-field {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 calc(var(--u) * 16);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 22);
+    background-color: #eff0f4;
+    color: #737373;
+}
+.is-field > svg {
+    width: calc(var(--u) * 21);
+    height: calc(var(--u) * 21);
+    flex: 0 0 auto;
+    color: #5f646d;
+}
+.is-field input {
+    flex: 1;
+    min-width: 0;
+    margin-left: calc(var(--u) * 10);
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-family: inherit;
+    font-size: calc(var(--u) * 15);
+    color: #111;
+}
+.is-field input::placeholder {
+    color: #8a8f98;
+}
+.is-cancel {
+    flex: 0 0 auto;
+    width: calc(var(--u) * 57);
+    height: 100%;
+    padding: 0;
+    border: none;
+    border-radius: calc(var(--u) * 22);
+    background-color: #fcfcfd;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    color: #111;
+    font-family: inherit;
+    font-size: calc(var(--u) * 15);
+    font-weight: 500;
+}
+
+/* ===================== 최근 검색 ===================== */
+.is-body {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    padding: calc(var(--u) * 136) 0 calc(var(--u) * 140);
+    scrollbar-width: none;
+}
+.is-body::-webkit-scrollbar {
+    display: none;
+}
+.is-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(var(--u) * 20);
+    padding: 0 calc(var(--u) * 16);
+}
+.is-section b {
+    font-size: calc(var(--u) * 15);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #111;
+}
+.is-section .ig-link {
+    font-size: calc(var(--u) * 14);
+}
+.is-list {
+    margin-top: calc(var(--u) * 13.3);
+}
+.is-row {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 58);
+    padding: 0 calc(var(--u) * 17);
+    cursor: pointer;
+}
+.is-clock {
+    width: calc(var(--u) * 44);
+    height: calc(var(--u) * 44);
+    box-sizing: border-box;
+    border: 1px solid #dbdbdb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: #111;
+}
+.is-clock svg {
+    width: calc(var(--u) * 26);
+    height: calc(var(--u) * 26);
+}
+.is-text {
+    flex: 1;
+    min-width: 0;
+    margin-left: calc(var(--u) * 13);
+}
+.is-name {
+    display: block;
+    font-size: calc(var(--u) * 14.5);
+    line-height: calc(var(--u) * 17);
+    font-weight: 700;
+    color: #111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.is-sub {
+    display: block;
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 16);
+    color: #737373;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.is-remove {
+    flex: 0 0 auto;
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+    margin-left: calc(var(--u) * 8);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #737373;
+}
+.is-remove svg {
+    width: 100%;
+    height: 100%;
+}
+.is-empty {
+    padding: calc(var(--u) * 60) 0;
+    text-align: center;
+    font-size: calc(var(--u) * 14);
+    color: #8e8e93;
+}

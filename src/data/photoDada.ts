@@ -489,7 +489,7 @@ const PHOTO_DATE_OVERRIDES: Record<string, string> = {
 const startDate = Date.UTC(2022, 3, 2)
 const anchorIndex = PHOTO_THUMB_SOURCES.indexOf('/photo-thumbs/216.jpg')
 const anchorDate = Date.UTC(2026, 4, 30)
-const endDate = Date.UTC(2028, 6, 10)
+const endDate = Date.UTC(2026, 9, 21)
 const firstDayRange = Math.floor((anchorDate - startDate) / 86_400_000)
 const secondDayRange = Math.floor((endDate - anchorDate) / 86_400_000)
 const dateWeights = PHOTO_ITEMS.slice(1).map((photo) => {

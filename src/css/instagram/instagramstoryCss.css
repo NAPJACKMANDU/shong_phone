@@ -1,0 +1,235 @@
+/* 인스타그램 스토리 페이지 전용 (--u 와 상태바는 kakaoCommonCss.css 의 .kk-wrapper 를 사용) */
+.st-wrapper {
+    --kk-fg: #fff;             /* 어두운 화면이라 상태바 흰색 */
+    --kk-battery-text: #000;
+    padding-top: 0;
+    min-height: 0;
+    background-color: #0a0f14;
+    color: #fff;
+}
+
+/* 스토리 화면 (둥근 모서리) */
+.st-card {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(var(--u) * 59);
+    bottom: calc(var(--u) * 98);
+    border-radius: calc(var(--u) * 16);
+    overflow: hidden;
+    background-color: #101010;
+}
+
+/* ===================== 위쪽 막대 / 사람 ===================== */
+.st-progress {
+    position: absolute;
+    top: calc(var(--u) * 67);
+    left: calc(var(--u) * 8);
+    right: calc(var(--u) * 8);
+    height: calc(var(--u) * 2);
+    display: flex;
+    gap: calc(var(--u) * 1.7);
+    z-index: 6;
+}
+.st-seg {
+    flex: 1;
+    border-radius: calc(var(--u) * 2);
+    background-color: rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+}
+.st-seg i {
+    display: block;
+    width: 0;
+    height: 100%;
+    background-color: #ececec;
+}
+.st-seg.done i {
+    width: 100%;
+}
+.st-seg.cur i {
+    animation: st-fill 5s linear forwards;
+}
+@keyframes st-fill {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+.st-head {
+    position: absolute;
+    top: calc(var(--u) * 77);
+    left: calc(var(--u) * 12);
+    right: calc(var(--u) * 10);
+    height: calc(var(--u) * 32);
+    display: flex;
+    align-items: center;
+    z-index: 7;
+}
+.st-head b {
+    margin-left: calc(var(--u) * 12);
+    font-size: calc(var(--u) * 14);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+.st-head span {
+    margin-left: calc(var(--u) * 10);
+    font-size: calc(var(--u) * 13);
+    color: #a8a8a8;
+}
+.st-head-actions {
+    margin-left: auto;
+    display: flex;
+    gap: calc(var(--u) * 20);
+}
+.st-head-actions button {
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #fff;
+}
+.st-head-actions svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ===================== 넘기기 영역 ===================== */
+.st-zone {
+    position: absolute;
+    top: calc(var(--u) * 59);
+    bottom: calc(var(--u) * 98);
+    z-index: 4;
+    background: none;
+    border: none;
+    padding: 0;
+}
+.st-zone.prev {
+    left: 0;
+    width: 35%;
+}
+.st-zone.next {
+    left: 35%;
+    right: 0;
+}
+
+/* ===================== 글자 카드 스토리 ===================== */
+.st-text-story {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 calc(var(--u) * 40);
+    text-align: center;
+    font-size: calc(var(--u) * 30);
+    line-height: calc(var(--u) * 40);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+/* ===================== 통화 기록 스토리 ===================== */
+.st-calls {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+.st-calls-title {
+    position: absolute;
+    left: calc(var(--u) * 28);
+    top: calc(var(--u) * 103);
+    font-size: calc(var(--u) * 33);
+    line-height: calc(var(--u) * 44);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+.st-call {
+    position: absolute;
+    left: calc(var(--u) * 27);
+    right: 0;
+}
+.st-call .pic {
+    position: absolute;
+    left: 0;
+    top: 0;
+    line-height: 0;
+}
+.st-call .name {
+    position: absolute;
+    left: calc(var(--u) * 101);
+    top: calc(var(--u) * 8);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 7);
+    font-size: calc(var(--u) * 26);
+    line-height: calc(var(--u) * 34);
+    font-weight: 500;
+    white-space: nowrap;
+}
+.st-call .name.bold {
+    font-weight: 700;
+}
+.st-call .name svg {
+    width: calc(var(--u) * 28);
+    height: calc(var(--u) * 28);
+}
+.st-call .sub {
+    position: absolute;
+    left: calc(var(--u) * 101);
+    top: calc(var(--u) * 41);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 9);
+    font-size: calc(var(--u) * 22);
+    line-height: calc(var(--u) * 28);
+    color: #8a8a8e;
+}
+.st-call .sub svg {
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 20);
+}
+
+/* ===================== 아래 메시지 줄 ===================== */
+.st-bottom {
+    position: absolute;
+    left: calc(var(--u) * 16);
+    right: calc(var(--u) * 16);
+    bottom: calc(var(--u) * 43);
+    height: calc(var(--u) * 43);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 18);
+    z-index: 7;
+}
+.st-input {
+    flex: 0 0 calc(var(--u) * 235);
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 calc(var(--u) * 20);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: calc(var(--u) * 22);
+    background: none;
+    outline: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: calc(var(--u) * 15);
+}
+.st-input::placeholder {
+    color: #fff;
+}
+.st-icons {
+    margin-left: auto;
+    display: flex;
+    gap: calc(var(--u) * 18);
+}
+.st-icons button {
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #fff;
+}
+.st-icons svg {
+    width: 100%;
+    height: 100%;
+}

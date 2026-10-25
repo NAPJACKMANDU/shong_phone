@@ -221,7 +221,7 @@ const WATCHED: Watched[] = [
   {
     id: 28, title: '슈퍼맨', age: '12',
     watchedAt: '2025-07-20',
-    date: '2025.07.20(일) 16:00~18:15', theater: ['영등포 IMAX관'], tag: 'IMAX 1',
+    date: '2025.07.20(일) 16:00~18:15', theater: ['영등포 IMAX관'], tag: 'IMAX 2',
     poster: 'cgv/superman.png',
   },
   {
@@ -273,7 +273,7 @@ const WATCHED: Watched[] = [
   {
     id: 36, title: '스파이더맨: 브랜드 뉴 데이', age: '12',
     watchedAt: '2026-07-29',
-    date: '2026.08.29(토) 16:40~19:20', theater: ['용산아이파크몰 IMAX관'], tag: 'IMAX 1',  
+    date: '2026.08.29(토) 16:40~19:20', theater: ['용산아이파크몰 IMAX관'], tag: 'IMAX 5',  
     poster: 'cgv/spiderman_brand_new_day.png',
   }
 ]

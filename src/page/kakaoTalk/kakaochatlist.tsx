@@ -38,7 +38,7 @@ export const KakaoChatList = () => {
 
     return (
         <div className={`kk-wrapper kc-wrapper ${shouldAnimateScreenEnter ? 'screen-enter' : ''}`}>
-            <KakaoStatusBar time="4:24" battery={97} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 타이틀 + 아이콘 */}
             <div className="kk-header">

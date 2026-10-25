@@ -110,7 +110,7 @@ export const PhoneRecents = () => {
             />
 
             {/* 카카오 공통 상태바 */}
-            <KakaoStatusBar time="10:00" battery={25} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 하단 흐림 + 탭바 */}
             <PhoneTabBar active="recents" />

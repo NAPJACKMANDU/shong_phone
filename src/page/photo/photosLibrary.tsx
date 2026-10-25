@@ -84,7 +84,7 @@ export const PhotosLibrary = () => {
             />
 
             {/* 카카오 공통 상태바 */}
-            <KakaoStatusBar time="2:37" battery={72} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 하단 떠 있는 탭바 */}
             <PhotosTabBar active="library" />

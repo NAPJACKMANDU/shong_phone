@@ -77,29 +77,29 @@ interface Memory { id: number; title: string; sub: string; bg?: string; src?: st
 interface Tile { id: number; label?: ReactNode; two?: boolean; bg?: string; src?: string; heart?: boolean; map?: boolean }
 
 const MEMORIES: Memory[] = [
-    { id: 1, title: '여행', sub: '지난 수년간', play: true, src:'/photo-thumbs/81.jpg' },
-    { id: 2, title: '인물 사진', sub: '2025년', src:'/photo-thumbs/162.jpg' },
-    { id: 3, title: '행복한 추억', sub: '2024년', src:'/photo-thumbs/105.jpg' },
+    { id: 1, title: '여행', sub: '지난 수년간', play: true, src: '/photo-thumbs/81.jpg' },
+    { id: 2, title: '인물 사진', sub: '2025년', src: '/photo-thumbs/162.jpg' },
+    { id: 3, title: '행복한 추억', sub: '2024년', src: '/photo-thumbs/105.jpg' },
 ]
 
 const PINNED: Tile[] = [
-    { id: 1, label: '즐겨찾기', heart: true,src:'/photo-thumbs/227.jpg' },
-    { id: 2, label: <>최근 저장된<br />항목</>, two: true, src:'/photo-thumbs/233.jpg'  },
+    { id: 1, label: '즐겨찾기', heart: true, src: '/photo-thumbs/227.jpg' },
+    { id: 2, label: <>최근 저장된<br />항목</>, two: true, src: '/photo-thumbs/233.jpg' },
     { id: 3, label: '지도', map: true, bg: '#bcdcec' }
 ]
 
 const ALBUMS: Tile[] = [
-    { id: 1, label: '앤톤',src:'/photo-thumbs/214.jpg'},
-    { id: 2, label: '뉴저지', src:'/photo-thumbs/205.jpg' },
-    { id: 3, label: '일본', src:'/photo-thumbs/130.jpg' },
-    { id: 4,  label: '상하이', src:'/photo-thumbs/107.jpg' },
+    { id: 1, label: '앤톤', src: '/photo-thumbs/214.jpg' },
+    { id: 2, label: '뉴저지', src: '/photo-thumbs/205.jpg' },
+    { id: 3, label: '일본', src: '/photo-thumbs/130.jpg' },
+    { id: 4, label: '상하이', src: '/photo-thumbs/107.jpg' },
 ]
 
 const PEOPLE: Tile[] = [
-    { id: 1, src:'/photo-thumbs/166.jpg'},
-    { id: 2, src:'/photo-thumbs/39.jpg' },
-    { id: 3, src:'/photo-thumbs/234.jpg' },
-    { id: 4, src:'/photo-thumbs/187.jpg' },
+    { id: 1, src: '/photo-thumbs/166.jpg' },
+    { id: 2, src: '/photo-thumbs/39.jpg' },
+    { id: 3, src: '/photo-thumbs/234.jpg' },
+    { id: 4, src: '/photo-thumbs/187.jpg' },
 
 ]
 
@@ -183,7 +183,7 @@ export const PhotosCollections = () => {
             />
 
             {/* 카카오 공통 상태바 */}
-            <KakaoStatusBar time="2:38" battery={96} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 하단 떠 있는 탭바 */}
             <PhotosTabBar active="collections" />

@@ -1,0 +1,157 @@
+/* ===== 인스타그램 공통 CSS (홈 / 프로필 / 검색 / 스토리 모두 사용) =====
+   --u 와 상태바는 카카오 공통(kakaoCommonCss.css)의 .kk-wrapper 를 그대로 사용합니다. */
+
+.ig-wrapper {
+    padding-top: 0;
+    background-color: #fff;
+}
+
+/* ===================== 위쪽 줄 (공통 자리) ===================== */
+.ig-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--u) * 108);
+    z-index: 20;
+    background-color: #fff;
+}
+.ig-header-row {
+    position: absolute;
+    top: calc(var(--u) * 64);
+    left: 0;
+    right: 0;
+    height: calc(var(--u) * 40);
+}
+.ig-icon-btn {
+    position: absolute;
+    top: 50%;
+    width: calc(var(--u) * 26);
+    height: calc(var(--u) * 26);
+    margin-top: calc(var(--u) * -13);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ig-icon-btn svg {
+    width: 100%;
+    height: 100%;
+}
+.ig-link {
+    color: #3b3bf0;
+    font-weight: 600;
+}
+
+/* ===================== 프로필 동그라미 ===================== */
+.ig-avatar {
+    display: block;
+    flex: 0 0 auto;
+    border-radius: 50%;
+}
+.ig-ring {
+    flex: 0 0 auto;
+    padding: calc(var(--u) * 3);
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f9b233 0%, #ee4a3c 45%, #cf2fb8 100%);
+}
+.ig-ring-gap {
+    padding: calc(var(--u) * 3);
+    border-radius: 50%;
+    background-color: #fff;
+    line-height: 0;
+}
+.ig-ring.seen {
+    background: #dbdbdb;
+}
+
+/* ===================== 하단 떠 있는 탭바 ===================== */
+.ig-tabbar {
+    position: fixed;
+    left: calc(var(--u) * 22);
+    right: calc(var(--u) * 22);
+    bottom: calc(var(--u) * 22);
+    height: calc(var(--u) * 60);
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    padding: 0 calc(var(--u) * 10);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 30);
+    background-color: rgba(250, 250, 250, 0.92);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    box-shadow: 0 4px 22px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+.ig-tab {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ig-tab > * {
+    position: relative;
+}
+.ig-tab svg {
+    width: calc(var(--u) * 28);
+    height: calc(var(--u) * 28);
+    display: block;
+}
+.ig-tab.on::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(var(--u) * 76);
+    height: calc(var(--u) * 54);
+    margin: calc(var(--u) * -27) 0 0 calc(var(--u) * -38);
+    border-radius: calc(var(--u) * 27);
+    background-color: rgba(120, 120, 128, 0.16);
+}
+.ig-tab-avatar {
+    width: calc(var(--u) * 28);
+    height: calc(var(--u) * 28);
+}
+.ig-reddot {
+    position: absolute;
+    right: calc(var(--u) * -5);
+    bottom: calc(var(--u) * -1);
+    width: calc(var(--u) * 8);
+    height: calc(var(--u) * 8);
+    border-radius: 50%;
+    background-color: #f0323c;
+}
+
+/* 홈처럼 작은 모양 */
+.ig-tabbar.compact {
+    left: calc(var(--u) * 50);
+    right: calc(var(--u) * 50);
+    bottom: calc(var(--u) * 27);
+    height: calc(var(--u) * 50);
+    padding: 0 calc(var(--u) * 8);
+    border-radius: calc(var(--u) * 25);
+    background-color: rgba(240, 240, 240, 0.8);
+}
+.ig-tabbar.compact .ig-tab.on::before {
+    width: calc(var(--u) * 64);
+    height: calc(var(--u) * 42);
+    margin: calc(var(--u) * -21) 0 0 calc(var(--u) * -32);
+    border-radius: calc(var(--u) * 21);
+}
+.ig-tabbar.compact .ig-tab svg {
+    width: calc(var(--u) * 26);
+    height: calc(var(--u) * 26);
+}
+.ig-tabbar.compact .ig-tab-avatar {
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+}

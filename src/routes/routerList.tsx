@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import {
     CALENDARMAIN_PATH,
@@ -6,6 +6,10 @@ import {
     CGVMORE_PATH,
     CGVWATCHED_PATH,
     HOMESCREEN_PATH,
+    INSTAGRAMHOME_PATH,
+    INSTAGRAMPROFILE_PATH,
+    INSTAGRAMSEARCH_PATH,
+    INSTAGRAMSTORY_PATH,
     KAKAOCHATLIST_PATH,
     KAKAOCHATROOM_PATH,
     KAKAOFRIENDS_PATH,
@@ -19,7 +23,8 @@ import {
     PHONERECENTS_PATH,
     PHONEVOICEMAIL_PATH,
     PHOTOSCOLLECTIONS_PATH,
-    PHOTOSLIBRARY_PATH
+    PHOTOSLIBRARY_PATH,
+    SETLOGMAIN_PATH
 } from "./index.ts"
 import LockScreen from "../page/lockScreen.tsx"
 import HomeScreen from "../page/homeScreen.tsx"
@@ -42,12 +47,21 @@ import PhoneRecents from "../page/calling/phonerecents.tsx"
 import PhoneVoicemail from "../page/calling/phonevoicemail.tsx"
 import KakaoMemoRoom from "../page/memo/kakaomemoroom.tsx"
 import CalendarMain from "../page/calendar/calendarmain.tsx"
+import SetlogMain from "../page/setlog/setlogmain.tsx"
+import InstagramHome from "../page/instagram/instagramhome.tsx"
+import InstagramSearch from "../page/instagram/instagramsearch.tsx"
+import InstagramProfile from "../page/instagram/instagramprofile.tsx"
+import InstagramStory from "../page/instagram/instagramstory.tsx"
 
 export const RouterSetting = () => {
     const [unlocked, setUnlocked] = useState(false)
     const [notifications, setNotifications] = useState<KakaoNoticeMsg[]>([])
     const location = useLocation()
     const navigate = useNavigate()
+
+    useLayoutEffect(() => {
+        window.scrollTo(0, 0)
+    }, [location.key])
 
     // 잠금 해제 후 5초 뒤 알림 표시
     useEffect(() => {
@@ -154,6 +168,11 @@ export const RouterSetting = () => {
                         <Route path={PHONERECENTS_PATH()} element={<PhoneRecents/>}></Route>
                         <Route path={PHONEVOICEMAIL_PATH()} element={<PhoneVoicemail/>}></Route>
                         <Route path={CALENDARMAIN_PATH()} element={<CalendarMain/>}></Route>
+                        <Route path={SETLOGMAIN_PATH()} element={<SetlogMain/>}></Route>
+                        <Route path={INSTAGRAMHOME_PATH()} element={<InstagramHome/>}></Route>
+                        <Route path={INSTAGRAMSEARCH_PATH()} element={<InstagramSearch/>}></Route>
+                        <Route path={INSTAGRAMPROFILE_PATH()} element={<InstagramProfile/>}></Route>
+                        <Route path={INSTAGRAMSTORY_PATH()} element={<InstagramStory/>}></Route>
                     </Routes>
                 </>
             )}

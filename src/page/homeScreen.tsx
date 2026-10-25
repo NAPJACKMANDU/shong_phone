@@ -394,7 +394,7 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
                 navigate("/KakaoChatList", { state: { animateScreenEnter: true } });
                 break;
             case "Instagram":
-                navigate("/instagram"); // 인스타그램을 누르면 이동할 경로
+                navigate("/instagramhome"); // 인스타그램을 누르면 이동할 경로
                 break;
             case "메모":
                 navigate("/kakaoMemo");
@@ -405,8 +405,11 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
             case "CGV":
                 navigate("/cgvHome")
                 break;
-            case "캘린더":
+            case "캘린더": 
                 navigate("/calendarmain")
+                break;
+             case "Setlog": 
+                navigate("/setlogMain")
                 break;
         }
     };
@@ -452,7 +455,7 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
             <HomeWallpaper className="home-bg" />
 
             {/* 상태바 */}
-            {showStatusBar && <KakaoStatusBar time="1:22" battery={73} variant="light" />}
+            {showStatusBar && <KakaoStatusBar time="4:23" battery={74} variant="light" />}
 
             {/* 페이지 (좌우로 넘기기) */}
             <div className="home-pages" ref={pagerRef} onScroll={handleScroll}>

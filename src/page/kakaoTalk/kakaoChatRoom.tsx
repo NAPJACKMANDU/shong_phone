@@ -120,7 +120,6 @@ export const KakaoChatRoom = () => {
                                     {m.photoUrl ? <img src={m.photoUrl} alt="보낸 사진" /> : <IconImage />}
                                 </div>
                                 <button className="kr-ocr"><IconScan /></button>
-                                <button className="kr-share"><IconShare /></button>
                             </div>
                         )
 
@@ -195,7 +194,7 @@ export const KakaoChatRoom = () => {
                 </div>
             </div>
 
-            <KakaoStatusBar time="4:24" battery={97} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 하단 입력창 */}
             <div className="kr-bottom" />

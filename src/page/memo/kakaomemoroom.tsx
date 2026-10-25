@@ -95,7 +95,7 @@ export const KakaoMemoRoom = () => {
             </div>
 
             {/* 카카오 공통 상태바 */}
-            <KakaoStatusBar time="8:18" battery={52} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 하단 흐림 + 도구 모음 */}
             <div className="mr-fade" />

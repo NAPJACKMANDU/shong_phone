@@ -76,7 +76,7 @@ export const KakaoFriends = () => {
 
     return (
         <div className="kk-wrapper kf-wrapper">
-            <KakaoStatusBar time="4:26" battery={97} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 상단 헤더 */}
             <div className="kk-header">

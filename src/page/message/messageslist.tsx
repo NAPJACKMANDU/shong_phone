@@ -76,7 +76,7 @@ export const MessagesList = () => {
             </div>
 
             {/* 카카오 공통 상태바 */}
-            <KakaoStatusBar time="9:59" battery={27} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 하단 흐림 + 검색 / 새 메시지 */}
             <div className="im-bottomfade" />
