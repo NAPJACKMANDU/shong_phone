@@ -494,8 +494,8 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
                         {/* 캘린더 위젯 */}
                         <div className="widget-wrap" onClick={() => navigate('/calendarmain')}>
                             <div className="widget widget-calendar">
-                                <div className="widget-cal-day">화요일</div>
-                                <div className="widget-cal-date">20</div>
+                                <div className="widget-cal-day">목요일</div>
+                                <div className="widget-cal-date">22</div>
 
                                 {/* 하단 일정 블록 (분홍색 포인트 바 + 텍스트) */}
                                 <div className="widget-cal-event-box">

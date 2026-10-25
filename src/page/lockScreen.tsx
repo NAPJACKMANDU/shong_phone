@@ -184,8 +184,8 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
       >
         {/* 날짜 & 시계 */}
         <div className="time-container">
-          <div className="lock-date">10월 20일 (화)</div>
-          <div className="lock-time">11:26</div>
+          <div className="lock-date">10월 22일 (목)</div>
+          <div className="lock-time">4:23</div>
         </div>
 
         {/* 위젯 */}

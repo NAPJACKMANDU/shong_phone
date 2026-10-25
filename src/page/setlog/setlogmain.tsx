@@ -146,7 +146,7 @@ const TIME_SLOTS: TimeSlotData[] = [
     /* 9월, 10월: 업로드 없음 */
 ]
 
-const FRIEND_NAME = 'anton'
+const FRIEND_NAME = '엥똔'
 const MY_NAME = '성찬'
 
 /* ===================== 아이콘 ===================== */
@@ -450,8 +450,25 @@ export const SetlogMain = () => {
                         </>
                     ) : (
                         <>
-                            <div className="sl-card sl-card-empty" aria-hidden="true" />
-                            <div className="sl-card sl-card-empty" aria-hidden="true" />
+                    <div className="sl-card" style={{ background: '#e4e4e4' }} aria-hidden="true">
+                        <div className="sl-user">
+                        <Avatar tone={'friend'} />
+                        <span>엥똔</span>
+                    </div>
+                    <div className="sl-center">
+                        <span className="sl-time">16:00</span>
+                    </div>
+
+                    </div>
+                        <div className="sl-card" style={{ background: '#e4e4e4' }} aria-hidden="true">
+                            <div className="sl-user">
+                            <Avatar tone={'me'} />
+                            <span>성찬</span>
+                        </div>
+                        <div className="sl-center">
+                           <span className="sl-time">16:00</span>
+                        </div>
+                      </div>
                         </>
                     )}
                 </div>

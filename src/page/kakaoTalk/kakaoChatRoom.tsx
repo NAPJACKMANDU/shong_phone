@@ -23,12 +23,7 @@ const IconMenu = () => (
         <path d="M3 6h18M3 12h18M3 18h18" />
     </svg>
 )
-const IconShare = () => (
-    <svg viewBox="0 0 24 24" {...lineProps} strokeWidth="2">
-        <path d="M12 15V3M7.5 7.5L12 3l4.5 4.5" />
-        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" />
-    </svg>
-)
+
 const IconScan = () => (
     <svg viewBox="0 0 24 24" {...lineProps} strokeWidth="2">
         <path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3" />
