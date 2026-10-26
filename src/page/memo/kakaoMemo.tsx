@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { KakaoStatusBar, IconSearch, lineProps } from '../../common/kakaoCommon.tsx'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { getBackDestination, KakaoStatusBar, IconSearch, lineProps } from '../../common/kakaoCommon.tsx'
 import { MEMOS, SECTION_DEFS, TOTAL_COUNT, MEMO_PATH, memoTitle, memoPreview } from '../../data/memoData.ts'
 import '../../css/memo/kakaoMemoCSS.css'
 
@@ -40,6 +40,7 @@ const IconCompose = () => (
    메모를 누르면 /kakaoMemoRoom?id=번호 로 들어가요. */
 export const KakaoMemo = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const [query, setQuery] = useState('')
     const [pinnedOpen, setPinnedOpen] = useState(true)
 
@@ -60,7 +61,7 @@ export const KakaoMemo = () => {
 
             {/* 상단 헤더 */}
             <div className="mm-header">
-                <button className="mm-round-btn left" onClick={() => navigate(-1)}><IconBack /></button>
+                <button className="mm-round-btn left" onClick={() => navigate(getBackDestination(location.pathname), { replace: true })}><IconBack /></button>
                 <div className="mm-header-title">
                     <b>메모</b>
                     <span>{TOTAL_COUNT}개의 메모</span>

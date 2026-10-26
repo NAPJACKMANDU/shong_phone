@@ -1,6 +1,26 @@
 /* ===== 아이메시지 공통 CSS (메시지 목록 / 대화방 모두 사용) =====
    --u 와 상태바는 카카오 공통(kakaoCommonCss.css)의 .kk-wrapper 를 그대로 사용합니다. */
 
+.kk-wrapper.il-wrapper,
+.kk-wrapper.ic-wrapper {
+    height: 100dvh;
+    min-height: 100dvh;
+    padding-top: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+}
+.kk-wrapper.il-wrapper::-webkit-scrollbar,
+.kk-wrapper.ic-wrapper::-webkit-scrollbar {
+    display: none;
+}
+.kk-wrapper.il-wrapper .im-topfade,
+.kk-wrapper.ic-wrapper .im-topfade,
+.kk-wrapper.il-wrapper .im-bottomfade,
+.kk-wrapper.ic-wrapper .im-bottomfade {
+    position: fixed;
+}
+
 /* 하얀 유리 버튼 */
 .im-glass {
     background-color: rgba(250, 250, 252, 0.92);

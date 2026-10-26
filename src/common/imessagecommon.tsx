@@ -3,7 +3,7 @@ import '../css/message/imessagecommonCss.css'
 // 라우터 경로 (프로젝트 라우터에 맞게 수정하세요)
 export const IMESSAGE_PATH = {
     list: '/messagesList',
-    chat: '/messagesChat',
+    chat: '/messageschat',
 }
 
 /* ===================== 기본 프로필 =====================

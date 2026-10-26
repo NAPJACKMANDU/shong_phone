@@ -26,6 +26,7 @@ import {
     PHOTOSLIBRARY_PATH,
     SETLOGMAIN_PATH
 } from "./index.ts"
+import { getBackDestination } from "../common/kakaoCommon.tsx"
 import LockScreen from "../page/lockScreen.tsx"
 import HomeScreen from "../page/homeScreen.tsx"
 import KakaoChatList from "../page/kakaoTalk/kakaochatlist.tsx"
@@ -77,7 +78,7 @@ export const RouterSetting = () => {
         return () => window.clearTimeout(timer)
     }, [unlocked])
 
-    // 뒤로가기 제스처 처리
+    // 왼쪽 가장자리 스와이프 뒤로가기 제스처 처리
     useEffect(() => {
         let touchStart: { pointerId: number; x: number; y: number } | null = null
 
@@ -100,16 +101,13 @@ export const RouterSetting = () => {
             if (deltaX < 70 || deltaX < deltaY * 1.5) return
 
             const pathname = location.pathname
-            const chatRoomPath = KAKAOCHATROOM_PATH()
-            const isChatRoom = pathname === chatRoomPath || pathname.startsWith(`${chatRoomPath}/`)
+            
+            // 홈 화면이나 루트에서는 스와이프 뒤로가기 차단
+            if (pathname === HOMESCREEN_PATH() || pathname === MAIN_PATH()) return
 
-            if (isChatRoom) {
-                // 1. 채팅방 안에서는 무조건 채팅 목록으로 이동
-                navigate(KAKAOCHATLIST_PATH(), { replace: true })
-            } else if (pathname !== HOMESCREEN_PATH() && pathname !== MAIN_PATH()) {
-                // 2. 채팅방이 아닌 다른 모든 화면(챗리스트, 친구목록, 설정 등)에서는 어디서 왔든 무조건 홈 화면으로 이동
-                navigate(HOMESCREEN_PATH(), { replace: true })
-            }
+            // 설정된 조건별 목적지로 이동
+            const dest = getBackDestination(pathname)
+            navigate(dest, { replace: true })
         }
 
         const handlePointerCancel = () => {

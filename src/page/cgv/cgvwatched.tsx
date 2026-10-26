@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { CgvPoster, AgeBadge, CGV_PATH } from '../../common/cgvCommon.tsx'
+import { getBackDestination } from '../../common/kakaoCommon.tsx'
 import '../../css/cgv/cgvwatchedCss.css'
 
 /* ===================== 아이콘 ===================== */
@@ -294,6 +295,7 @@ const formatDate = (date: Date) =>
 /* ===================== 내가 본 영화 페이지 ===================== */
 export const CgvWatched = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const [period, setPeriod] = useState(0)
     const startDate = shiftPeriod(PERIOD_START, period)
     const endDate = shiftPeriod(PERIOD_END, period)
@@ -310,7 +312,7 @@ export const CgvWatched = () => {
 
             {/* 상단 바 */}
             <div className="cw-appbar">
-                <button className="cw-icon-btn back" onClick={() => navigate(-1)}><IconBack /></button>
+                <button className="cw-icon-btn back" onClick={() => navigate(getBackDestination(location.pathname), { replace: true })}><IconBack /></button>
                 <button className="cw-icon-btn home" onClick={() => navigate(CGV_PATH.home)}><IconHome /></button>
                 <div className="cw-appbar-title">내가 본 영화</div>
             </div>

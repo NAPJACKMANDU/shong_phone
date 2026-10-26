@@ -2,7 +2,7 @@
 
 /* ===================== 위쪽 검색창 ===================== */
 .is-head {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -71,14 +71,10 @@
 
 /* ===================== 최근 검색 ===================== */
 .is-body {
-    position: absolute;
-    inset: 0;
-    overflow-y: auto;
+    position: relative;
+    flex: 0 0 auto;
+    overflow: visible;
     padding: calc(var(--u) * 136) 0 calc(var(--u) * 140);
-    scrollbar-width: none;
-}
-.is-body::-webkit-scrollbar {
-    display: none;
 }
 .is-section {
     display: flex;

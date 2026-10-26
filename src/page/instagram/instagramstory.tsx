@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { getBackDestination, KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { IgAvatar, IconHeart, IconComment, IconSendPlane, IconClose } from '../../common/instagramcommon.tsx'
 import { STORY_USERS, markStoryUserSeen } from '../../data/instagramdata.ts'
 import '../../css/instagram/instagramstoryCss.css'
@@ -54,6 +54,7 @@ const CallsStory = () => (
    - 그 사람의 스토리가 끝나면 다음 사람의 스토리가 이어서 나와요 */
 export const InstagramStory = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const [params] = useSearchParams()
 
     const firstUser = Math.max(0, STORY_USERS.findIndex((u) => u.id === params.get('user')))
@@ -71,7 +72,7 @@ export const InstagramStory = () => {
             setUIdx(uIdx + 1)
             setSIdx(0)
         } else {
-            navigate(-1)
+            navigate(getBackDestination(location.pathname), { replace: true })
         }
     }
 
@@ -131,7 +132,7 @@ export const InstagramStory = () => {
                 <span>{user.time}</span>
                 <div className="st-head-actions">
                     <button><IconMenuLines /></button>
-                    <button onClick={() => navigate(-1)}><IconClose /></button>
+                    <button onClick={() => navigate(getBackDestination(location.pathname), { replace: true })}><IconClose /></button>
                 </div>
             </div>
 

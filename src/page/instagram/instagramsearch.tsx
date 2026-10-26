@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { getBackDestination, KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { IgAvatar, IgTabBar, IconSearch, IconClose } from '../../common/instagramcommon.tsx'
 import { SEARCH_HISTORY } from '../../data/instagramdata.ts'
 import '../../css/instagram/instagramsearchCss.css'
@@ -15,6 +15,7 @@ const IconClock = () => (
 /* ===================== 인스타그램 검색 ===================== */
 export const InstagramSearch = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const [query, setQuery] = useState('')
     const [items, setItems] = useState(SEARCH_HISTORY)
 
@@ -66,7 +67,7 @@ export const InstagramSearch = () => {
                             onChange={(e) => setQuery(e.target.value)}
                         />
                     </label>
-                    <button className="is-cancel" onClick={() => navigate(-1)}>취소</button>
+                    <button className="is-cancel" onClick={() => navigate(getBackDestination(location.pathname), { replace: true })}>취소</button>
                 </div>
             </div>
 

@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { IgAvatar, IgTabBar, IconPlus } from '../../common/instagramcommon.tsx'
 import { GRID_POSTS } from '../../data/instagramdata.ts'
+import { FEED_POSTS, getInstagramProfileSrc, SEONGCHAN } from '../../data/instagramfeeddata.ts'
+import type { FeedPost } from '../../data/instagramfeeddata.ts'
+import { CommentModal, PostCard } from './instagramhome.tsx'
 import '../../css/instagram/instagramprofileCss.css'
 
 /* ===================== 아이콘 ===================== */
@@ -67,16 +70,36 @@ const IconMulti = () => (
 )
 
 /* ===================== 데이터 ===================== */
-const USERNAME = 'chxxanx__'
+const USERNAME = SEONGCHAN
 const STATS = [
-    { value: '12', label: '게시물', left: 124 },
-    { value: '1', label: '팔로워', left: 212 },
-    { value: '1', label: '팔로잉', left: 301 },
+    { value: '4', label: '게시물', left: 124 },
+    { value: '832', label: '팔로워', left: 212 },
+    { value: '147', label: '팔로잉', left: 301 },
 ]
+const PROFILE_POSTS = GRID_POSTS.flatMap((gridPost) => {
+    const post = FEED_POSTS.find((feedPost) => feedPost.id === gridPost.feedPostId && feedPost.user === SEONGCHAN)
+    return post ? [post] : []
+})
 
 /* ===================== 인스타그램 프로필 ===================== */
 export const InstagramProfile = () => {
     const [tab, setTab] = useState<'grid' | 'repost' | 'tagged'>('grid')
+    const [selectedPostId, setSelectedPostId] = useState<number | null>(null)
+    const [activeCommentPost, setActiveCommentPost] = useState<FeedPost | null>(null)
+    const viewerRef = useRef<HTMLDivElement>(null)
+    const postRefs = useRef(new Map<number, HTMLDivElement>())
+    const selectedPost = PROFILE_POSTS.find((post) => post.id === selectedPostId) ?? null
+
+    useLayoutEffect(() => {
+        if (selectedPostId === null) return
+
+        const viewer = viewerRef.current
+        const postElement = postRefs.current.get(selectedPostId)
+        if (!viewer || !postElement) return
+
+        const headerHeight = viewer.querySelector('.ip-post-viewer-header')?.clientHeight ?? 0
+        viewer.scrollTo({ top: postElement.offsetTop - headerHeight, behavior: 'auto' })
+    }, [selectedPostId])
 
     return (
         <div className="kk-wrapper ig-wrapper">
@@ -84,9 +107,10 @@ export const InstagramProfile = () => {
             <div className="ip-scroll">
                 <div className="ip-info">
                     {/* 프로필 사진 + 생각 말풍선 */}
-                    <div className="ip-avatar"><IgAvatar size={86} tint={0} /></div>
+                    <div className="ip-avatar"><IgAvatar size={86} tint={0} src={getInstagramProfileSrc(SEONGCHAN)} /></div>
                     <span className="ip-avatar-plus"><IconPlus /></span>
                     <div className="ip-note">생각을 여기에<br />공유해보세...</div>
+                    <span className="ip-profile-name">정성찬</span>
 
                     {/* 숫자 */}
                     {STATS.map((s) => (
@@ -95,7 +119,6 @@ export const InstagramProfile = () => {
                             <span>{s.label}</span>
                         </div>
                     ))}
-
                     <button className="ip-banner-btn"><IconSmallPlus />배너 추가</button>
 
                     <div className="ip-actions">
@@ -116,14 +139,49 @@ export const InstagramProfile = () => {
                 {tab === 'grid' && (
                     <div className="ip-grid">
                         {GRID_POSTS.map((p) => (
-                            <div className="ip-tile" key={p.id} style={{ background: p.bg }}>
-                                {p.src && <img src={p.src} alt="" />}
+                            <button
+                                className="ip-tile"
+                                key={p.id}
+                                style={{ background: p.bg }}
+                                onClick={() => setSelectedPostId(p.feedPostId)}
+                                aria-label={`게시물 ${p.id} 보기`}
+                            >
+                                {p.kind === 'video' && p.src ? (
+                                    <video src={p.src} muted playsInline preload="metadata" />
+                                ) : p.src ? (
+                                    <img src={p.src} alt="" />
+                                ) : null}
                                 {p.multi && <IconMulti />}
-                            </div>
+                            </button>
                         ))}
                     </div>
                 )}
             </div>
+
+            {selectedPost && (
+                <div className="ip-post-viewer" ref={viewerRef}>
+                    <div className="ip-post-viewer-header">
+                        <button type="button" onClick={() => setSelectedPostId(null)} aria-label="프로필로 돌아가기">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="15 4 7 12 15 20" />
+                            </svg>
+                        </button>
+                        <b>게시물</b>
+                    </div>
+                    {PROFILE_POSTS.map((post) => (
+                        <div
+                            className="ip-post-item"
+                            key={post.id}
+                            ref={(element) => {
+                                if (element) postRefs.current.set(post.id, element)
+                                else postRefs.current.delete(post.id)
+                            }}
+                        >
+                            <PostCard post={post} onOpenComments={setActiveCommentPost} />
+                        </div>
+                    ))}
+                </div>
+            )}
 
             {/* 위쪽 줄 */}
             <div className="ig-header">
@@ -144,7 +202,11 @@ export const InstagramProfile = () => {
             <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 하단 탭바 */}
-            <IgTabBar active="profile" />
+            {selectedPostId === null && <IgTabBar active="profile" />}
+
+            {activeCommentPost && (
+                <CommentModal post={activeCommentPost} onClose={() => setActiveCommentPost(null)} />
+            )}
         </div>
     )
 }

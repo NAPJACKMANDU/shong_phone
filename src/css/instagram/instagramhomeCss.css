@@ -1,5 +1,15 @@
 /* 인스타그램 홈 페이지 전용 (공통은 instagramCommonCss.css / kakaoCommonCss.css) */
 
+/* ===================== 전체 래퍼 스크롤 설정 ===================== */
+.ig-wrapper {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: none;
+}
+.ig-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
 /* ===================== 위쪽 줄 ===================== */
 .ih-logo {
     position: absolute;
@@ -28,17 +38,15 @@
     margin-top: calc(var(--u) * 4);
 }
 
-/* ===================== 스크롤 영역 ===================== */
+/* ===================== 본문 영역 (전체 스크롤에 맞게 변경) ===================== */
 .ih-scroll {
-    position: absolute;
-    inset: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+    position: relative !important;
+    inset: auto !important;
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+    width: 100%;
+    box-sizing: border-box;
     padding: calc(var(--u) * 111) 0 calc(var(--u) * 90);
-    scrollbar-width: none;
-}
-.ih-scroll::-webkit-scrollbar {
-    display: none;
 }
 
 /* ===================== 스토리 줄 ===================== */
@@ -71,7 +79,7 @@
 
 .ih-story-friend {
     flex: 0 0 auto;
-    width: calc(var(--u) * 74);
+    width: calc(var(--u) * 75);
     padding: 0;
     border: none;
     background: none;
@@ -162,9 +170,9 @@
     text-overflow: ellipsis;
 }
 
-.ih-story-name-me{
+.ih-story-name-me {
     width: 100%;
-    margin-top: calc(var(--u) * 7);
+    margin-top: calc(var(--u) * 8.5);
     font-size: calc(var(--u) * 11);
     line-height: calc(var(--u) * 15);
     color: #262626;
@@ -174,58 +182,13 @@
     text-overflow: ellipsis;
 }
 
-/* ===================== 모두 확인했어요 줄 ===================== */
-.ih-check {
-    width: calc(var(--u) * 28);
-    height: calc(var(--u) * 28);
-    padding: calc(var(--u) * 2);
-    box-sizing: border-box;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #f9b233, #ee4a3c 50%, #cf2fb8);
-    flex: 0 0 auto;
-}
-.ih-check > div {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.ih-check svg {
-    width: calc(var(--u) * 14);
-    height: calc(var(--u) * 14);
-}
-.ih-caught span {
-    font-size: calc(var(--u) * 13);
-    color: #737373;
-}
-
-/* ===================== 추천 제목 ===================== */
-.ih-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: calc(var(--u) * 13.7) calc(var(--u) * 12) 0;
-    height: calc(var(--u) * 20);
-}
-.ih-section b {
-    font-size: calc(var(--u) * 14.5);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    color: #111;
-}
-.ih-section .ig-link {
-    font-size: calc(var(--u) * 14);
-}
 .ih-divider {
     height: 1px;
     margin: calc(var(--u) * 15) calc(var(--u) * 12) 0;
     background-color: #ececec;
 }
 
-/* ===================== 게시물 ===================== */
+/* ===================== 게시물 한 개 ===================== */
 .ih-post-head {
     display: flex;
     align-items: center;
@@ -243,12 +206,26 @@
     line-height: calc(var(--u) * 17);
     font-weight: 700;
     color: #111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-.ih-post-user span {
+.ih-post-user > span {
     display: block;
-    font-size: calc(var(--u) * 12.5);
-    line-height: calc(var(--u) * 16);
+    font-size: calc(var(--u) * 10);
+    line-height: calc(var(--u) * 15);
     color: #737373;
+}
+.ih-music {
+    display: flex !important;
+    align-items: center;
+    gap: calc(var(--u) * 5);
+    color: #111 !important;
+}
+.ih-music svg {
+    width: calc(var(--u) * 14);
+    height: calc(var(--u) * 14);
+    flex: 0 0 auto;
 }
 .ih-follow {
     height: calc(var(--u) * 32);
@@ -264,6 +241,7 @@
 .ih-more {
     width: calc(var(--u) * 24);
     height: calc(var(--u) * 24);
+    margin-left: calc(var(--u) * 12);
     padding: 0;
     border: none;
     background: none;
@@ -273,29 +251,441 @@
     width: 100%;
     height: 100%;
 }
+
+/* 사진 / 글 카드 (옆으로 넘겨요) */
 .ih-media {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 5;
-    background: linear-gradient(180deg, #2c3a2a 0%, #3b4c34 45%, #1c1f1a 100%);
+    background-color: #f2f2f2;
+}
+.ih-slides {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+.ih-slides::-webkit-scrollbar {
+    display: none;
+}
+.ih-slide {
+    position: relative;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+}
+.ih-slide > img,
+.ih-slide > video {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.ih-text-slide {
+    width: 100%;
+    box-sizing: border-box;
+    padding: calc(var(--u) * 24) calc(var(--u) * 20);
+    background-color: #f8f8f8;
+    border: 1px solid #e6e6e6;
+    color: #4a4a4a;
+    font-size: calc(var(--u) * 12.5);
+    line-height: calc(var(--u) * 20);
     overflow: hidden;
 }
-.ih-media > img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.ih-text-slide b {
+    display: block;
+    margin-bottom: calc(var(--u) * 16);
+    color: #f0a030;
+    font-size: calc(var(--u) * 13);
+    font-weight: 700;
 }
-.ih-media-text {
+.ih-text-slide p {
+    margin: 0 0 calc(var(--u) * 20);
+}
+.ih-count {
     position: absolute;
-    left: calc(var(--u) * 33);
-    bottom: calc(var(--u) * 100);
-    font-size: calc(var(--u) * 30);
-    line-height: calc(var(--u) * 37);
-    font-weight: 800;
-    letter-spacing: -0.04em;
+    top: calc(var(--u) * 14);
+    right: calc(var(--u) * 14);
+    min-width: calc(var(--u) * 34);
+    height: calc(var(--u) * 26);
+    padding: 0 calc(var(--u) * 9);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 13);
+    background-color: rgba(100, 100, 100, 0.6);
     color: #fff;
-    white-space: pre-line;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 26);
+    text-align: center;
+    z-index: 2;
+}
+
+/* 사진 넘김 점 */
+.ih-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--u) * 4.5);
+    height: calc(var(--u) * 24);
+}
+.ih-dot {
+    width: calc(var(--u) * 5.7);
+    height: calc(var(--u) * 5.7);
+    border-radius: 50%;
+    background-color: #c7c7cc;
+}
+.ih-dot.on {
+    background-color: #3b5de6;
+}
+
+/* 하트 / 댓글 / 보내기 / 저장 */
+.ih-actions {
+    display: flex;
+    align-items: center;
+    height: calc(var(--u) * 30);
+    padding: 0 calc(var(--u) * 12);
+}
+.ih-actions.solo {
+    margin-top: calc(var(--u) * 8);
+}
+.ih-act {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 6);
+    margin-right: calc(var(--u) * 15);
+    padding: 0;
+    border: none;
+    background: none;
+    color: #111;
+    font-family: inherit;
+    font-size: calc(var(--u) * 13);
+    font-weight: 700;
+}
+.ih-act svg {
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+}
+.ih-act.liked {
+    color: #ed4956;
+}
+.ih-act.save {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+/* 좋아요 / 글 / 해시태그 / 날짜 */
+.ih-likes {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 6);
+    margin-top: calc(var(--u) * 9);
+    padding: 0 calc(var(--u) * 12);
+    font-size: calc(var(--u) * 12.5);
+    line-height: calc(var(--u) * 16);
+    color: #111;
+}
+.ih-liked-avatars {
+    display: flex;
+}
+.ih-liked-avatars span {
+    margin-left: calc(var(--u) * -5);
+    border: calc(var(--u) * 1.5) solid #fff;
+    border-radius: 50%;
+    line-height: 0;
+}
+.ih-liked-avatars span:first-child {
+    margin-left: 0;
+}
+.ih-likes b,
+.ih-caption b {
+    font-weight: 700;
+}
+.ih-caption {
+    margin-top: calc(var(--u) * 5.5);
+    padding: 0 calc(var(--u) * 12);
+    font-size: calc(var(--u) * 12.5);
+    line-height: calc(var(--u) * 15);
+    color: #111;
+    overflow-wrap: anywhere;
+}
+.ih-hashtags {
+    padding: 0 calc(var(--u) * 12);
+    margin-top: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 12.5);
+    color: #00376b;
+    font-weight: 600;
+}
+
+/* 피드 노출용 프리뷰 댓글 영역 */
+.ih-feed-preview-comments {
+    display: block;
+    width: 100%;
+    margin-top: calc(var(--u) * 6);
+    padding: 0 calc(var(--u) * 12);
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+.ih-preview-comment-row {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 7);
+    margin-bottom: calc(var(--u) * 4);
+    font-size: calc(var(--u) * 12.5);
+    line-height: calc(var(--u) * 16);
+}
+.ih-pc-text {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+.ih-pc-text b {
+    font-weight: 700;
+    margin-right: calc(var(--u) * 4);
+}
+.ih-pc-like svg {
+    width: calc(var(--u) * 12);
+    height: calc(var(--u) * 12);
+}
+
+.ih-allcomments {
+    display: block;
+    margin-top: calc(var(--u) * 3);
+    padding: 0 calc(var(--u) * 12);
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: calc(var(--u) * 12.5);
+    line-height: calc(var(--u) * 16);
+    color: #737373;
+}
+.ih-date {
+    margin: calc(var(--u) * 3.5) 0 calc(var(--u) * 10);
+    padding: 0 calc(var(--u) * 12);
+    font-size: calc(var(--u) * 11.5);
+    line-height: calc(var(--u) * 14);
+    color: #737373;
+}
+
+/* ===================== 댓글 팝업 (바텀시트 Modal) ===================== */
+.ih-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.ih-modal-content {
+    width: 100%;
+    max-width: 480px;
+    height: 75vh;
+    background-color: #ffffff;
+    border-top-left-radius: calc(var(--u) * 16);
+    border-top-right-radius: calc(var(--u) * 16);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    animation: slideUp 0.25s ease-out forwards;
+}
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.ih-modal-drag-handle {
+    width: calc(var(--u) * 36);
+    height: calc(var(--u) * 4);
+    background-color: #e0e0e0;
+    border-radius: calc(var(--u) * 2);
+    margin: calc(var(--u) * 10) auto calc(var(--u) * 4);
+}
+.ih-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(var(--u) * 40);
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+}
+.ih-modal-title {
+    font-size: calc(var(--u) * 15);
+    font-weight: 700;
+    color: #111;
+}
+.ih-modal-more {
+    position: absolute;
+    right: calc(var(--u) * 16);
+    border: none;
+    background: none;
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+    color: #111;
+}
+
+.ih-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: calc(var(--u) * 12) calc(var(--u) * 16);
+}
+.ih-modal-recommend-filter {
+    font-size: calc(var(--u) * 12);
+    color: #737373;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+    margin-bottom: calc(var(--u) * 16);
+}
+.ih-modal-recommend-filter svg {
+    width: calc(var(--u) * 10);
+    height: calc(var(--u) * 10);
+}
+
+/* 개별 댓글 스타일 */
+.ih-comment-item {
+    margin-bottom: calc(var(--u) * 18);
+}
+.ih-comment-main {
+    display: flex;
+    align-items: flex-start;
+    gap: calc(var(--u) * 10);
+}
+.ih-comment-content {
+    flex: 1;
+}
+.ih-comment-user-line {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 6);
+    font-size: calc(var(--u) * 12);
+}
+.ih-comment-user {
+    font-weight: 700;
+    color: #111;
+}
+.ih-comment-time {
+    color: #8e8e8e;
+}
+.ih-comment-badge {
+    color: #ed4956;
+    font-size: calc(var(--u) * 11);
+}
+.ih-author-tag {
+    color: #737373;
+    font-size: calc(var(--u) * 11);
+}
+.ih-comment-text {
+    margin: calc(var(--u) * 3) 0;
+    font-size: calc(var(--u) * 13);
+    line-height: calc(var(--u) * 17);
+    color: #111;
+    word-break: break-word;
+}
+.ih-comment-actions {
+    display: flex;
+    gap: calc(var(--u) * 12);
+    margin-top: calc(var(--u) * 4);
+}
+.ih-reply-btn {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: calc(var(--u) * 11.5);
+    color: #737373;
+    font-weight: 600;
+}
+.ih-comment-like-btn {
+    border: none;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(var(--u) * 2);
+}
+.ih-comment-like-btn svg {
+    width: calc(var(--u) * 14);
+    height: calc(var(--u) * 14);
+}
+.ih-like-num {
+    font-size: calc(var(--u) * 10);
+    color: #8e8e8e;
+    margin-top: calc(var(--u) * 2);
+}
+
+/* 답글(대댓글) 계층 */
+.ih-replies-wrapper {
+    margin-left: calc(var(--u) * 44);
+    margin-top: calc(var(--u) * 12);
+}
+.ih-reply-item {
+    display: flex;
+    align-items: flex-start;
+    gap: calc(var(--u) * 10);
+    margin-bottom: calc(var(--u) * 14);
+}
+.ih-hide-replies-btn {
+    border: none;
+    background: none;
+    font-size: calc(var(--u) * 11.5);
+    color: #737373;
+    font-weight: 600;
+    padding: 0;
+}
+
+/* 하단 퀵 이모지 바 & 댓글 입력 창 */
+.ih-quick-emojis {
+    display: flex;
+    justify-content: space-around;
+    padding: calc(var(--u) * 8) calc(var(--u) * 12);
+    border-top: 1px solid #f0f0f0;
+}
+.ih-quick-emojis button {
+    border: none;
+    background: none;
+    font-size: calc(var(--u) * 20);
+    cursor: pointer;
+}
+
+.ih-comment-input-bar {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 10);
+    padding: calc(var(--u) * 10) calc(var(--u) * 16);
+    border-top: 1px solid #f0f0f0;
+    background-color: #fff;
+    color: #000;
+
+}
+.ih-comment-input-bar input {
+    flex: 1;
+    font-size: calc(var(--u) * 13);
+    background-color: #fff;
+    color: #000;
+    border: 0.5px solid #bebebe;
+    padding: 8px 2px;
+     border-radius: 8px; 
+}
+.ih-input-actions {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 8);
+}
+.ih-input-icon {
+    border: none;
+    background: none;
+    padding: 0;
+    color: #111;
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+}
+.ih-gif-btn {
+    border: 1px solid #dbdbdb;
+    border-radius: calc(var(--u) * 4);
+    background: none;
+    font-size: calc(var(--u) * 10);
+    font-weight: 700;
+    padding: calc(var(--u) * 1) calc(var(--u) * 4);
+    color: #111;
 }

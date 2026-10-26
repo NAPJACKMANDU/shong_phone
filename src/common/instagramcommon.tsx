@@ -9,12 +9,33 @@ interface AvatarProps {
     size: number
     tint?: number
     ring?: 'story' | 'seen'
+    src?:string
 }
 
-const Silhouette = ({ size, tint }: { size: number; tint: number }) => {
+const Silhouette = ({ size, tint, src }: { size: number; tint: number; src?: string }) => {
+    // 1. src가 존재하는 경우 이미지 전달
+    if (src) {
+        return (
+            <img
+                className="ig-avatar"
+                src={src}
+                alt="Profile"
+                style={{
+                    width: `calc(var(--u) * ${size})`,
+                    height: `calc(var(--u) * ${size})`,
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    display: 'block',
+                }}
+            />
+        )
+    }
+
+    // 2. src가 없는 경우 기존 SVG 실루엣 사용
     const [top, bottom] = AVATAR_TINTS[tint % AVATAR_TINTS.length]
     const id = `ig-ava-${tint}`
     const dark = tint === 4
+
     return (
         <svg
             className="ig-avatar"
@@ -38,12 +59,12 @@ const Silhouette = ({ size, tint }: { size: number; tint: number }) => {
     )
 }
 
-export const IgAvatar = ({ size, tint = 0, ring }: AvatarProps) => {
-    if (!ring) return <Silhouette size={size} tint={tint} />
+export const IgAvatar = ({ size, tint = 0, ring, src}: AvatarProps) => {
+    if (!ring) return <Silhouette size={size} tint={tint} src={src} />
     return (
         <div className={`ig-ring ${ring === 'seen' ? 'seen' : ''}`}>
             <div className="ig-ring-gap">
-                <Silhouette size={size} tint={tint} />
+                <Silhouette size={size} tint={tint} src={src} />
             </div>
         </div>
     )
@@ -139,7 +160,7 @@ export const IgTabBar = ({ active, compact = false, profileDot = true, profileTi
             </button>
             <button className={`ig-tab ${active === 'profile' ? 'on' : ''}`} onClick={() => navigate(IG_PATH.profile)}>
                 <span style={{ position: 'relative', display: 'flex' }}>
-                    <span className="ig-tab-avatar"><IgAvatar size={compact ? 24 : 28} tint={profileTint} /></span>
+                    <span className="ig-tab-avatar"><IgAvatar size={compact ? 24 : 28} tint={profileTint} src='/instagram/chanProfile.jpg'/></span>
                     {profileDot && <i className="ig-reddot" />}
                 </span>
             </button>

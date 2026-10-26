@@ -1,14 +1,22 @@
 /* ===== 인스타그램 공통 CSS (홈 / 프로필 / 검색 / 스토리 모두 사용) =====
    --u 와 상태바는 카카오 공통(kakaoCommonCss.css)의 .kk-wrapper 를 그대로 사용합니다. */
 
-.ig-wrapper {
+.kk-wrapper.ig-wrapper {
     padding-top: 0;
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
     background-color: #fff;
+}
+.kk-wrapper.ig-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 /* ===================== 위쪽 줄 (공통 자리) ===================== */
 .ig-header {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -18,7 +26,7 @@
 }
 .ig-header-row {
     position: absolute;
-    top: calc(var(--u) * 64);
+    top: calc(var(--u) * 60);
     left: 0;
     right: 0;
     height: calc(var(--u) * 40);

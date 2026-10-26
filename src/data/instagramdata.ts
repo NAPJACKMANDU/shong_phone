@@ -1,5 +1,7 @@
 /* ===================== 인스타그램 데이터 ===================== */
 
+import { ANTON, getInstagramProfileSrc, SEONGCHAN, SHOTARO, SOHEE, WONBIN } from "./instagramfeeddata"
+
 // 라우터 경로 (프로젝트 라우터에 맞게 수정하세요)
 export const IG_PATH = {
     home: '/instagramhome',
@@ -25,6 +27,7 @@ export interface StoryItem {
     kind: 'calls' | 'card'      // calls: 통화 기록 화면, card: 글자 카드
     bg: string                  // card 일 때 배경
     text?: string               // card 일 때 가운데 글자
+    src?:string
 }
 
 export interface IgUser {
@@ -32,32 +35,33 @@ export interface IgUser {
     tint: number                // 기본 프로필 색 번호 (0~4)
     time: string                // 스토리 올린 시간
     stories: StoryItem[]        // 비어 있으면 스토리 없음 (내 스토리: + 버튼)
+    src?:string
 }
 
 export const IG_USERS: IgUser[] = [
-    { id: '내 스토리', tint: 0, time: '', stories: [] },
+    { id: '내 스토리', tint: 0, time: '', stories: [],  src:getInstagramProfileSrc(SEONGCHAN)},
     {
-        id: 'bbaekk.98', tint: 1, time: '2시간',
+        id: WONBIN, tint: 1, time: '2시간', src:getInstagramProfileSrc(WONBIN),
         stories: [
             { id: 1, kind: 'card', bg: 'linear-gradient(160deg,#243b55,#141e30)', text: '퇴근 완료' },
             { id: 2, kind: 'card', bg: 'linear-gradient(160deg,#614385,#516395)', text: '오늘 하루도 수고했어' },
         ],
     },
     {
-        id: 'mandunyam1', tint: 2, time: '5시간',
+        id: ANTON, tint: 2, time: '5시간',  src:getInstagramProfileSrc(ANTON),
         stories: [
             { id: 1, kind: 'card', bg: 'linear-gradient(160deg,#134e5e,#71b280)', text: '산책하기 좋은 날씨' },
             { id: 2, kind: 'card', bg: 'linear-gradient(160deg,#b24592,#f15f79)', text: '저녁은 만두' },
         ],
     },
     {
-        id: 'eb_hwang', tint: 3, time: '6시간',
+        id: SOHEE, tint: 3, time: '6시간', src:getInstagramProfileSrc(SOHEE),
         stories: [
             { id: 1, kind: 'card', bg: 'linear-gradient(160deg,#1f4037,#99f2c8)', text: '주말 계획 짜는 중' },
         ],
     },
     {
-        id: 'meoyysn', tint: 4, time: '7시간',
+        id: SHOTARO, tint: 4, time: '7시간', src:getInstagramProfileSrc(SHOTARO),
         stories: [
             { id: 1, kind: 'calls', bg: '#101010' },
             { id: 2, kind: 'card', bg: 'linear-gradient(160deg,#232526,#414345)', text: '다음 스토리' },
@@ -87,31 +91,24 @@ export interface SearchItem {
 }
 
 export const SEARCH_HISTORY: SearchItem[] = [
-    { id: 1, kind: 'term', name: '장희성' },
-    { id: 2, kind: 'user', name: 'sejinming', sub: '기묘한 기무세딘', tint: 1 },
-    { id: 3, kind: 'term', name: '기무세딘' },
-    { id: 4, kind: 'user', name: 'siroooo._.1011', sub: '시루 떡? • sooa._.00님 외 1명이 팔로우합니다', tint: 3 },
+    { id: 1, kind: 'user', name: 'Antonyeeton', sub: '앤톤 찬영 리 • bbinniy님 외 3명이 팔로우합니다', tint: 1 },
+    { id: 2, kind: 'term', name: '앤톤'},
+    { id: 3, kind: 'term', name: '수영팀' },
 ]
 
 /* ----- 프로필 게시물 (사진이 없으면 색으로 보여요. src 에 주소를 넣으면 사진) ----- */
 export interface GridPost {
     id: number
-    bg: string
+    feedPostId: number
+    kind?: 'photo' | 'video'
     src?: string
+    bg?: string
     multi?: boolean             // 여러 장 아이콘
 }
 
 export const GRID_POSTS: GridPost[] = [
-    { id: 1, multi: true, bg: 'linear-gradient(180deg,#8fb6dd 0%,#d9a46c 55%,#26211f 100%)' },
-    { id: 2, multi: true, bg: 'linear-gradient(180deg,#c9c6c3 0%,#8a7f78 55%,#2a2a2e 100%)' },
-    { id: 3, multi: true, bg: 'linear-gradient(180deg,#efe6dc 0%,#c9d4b5 55%,#5d5f4a 100%)' },
-    { id: 4, bg: 'linear-gradient(160deg,#d6b27a,#b0522e)' },
-    { id: 5, bg: 'linear-gradient(160deg,#e8c078,#b8682f)' },
-    { id: 6, bg: 'linear-gradient(160deg,#c8a05a,#7a3a24)' },
-    { id: 7, bg: 'linear-gradient(160deg,#b8863f,#5c2c1c)' },
-    { id: 8, bg: 'linear-gradient(160deg,#ead9b5,#c9a15f)' },
-    { id: 9, bg: 'linear-gradient(160deg,#a8b8d8,#d8b86a)' },
-    { id: 10, bg: 'linear-gradient(160deg,#d89a5a,#8a3a1a)' },
-    { id: 11, bg: 'linear-gradient(160deg,#e4c68a,#a8581f)' },
-    { id: 12, bg: 'linear-gradient(160deg,#c9a46a,#703020)' },
+    { id: 1, feedPostId: 7, multi: true, src: '/instagram/chan1.jpg' },
+    { id: 2, feedPostId: 9, kind: 'video', src: '/instagram/chanton.mp4' },
+    { id: 3, feedPostId: 10, multi: true, bg: 'linear-gradient(180deg,#efe6dc 0%,#c9d4b5 55%,#5d5f4a 100%)' },
+    { id: 4, feedPostId: 11, bg: 'linear-gradient(160deg,#d6b27a,#b0522e)' },
 ]

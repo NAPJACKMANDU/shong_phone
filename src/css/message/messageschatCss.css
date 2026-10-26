@@ -6,18 +6,14 @@
 
 /* ===================== 메시지 영역 ===================== */
 .ic-messages {
-    position: absolute;
-    inset: 0;
-    overflow-y: auto;
+    position: relative;
+    flex: 0 0 auto;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     /* 위쪽 여백 167.5: 맨 위로 올리면 첫 안내 글이 사진처럼 상대방 이름 아래에 와요 */
     padding: calc(var(--u) * 167.5) calc(var(--u) * 16) calc(var(--u) * 130);
     box-sizing: border-box;
-    scrollbar-width: none;
-}
-.ic-messages::-webkit-scrollbar {
-    display: none;
 }
 .ic-messages > * {
     flex: 0 0 auto;
@@ -144,7 +140,7 @@
 
 /* ===================== 상단 (뒤로 / 상대방 / 영상통화) ===================== */
 .ic-top {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;

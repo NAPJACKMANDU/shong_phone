@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { KakaoStatusBar, lineProps } from '../../common/kakaoCommon.tsx'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { getBackDestination, KakaoStatusBar, lineProps } from '../../common/kakaoCommon.tsx'
 import { getMemo } from '../../data/memoData.ts'
 import '../../css/memo/kakaomemoroomCss.css'
 
@@ -73,6 +73,7 @@ const renderBody = (body: string): ReactNode[] =>
    주소 뒤에 ?id=메모번호 를 붙여서 들어와요.  예) /kakaoMemoRoom?id=5 */
 export const KakaoMemoRoom = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const [params] = useSearchParams()
     const memo = getMemo(Number(params.get('id')))
 
@@ -87,7 +88,7 @@ export const KakaoMemoRoom = () => {
             {/* 위쪽 흐림 + 뒤로 / 공유·더보기 */}
             <div className="mr-topfade" />
             <div className="mr-top">
-                <button className="mr-round mr-glass" onClick={() => navigate(-1)}><IconBack /></button>
+                <button className="mr-round mr-glass" onClick={() => navigate(getBackDestination(location.pathname), { replace: true })}><IconBack /></button>
                 <div className="mr-pill mr-glass">
                     <button><IconShare /></button>
                     <button><IconDots /></button>

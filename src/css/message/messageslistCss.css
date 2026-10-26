@@ -5,7 +5,7 @@
 
 /* ===================== 상단 버튼 ===================== */
 .il-header {
-    position: absolute;
+    position: fixed;
     top: calc(var(--u) * 59);
     left: calc(var(--u) * 16);
     right: calc(var(--u) * 16);
@@ -20,14 +20,10 @@
 
 /* ===================== 스크롤 영역 ===================== */
 .il-scroll {
-    position: absolute;
-    inset: 0;
-    overflow-y: auto;
+    position: relative;
+    flex: 0 0 auto;
+    overflow: visible;
     padding: calc(var(--u) * 120) 0 calc(var(--u) * 110);
-    scrollbar-width: none;
-}
-.il-scroll::-webkit-scrollbar {
-    display: none;
 }
 .il-title {
     margin: 0 calc(var(--u) * 17);

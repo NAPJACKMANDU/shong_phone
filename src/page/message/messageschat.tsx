@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { KakaoStatusBar, lineProps } from '../../common/kakaoCommon.tsx'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { getBackDestination, KakaoStatusBar, lineProps } from '../../common/kakaoCommon.tsx'
 import { MsgAvatar, IconMic, IconChevronLeft } from '../../common/imessagecommon.tsx'
 import { getThread, UNREAD_TOTAL } from '../../data/messagesdata.ts'
 import type { ChatItem } from '../../data/messagesdata.ts'
@@ -86,6 +86,7 @@ const layoutRows = (items: ChatItem[]): Row[] =>
    주소 뒤에 ?id=대화방번호 를 붙여서 들어와요.  예) /messagesChat?id=3 */
 export const MessagesChat = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const [params] = useSearchParams()
     const thread = getThread(Number(params.get('id')))
     const boxRef = useRef<HTMLDivElement>(null)
@@ -143,7 +144,7 @@ export const MessagesChat = () => {
             {/* 위쪽 흐림 + 상단 (뒤로 / 상대방 / 영상통화) */}
             <div className="im-topfade" />
             <div className="ic-top">
-                <button className="ic-back im-glass" onClick={() => navigate(-1)}>
+                <button className="ic-back im-glass" onClick={() => navigate(getBackDestination(location.pathname), { replace: true })}>
                     <IconChevronLeft />
                     <span className="ic-back-count">{UNREAD_TOTAL - thread.unreadCount}</span>
                 </button>
