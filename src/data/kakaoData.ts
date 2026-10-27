@@ -125,7 +125,7 @@ export const KAKAO_CHATS: KakaoChat[] = [
         title: '앤토니',
         memberIds: ['antony'],
         isGroup: false,
-        message: '형 저 한국 가요.. :) 4주년때 한국 가서 형이랑 놀겠다고 한 약속 형이 기억할지는 모르겠지만...',
+        message: '형 저 한국 가요.. :) 3주년때 한국 가서 형이랑 놀겠다고 한 약속 형이 기억할지는 모르겠지만...',
         twoLine: true,
         time: '오전 12:01',
         unread: 1,

@@ -176,7 +176,6 @@
     height: calc(var(--u) * 140);
     z-index: 2;
     pointer-events: none;
-    background: linear-gradient(to top, #f2f2f7 22%, rgba(242, 242, 247, 0));
 }
 .mm-bottom {
     position: fixed;

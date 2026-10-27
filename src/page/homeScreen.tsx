@@ -282,21 +282,21 @@ const CALENDAR_ICON = (
 
 // 앱 목록 순서대로 화면 크기에 맞춰 페이지를 나눕니다.
 const PAGE1_APPS: AppData[] = [
-    { name: "FaceTime", icon: <IconFaceTime /> },
-    { name: "캘린더", icon: CALENDAR_ICON },
     { name: "사진", icon: <IconPhotos /> },
     { name: "카메라", icon: <IconCamera /> },
     { name: "메모", icon: <IconNotes /> },
-    { name: "시계", icon: <IconClock /> },
-    { name: "지도", icon: <IconMaps /> },
+    { name: "CGV", icon: <IconCGV /> },
     { name: "카카오톡", icon: <IconKakaoTalk /> },
     { name: "Instagram", icon: <IconInstagram /> },
+    { name: "캘린더", icon: CALENDAR_ICON },
+    { name: "Setlog", icon: <IconSetlog /> },
+    { name: "지도", icon: <IconMaps /> },
+    { name: "FaceTime", icon: <IconFaceTime /> },
     { name: "YouTube", icon: <IconYouTube /> },
-    { name: "CGV", icon: <IconCGV /> },
 ];
 
 const PAGE2_APPS: AppData[] = [
-    { name: "Setlog", icon: <IconSetlog /> },
+    { name: "시계", icon: <IconClock /> },
 ];
 
 const ALL_APPS = [...PAGE1_APPS, ...PAGE2_APPS];
@@ -501,7 +501,7 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
                                 <div className="widget-cal-event-box">
                                     <div className="widget-cal-bar" />
                                     <div className="widget-cal-text-group">
-                                        <div className="widget-cal-title">천사랑 4주년 ㅎㅎ</div>
+                                        <div className="widget-cal-title">천사랑 3주년 ㅎㅎ</div>
                                         <div className="widget-cal-time">오전 12시 ~ 1시</div>
                                     </div>
                                 </div>

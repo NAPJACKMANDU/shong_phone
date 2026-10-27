@@ -71,7 +71,7 @@ const EVENTS: Record<string, CalEvent[]> = {
     '10-3': [{ title: '개천절', type: 'holiday' }],
     '10-5': [{ title: '개천절(대체공휴일)', type: 'holiday' }],
     '10-9': [{ title: '한글날', type: 'holiday' }],
-    '10-22': [{ title: '천사랑 4주년 ㅎㅎ', type: 'event' }],
+    '10-22': [{ title: '천사랑 3주년 ㅎㅎ', type: 'event' }],
     '12-25': [{ title: '성탄절', type: 'holiday' }],
 }
 

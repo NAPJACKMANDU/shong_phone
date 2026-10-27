@@ -52,7 +52,7 @@ export const KakaoMemo = () => {
                 ...def,
                 memos: MEMOS.filter((m) => m.section === def.key && (!q || m.body.toLowerCase().includes(q))),
             }))
-            .filter((s) => s.memos.length > 0)
+            .filter((s) => s.memos.length > 0 || (!q && s.showWhenEmpty))
     }, [query])
 
     return (
@@ -86,7 +86,7 @@ export const KakaoMemo = () => {
                                     </button>
                                 )}
                             </div>
-                            {open && (
+                            {open && s.memos.length > 0 && (
                                 <div className="mm-card">
                                     {s.memos.map((m) => (
                                         <div

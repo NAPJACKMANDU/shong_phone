@@ -209,7 +209,7 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
               setShowPasscode(true);
             }}
           >
-            천사랑 4주년 ㅎㅎ
+            천사랑 3주년 ㅎㅎ
           </div>
         </div>
 
