@@ -25,7 +25,7 @@ export const markStoryUserSeen = (userId: string) => {
 export interface StoryItem {
     id: number
     kind: 'calls' | 'card'      // calls: 통화 기록 화면, card: 글자 카드
-    bg: string                  // card 일 때 배경
+    bg?: string                  // card 일 때 배경
     text?: string               // card 일 때 가운데 글자
     src?:string
 }
@@ -40,33 +40,31 @@ export interface IgUser {
 
 export const IG_USERS: IgUser[] = [
     { id: '내 스토리', tint: 0, time: '', stories: [],  src:getInstagramProfileSrc(SEONGCHAN)},
-    {
-        id: WONBIN, tint: 1, time: '2시간', src:getInstagramProfileSrc(WONBIN),
+        {
+        id: ANTON, tint: 2, time: '22시간',  src:getInstagramProfileSrc(ANTON),
         stories: [
-            { id: 1, kind: 'card', bg: 'linear-gradient(160deg,#243b55,#141e30)', text: '퇴근 완료' },
-            { id: 2, kind: 'card', bg: 'linear-gradient(160deg,#614385,#516395)', text: '오늘 하루도 수고했어' },
+            { id: 1, kind: 'card', src: '/instagram/tonstory.jpg'}
         ],
     },
     {
-        id: ANTON, tint: 2, time: '5시간',  src:getInstagramProfileSrc(ANTON),
+        id: WONBIN, tint: 1, time: '2시간', src:getInstagramProfileSrc(WONBIN),
         stories: [
-            { id: 1, kind: 'card', bg: 'linear-gradient(160deg,#134e5e,#71b280)', text: '산책하기 좋은 날씨' },
-            { id: 2, kind: 'card', bg: 'linear-gradient(160deg,#b24592,#f15f79)', text: '저녁은 만두' },
+            { id: 1, kind: 'card', src: '/instagram/bintaro.jpg' }
+        ],
+    },
+    {
+        id: SHOTARO, tint: 4, time: '2시간', src:getInstagramProfileSrc(SHOTARO),
+        stories: [
+            { id: 1, kind: 'card', src: '/instagram/bintaro.jpg' }
         ],
     },
     {
         id: SOHEE, tint: 3, time: '6시간', src:getInstagramProfileSrc(SOHEE),
         stories: [
-            { id: 1, kind: 'card', bg: 'linear-gradient(160deg,#1f4037,#99f2c8)', text: '주말 계획 짜는 중' },
+            { id: 1, kind: 'card', src: '/instagram/soheestory.jpg' }
         ],
     },
-    {
-        id: SHOTARO, tint: 4, time: '7시간', src:getInstagramProfileSrc(SHOTARO),
-        stories: [
-            { id: 1, kind: 'calls', bg: '#101010' },
-            { id: 2, kind: 'card', bg: 'linear-gradient(160deg,#232526,#414345)', text: '다음 스토리' },
-        ],
-    },
+
 ]
 
 // 스토리가 있는 사람만 (스토리 화면에서 옆으로 넘어갈 순서)
@@ -107,8 +105,7 @@ export interface GridPost {
 }
 
 export const GRID_POSTS: GridPost[] = [
-    { id: 1, feedPostId: 7, multi: true, src: '/instagram/chan1.jpg' },
-    { id: 2, feedPostId: 9, kind: 'video', src: '/instagram/chanton.mp4' },
-    { id: 3, feedPostId: 10, multi: true, bg: 'linear-gradient(180deg,#efe6dc 0%,#c9d4b5 55%,#5d5f4a 100%)' },
-    { id: 4, feedPostId: 11, bg: 'linear-gradient(160deg,#d6b27a,#b0522e)' },
+    { id: 1, feedPostId: 4, multi: true, src: '/instagram/chan1.jpg' },
+    { id: 2, feedPostId: 9, multi: true, src: '/instagram/chanton1.jpg' },
+    { id: 3, feedPostId: 10,  kind: 'video', src: '/instagram/chanton0.mp4' },
 ]

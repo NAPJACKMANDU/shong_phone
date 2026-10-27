@@ -82,8 +82,7 @@ const layoutRows = (items: ChatItem[]): Row[] =>
         return { item, mt, tail }
     })
 
-/* ===================== 대화방 페이지 =====================
-   주소 뒤에 ?id=대화방번호 를 붙여서 들어와요.  예) /messagesChat?id=3 */
+/* ===================== 대화방 페이지 =====================*/
 export const MessagesChat = () => {
     const navigate = useNavigate()
     const location = useLocation()

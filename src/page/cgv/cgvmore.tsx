@@ -53,7 +53,7 @@ export const CgvMore = () => {
 
     return (
         <div className="kk-wrapper cm-wrapper">
-            <KakaoStatusBar time="2:40" battery={96} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             <div className="kk-scroll cm-scroll">
                 <CgvTopbar bellBadge={2} />

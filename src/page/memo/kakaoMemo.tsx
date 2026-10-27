@@ -57,7 +57,7 @@ export const KakaoMemo = () => {
 
     return (
         <div className="kk-wrapper mm-wrapper">
-            <KakaoStatusBar time="2:35" battery={96} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 상단 헤더 */}
             <div className="mm-header">

@@ -1,12 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import type { UIEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import {
     IgAvatar, IgTabBar, IconPlus, IconChevronDown, IconHeart, IconComment, IconSendPlane,
 } from '../../common/instagramcommon.tsx'
-import { IG_USERS, IG_PATH } from '../../data/instagramdata.ts'
-import { FEED_POSTS, getInstagramProfileSrc, SEONGCHAN } from '../../data/instagramfeeddata.ts'
+import { getSeenStoryUserIds, IG_USERS, IG_PATH } from '../../data/instagramdata.ts'
+import {
+    FEED_POSTS, getCommentLike, getCommentLikesVersion, getInitialCommentLike,
+    getInstagramProfileSrc, SEONGCHAN, setCommentLike, subscribeToCommentLikes,
+} from '../../data/instagramfeeddata.ts'
 import type { FeedPost, CommentItem } from '../../data/instagramfeeddata.ts'
 import '../../css/instagram/instagramhomeCss.css'
 
@@ -61,6 +64,34 @@ const IconImageIcon = () => (
 
 const formatCount = (n: number) => n.toLocaleString('ko-KR')
 
+const FeedVideo = ({ src }: { src: string }) => {
+    const videoRef = useRef<HTMLVideoElement>(null)
+
+    useEffect(() => {
+        const video = videoRef.current
+        if (!video) return
+
+        const observer = new IntersectionObserver(([entry]) => {
+            if (!entry) return
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                void video.play().catch((error: unknown) => {
+                    console.error('Instagram feed video playback failed.', error)
+                })
+            } else {
+                video.pause()
+            }
+        }, { threshold: [0, 0.5] })
+
+        observer.observe(video)
+        return () => {
+            observer.disconnect()
+            video.pause()
+        }
+    }, [])
+
+    return <video ref={videoRef} src={src} muted controls playsInline preload="metadata" />
+}
+
 /* ===================== 댓글 팝업 (바텀시트 Modal) ===================== */
 interface CommentModalProps {
     post: FeedPost
@@ -90,7 +121,7 @@ export const CommentModal = ({ post, onClose }: CommentModalProps) => {
                     </div>
 
                     {comments.map((c) => (
-                        <CommentRow key={c.id} comment={c} />
+                        <CommentRow key={c.id} post={post} comment={c} />
                     ))}
                 </div>
 
@@ -123,19 +154,15 @@ export const CommentModal = ({ post, onClose }: CommentModalProps) => {
 }
 
 /* ===================== 댓글 1개 개별 행 ===================== */
-const CommentRow = ({ comment }: { comment: CommentItem }) => {
-    const [liked, setLiked] = useState(comment.isLiked ?? false)
-    const [likeCount, setLikeCount] = useState(comment.likes)
+const CommentRow = ({ post, comment }: { post: FeedPost; comment: CommentItem }) => {
+    useSyncExternalStore(subscribeToCommentLikes, getCommentLikesVersion, getCommentLikesVersion)
+    const liked = getCommentLike(post, comment)
+    const initialLiked = getInitialCommentLike(post, comment)
+    const likeCount = Math.max(0, comment.likes + Number(liked) - Number(initialLiked))
     const [hideReplies, setHideReplies] = useState(true)
 
     const toggleLike = () => {
-        if (liked) {
-            setLiked(false)
-            setLikeCount((prev) => Math.max(0, prev - 1))
-        } else {
-            setLiked(true)
-            setLikeCount((prev) => prev + 1)
-        }
+        setCommentLike(post, comment, !getCommentLike(post, comment))
     }
 
     return (
@@ -146,6 +173,9 @@ const CommentRow = ({ comment }: { comment: CommentItem }) => {
                     <div className="ih-comment-user-line">
                         <span className="ih-comment-user">{comment.user}</span>
                         <span className="ih-comment-time">{comment.time}</span>
+                        {comment.isLikedByAuthor && (
+                            <span className="ih-comment-badge">• 작성자가 좋아하는 댓글</span>
+                        )}
                     </div>
                     <p className="ih-comment-text">
                         {comment.text.split(/(@\w+)/).map((part, i) =>
@@ -154,7 +184,6 @@ const CommentRow = ({ comment }: { comment: CommentItem }) => {
                     </p>
                     <div className="ih-comment-actions">
                         <button className="ih-reply-btn">답글 달기</button>
-                        <button className="ih-reply-btn">숨기기</button>
                     </div>
                 </div>
                 <button className="ih-comment-like-btn" onClick={toggleLike}>
@@ -209,6 +238,7 @@ const CommentRow = ({ comment }: { comment: CommentItem }) => {
 
 /* ===================== 피드 게시물 카드 ===================== */
 export const PostCard = ({ post, onOpenComments }: { post: FeedPost; onOpenComments: (post: FeedPost) => void }) => {
+    useSyncExternalStore(subscribeToCommentLikes, getCommentLikesVersion, getCommentLikesVersion)
     const [liked, setLiked] = useState(false)
     const [saved, setSaved] = useState(false)
     const [idx, setIdx] = useState(0)
@@ -248,9 +278,9 @@ export const PostCard = ({ post, onOpenComments }: { post: FeedPost; onOpenComme
                 <div className="ih-slides" onScroll={handleSlides}>
                     {post.slides.map((s, i) => (
                         <div className="ih-slide" key={i} style={s.kind === 'photo' ? { background: s.bg } : undefined}>
-                            {s.kind === 'photo' && s.src && <img src={s.src} alt="" />}
+                            {s.kind === 'photo' && s.src && <img src={s.src} alt="" loading="eager" decoding="async" />}
                             {s.kind === 'video' && s.src && (
-                                <video src={s.src} autoPlay muted controls playsInline preload="metadata" />
+                                <FeedVideo src={s.src} />
                             )}
                             {s.kind === 'text' && (
                                 <div className="ih-text-slide" style={{ aspectRatio: post.ratio }}>
@@ -309,12 +339,15 @@ export const PostCard = ({ post, onOpenComments }: { post: FeedPost; onOpenComme
                     onClick={() => onOpenComments(post)}
                     aria-label={`댓글 ${formatCount(commentCount)}개 보기`}
                 >
-                    {previewComments.map((comment) => (
-                        <span className="ih-preview-comment-row" key={comment.id}>
-                            <span className="ih-pc-text"><b>{comment.user}</b>{comment.text}</span>
-                            {comment.isLiked && <span className="ih-pc-like"><IconHeartSmall filled /></span>}
-                        </span>
-                    ))}
+                    {previewComments.map((comment) => {
+                        const isLiked = getCommentLike(post, comment)
+                        return (
+                            <span className="ih-preview-comment-row" key={comment.id}>
+                                <span className="ih-pc-text"><b>{comment.user}</b>{comment.text}</span>
+                                {isLiked && <span className="ih-pc-like"><IconHeartSmall filled /></span>}
+                            </span>
+                        )
+                    })}
                 </button>
             )}
             {commentCount > 0 && (
@@ -331,6 +364,7 @@ export const PostCard = ({ post, onOpenComments }: { post: FeedPost; onOpenComme
 export const InstagramHome = () => {
     const navigate = useNavigate()
     const [activeCommentPost, setActiveCommentPost] = useState<FeedPost | null>(null)
+    const seenStoryUserIds = getSeenStoryUserIds()
 
     const openStory = (id: string, hasStory: boolean) => {
         if (hasStory) navigate(`${IG_PATH.story}?user=${encodeURIComponent(id)}`)
@@ -338,6 +372,15 @@ export const InstagramHome = () => {
 
     return (
         <div className="kk-wrapper ig-wrapper">
+            {FEED_POSTS.flatMap((post) => post.slides
+                .filter((slide) => slide.kind === 'photo' && slide.src)
+                .map((slide) => <link key={`${post.id}-${slide.src}`} rel="preload" as="image" href={slide.src} />))}
+            {IG_USERS.map((user) => user.src && (
+                <link key={`avatar-${user.id}`} rel="preload" as="image" href={user.src} />
+            ))}
+            {IG_USERS.flatMap((user) => user.stories
+                .filter((story) => story.src)
+                .map((story) => <link key={`story-${user.id}-${story.id}`} rel="preload" as="image" href={story.src} />))}
             {/* 메인 스크롤 피드 */}
             <div className="ih-scroll">
                 {/* 스토리 목록 */}
@@ -352,7 +395,7 @@ export const InstagramHome = () => {
                             >
                                 <div className="ih-story-pic">
                                     {hasStory ? (
-                                        <IgAvatar size={80} tint={u.tint} src={u.src} ring="story" />
+                                        <IgAvatar size={80} tint={u.tint} src={u.src} ring={seenStoryUserIds.has(u.id) ? 'seen' : 'story'} />
                                     ) : (
                                         <div style={{ position: 'relative', lineHeight: 0 }}>
                                             <IgAvatar size={80} tint={u.tint} src={u.src} />
@@ -387,7 +430,7 @@ export const InstagramHome = () => {
             </div>
 
             {/* 상단 상태바 */}
-            <KakaoStatusBar time="7:23" battery={100} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 하단 탭바 */}
             <IgTabBar active="home" profileDot={true} />

@@ -123,7 +123,7 @@ export const CgvHome = () => {
 
     return (
         <div className="kk-wrapper ch-wrapper">
-            <KakaoStatusBar time="2:39" battery={96} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             <div className="kk-scroll ch-scroll">
                 <CgvTopbar showLogo />

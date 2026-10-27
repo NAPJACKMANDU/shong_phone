@@ -13,40 +13,6 @@ const IconMenuLines = () => (
         <path d="M3 8h18M3 15h11" />
     </svg>
 )
-const IconArrowOut = () => (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4.5 15.5l11-11M6.5 4.5h9v9" />
-    </svg>
-)
-
-/* 통화 기록 화면 스토리 */
-const CallsStory = () => (
-    <div className="st-calls">
-        <div className="st-calls-title">通話</div>
-
-        <div className="st-call" style={{ top: 'calc(var(--u) * 191)' }}>
-            <div className="pic"><IgAvatar size={78} tint={4} /></div>
-            <div className="name">
-                <IconHeart />
-                <span>(20)</span>
-            </div>
-            <div className="sub">
-                <IconArrowOut />
-                <span>木曜日</span>
-            </div>
-        </div>
-
-        <div className="st-call" style={{ top: 'calc(var(--u) * 301)' }}>
-            <div className="pic"><IgAvatar size={78} tint={4} /></div>
-            <div className="name bold"><span>ゆあ</span></div>
-            <div className="sub">
-                <IconArrowOut />
-                <span>10. 4.</span>
-            </div>
-        </div>
-    </div>
-)
-
 /* ===================== 스토리 화면 =====================
    주소: /instagramStory?user=사용자이름
    - 오른쪽을 누르면 다음 스토리, 왼쪽을 누르면 이전 스토리
@@ -100,14 +66,18 @@ export const InstagramStory = () => {
 
     return (
         <div className="kk-wrapper st-wrapper">
+            {story.src && <link rel="preload" as="image" href={story.src} />}
             {/* 스토리 화면 */}
-            <div className="st-card" style={{ background: story.bg }}>
-                {story.kind === 'calls' ? (
-                    <CallsStory />
-                ) : (
-                    <div className="st-text-story">{story.text}</div>
-                )}
+            <div className="st-card">
+                  {story.src && <img src={story.src} alt="story" loading="eager" decoding="async"
+                                    style={{ 
+                                               width: '100%', 
+                                               height: '100%', 
+                                               objectFit: 'contain' // or 'cover'
+                                            }} />}
+                  <div className="st-text-story">{story.text}</div>
             </div>
+
 
             {/* 넘기기 영역 (왼쪽 = 이전, 오른쪽 = 다음) */}
             <button className="st-zone prev" onClick={goPrev} aria-label="이전 스토리" />
@@ -127,7 +97,7 @@ export const InstagramStory = () => {
 
             {/* 사람 이름 */}
             <div className="st-head">
-                <IgAvatar size={32} tint={user.tint} />
+                <IgAvatar size={32} tint={user.tint} src={user.src} />
                 <b>{user.id}</b>
                 <span>{user.time}</span>
                 <div className="st-head-actions">

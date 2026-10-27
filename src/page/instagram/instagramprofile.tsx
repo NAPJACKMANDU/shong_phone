@@ -72,7 +72,7 @@ const IconMulti = () => (
 /* ===================== 데이터 ===================== */
 const USERNAME = SEONGCHAN
 const STATS = [
-    { value: '4', label: '게시물', left: 124 },
+    { value: '3', label: '게시물', left: 124 },
     { value: '832', label: '팔로워', left: 212 },
     { value: '147', label: '팔로잉', left: 301 },
 ]
@@ -103,6 +103,11 @@ export const InstagramProfile = () => {
 
     return (
         <div className="kk-wrapper ig-wrapper">
+            {PROFILE_POSTS.flatMap((post) => post.slides
+                .filter((slide) => slide.kind === 'photo' && slide.src)
+                .map((slide) => <link key={`${post.id}-${slide.src}`} rel="preload" as="image" href={slide.src} />))}
+            {GRID_POSTS.filter((post) => post.kind !== 'video' && post.src)
+                .map((post) => <link key={`grid-${post.id}`} rel="preload" as="image" href={post.src} />)}
             {/* 내용 (스크롤) */}
             <div className="ip-scroll">
                 <div className="ip-info">
@@ -149,7 +154,7 @@ export const InstagramProfile = () => {
                                 {p.kind === 'video' && p.src ? (
                                     <video src={p.src} muted playsInline preload="metadata" />
                                 ) : p.src ? (
-                                    <img src={p.src} alt="" />
+                                    <img src={p.src} alt="" loading="eager" decoding="async" />
                                 ) : null}
                                 {p.multi && <IconMulti />}
                             </button>

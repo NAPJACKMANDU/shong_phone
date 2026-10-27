@@ -308,7 +308,7 @@ export const CgvWatched = () => {
 
     return (
         <div className="kk-wrapper cw-wrapper">
-            <KakaoStatusBar time="2:40" battery={96} />
+            <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 상단 바 */}
             <div className="cw-appbar">

@@ -81,6 +81,53 @@ const PROFILE_SOURCES: Partial<Record<string, string>> = {
 export const getInstagramProfileSrc = (username: string, src?: string) =>
     PROFILE_SOURCES[username] ?? src
 
+type CommentLikeTarget = Pick<CommentItem, 'user' | 'text' | 'isLiked'> & Partial<Pick<CommentItem, 'likes'>>
+
+const COMMENT_LIKES_STORAGE_PREFIX = 'instagram-comment-like:'
+const commentLikeListeners = new Set<() => void>()
+let commentLikesVersion = 0
+
+const getCommentLikeStorageKey = (postId: number, comment: CommentLikeTarget) =>
+    `${COMMENT_LIKES_STORAGE_PREFIX}${postId}:${encodeURIComponent(comment.user)}:${encodeURIComponent(comment.text)}`
+
+export const getInitialCommentLike = (post: FeedPost, comment: CommentLikeTarget) => {
+    const sameComment = (candidate: { user: string; text: string }) =>
+        candidate.user === comment.user && candidate.text === comment.text
+    const matchingPreview = post.previewComments?.find(sameComment)
+    const matchingComment = post.commentList?.find(sameComment)
+
+    return Boolean(comment.isLiked || matchingPreview?.isLiked || matchingComment?.isLiked)
+}
+
+export const getCommentLike = (post: FeedPost, comment: CommentLikeTarget) => {
+    const savedLike = localStorage.getItem(getCommentLikeStorageKey(post.id, comment))
+    return savedLike === null ? getInitialCommentLike(post, comment) : savedLike === '1'
+}
+
+export const setCommentLike = (post: FeedPost, comment: CommentLikeTarget, isLiked: boolean) => {
+    localStorage.setItem(getCommentLikeStorageKey(post.id, comment), isLiked ? '1' : '0')
+    commentLikesVersion += 1
+    commentLikeListeners.forEach((listener) => listener())
+}
+
+export const subscribeToCommentLikes = (listener: () => void) => {
+    commentLikeListeners.add(listener)
+    const handleStorage = (event: StorageEvent) => {
+        if (event.key?.startsWith(COMMENT_LIKES_STORAGE_PREFIX)) {
+            commentLikesVersion += 1
+            listener()
+        }
+    }
+    window.addEventListener('storage', handleStorage)
+
+    return () => {
+        commentLikeListeners.delete(listener)
+        window.removeEventListener('storage', handleStorage)
+    }
+}
+
+export const getCommentLikesVersion = () => commentLikesVersion
+
 export const FEED_POSTS: FeedPost[] = [
   
     {
@@ -96,12 +143,12 @@ export const FEED_POSTS: FeedPost[] = [
             { kind: 'photo', src: '/instagram/233.jpg' },
             { kind: 'photo', src: '/instagram/232.jpg' },
         ],
-        likes: '10.3만',
+        likes: '2.3만',
         caption: 'I`m going to Korea 🛫 ',
         date: '10월 21일',
         previewComments: [
             { id: 201, user: WONBIN, tint: 2, text: '조심히 오거라', isLiked: false },
-            { id: 201, user: EUNSEOK, tint: 2, text: '이번에 오면 얼마나 있나?', isLiked: false },
+            { id: 202, user: EUNSEOK, tint: 2, text: '이번에 오면 얼마나 있나?', isLiked: false },
         ],
         commentList: [
             {
@@ -311,14 +358,14 @@ export const FEED_POSTS: FeedPost[] = [
             {
                 id: 3,
                 user: 'bluehourlog',
-                tint: 2,
+                tint: 3,
                 time: '4일',
                 text: '우리얼른축제하자',
                 likes: 0,
                 isLiked: false,
             },
             {
-                id: 1,
+                id: 4,
                 user: SOHEE,
                 tint: 2,
                 time: '4일',
@@ -370,6 +417,7 @@ export const FEED_POSTS: FeedPost[] = [
                 text: '역시 타로 형',
                 likes: 32,
                 isLiked: false,
+                isLikedByAuthor : true
             },
             {
                 id: 2,
@@ -377,8 +425,9 @@ export const FEED_POSTS: FeedPost[] = [
                 tint: 3,
                 time: '6일',
                 text: '이제 축제준비해요',
-                likes: 0,
-                isLiked: false
+                likes: 1,
+                isLiked: false,
+                isLikedByAuthor : true
             },
             {
                 id: 3,
@@ -409,8 +458,81 @@ export const FEED_POSTS: FeedPost[] = [
             },
         ],
     },
-        {
+    {
         id: 4,
+        user: SEONGCHAN,
+        likedBy: { name: SEONGCHAN, tints: [ANTON, WONBIN, SOHEE] },
+        music:'Beenzino (빈지노) – Always Awake',
+        src:getInstagramProfileSrc(SEONGCHAN),
+        commentCount: 18,
+        ratio: 0.8,
+        slides: [
+            { kind: 'photo', src: '/instagram/chan1.jpg' },
+            { kind: 'photo', src: '/instagram/chan2.jpg' },
+            { kind: 'photo', src: '/instagram/chan3.jpg' },
+            { kind: 'photo', src: '/instagram/chan4.jpg' },
+        ],
+        likes: '293',
+        caption: '🥖🥖🥖',
+        date: '9월 17일',
+        previewComments: [
+            { id: 201, user: ANTON, tint: 3, text: '성찬이형 오늘 옷 잘 어울리는데요 😍 ', isLiked: true },
+            { id: 202, user: EUNSEOK, tint: 3, text: '언제 또 해외 나갔냐', isLiked: false },
+        ],
+        commentList: [
+            {
+                id: 1,
+                user: ANTON,
+                tint: 3,
+                time: '한 달 전',
+                text: '성찬이형 오늘 옷 잘 어울리는데요 😍',
+                likes: 28,
+                isLiked: true,
+                replies: [
+                    {
+                        id: 21,
+                        user: SEONGCHAN,
+                        tint: 3,
+                        time: '한 달 전',
+                        text: '@' + ANTON + ' 앤토니랑 제일 잘 어울림 ㅎㅎ',
+                        likes: 12,
+                        isLiked: false,
+                        isAuthor: true,
+                    },
+                    {
+                        id: 22,
+                        user: SOHEE,
+                        tint: 3,
+                        time: '한 달 전',
+                        text: '@' + SEONGCHAN + ' 🤢🤮',
+                        likes: 0,
+                        isLiked: false,
+                        isAuthor: false,
+                    },
+                ]
+            },
+            {
+                id: 2,
+                user: EUNSEOK,
+                tint: 3,
+                time: '한 달 전',
+                text: '언제 또 해외 나갔냐',
+                likes: 0,
+                isLiked: false
+            },
+            {
+                id: 3,
+                user: SHOTARO,
+                tint: 3,
+                time: '한 달 전',
+                text: '성찬 잘생겼는데~',
+                likes: 0,
+                isLiked: false,
+            },
+        ],
+    },
+        {
+        id: 5,
         user: EUNSEOK,
         likedBy: { name: SOHEE, tints: [ANTON, WONBIN, SOHEE] },
         src:getInstagramProfileSrc(EUNSEOK),
@@ -490,7 +612,7 @@ export const FEED_POSTS: FeedPost[] = [
         ],
     },
     {
-        id: 5,
+        id: 6,
         user: SHOTARO,
         likedBy: { name: SOHEE, tints: [ANTON, WONBIN, SOHEE] },
         src:getInstagramProfileSrc(SHOTARO),
@@ -567,12 +689,12 @@ export const FEED_POSTS: FeedPost[] = [
         ],
     },
         {
-        id: 6,
+        id: 7,
         user: ANTON,
         likedBy: { name: SHOTARO, tints: [ANTON, WONBIN, SOHEE] },
         src:getInstagramProfileSrc(ANTON),
         music:'Tom Misch, Jordan Rakei - Wake Up This Day',
-        commentCount: 7892,
+        commentCount: 1892,
         ratio: 0.8,
         slides: [
             { kind: 'photo', src: '/instagram/ton1.jpg' },
@@ -580,7 +702,7 @@ export const FEED_POSTS: FeedPost[] = [
             { kind: 'photo', src: '/instagram/ton3.jpg' },
             { kind: 'photo', src: '/instagram/ton4.jpg' },
         ],
-        likes: '14.3만',
+        likes: '4.3만',
         caption: '🥖🥖🥖',
         date: '9월 25일',
         previewComments: [
@@ -594,8 +716,9 @@ export const FEED_POSTS: FeedPost[] = [
                 tint: 3,
                 time: '한 달 전',
                 text: '바게트 진짜 좋아하네 보고 싶어ㅓ 사랑해',
-                likes: 9821,
+                likes: 3821,
                 isLiked: false,
+                isLikedByAuthor:true,
                 replies: [
                     {
                         id: 21,
@@ -638,7 +761,7 @@ export const FEED_POSTS: FeedPost[] = [
                         isAuthor: false,
                     },
                     {
-                        id: 21,
+                        id: 25,
                         user: 'mondaHateClub',
                         tint: 3,
                         time: '한 달 전',
@@ -648,7 +771,7 @@ export const FEED_POSTS: FeedPost[] = [
                         isAuthor: false,
                     },
                     {
-                        id: 22,
+                        id: 26,
                         user: 'already_done_',
                         tint: 3,
                         time: '22시간 전',
@@ -665,7 +788,7 @@ export const FEED_POSTS: FeedPost[] = [
                 tint: 3,
                 time: '한 달 전',
                 text: '댓글에서 단내 대박 ㅋㅋ',
-                likes: 8920,
+                likes: 1920,
                 isLiked: false
             },
             {
@@ -674,7 +797,7 @@ export const FEED_POSTS: FeedPost[] = [
                 tint: 3,
                 time: '한 달 전',
                 text: '앤톤 한국 언제 와? ㅠㅠ 성찬이 계속 너 노래 불러',
-                likes: 6323,
+                likes: 1323,
                 isLiked: false,
                 replies: [
                     {
@@ -683,7 +806,7 @@ export const FEED_POSTS: FeedPost[] = [
                         tint: 3,
                         time: '한 달 전',
                         text: '@' + EUNSEOK + ' ㅋㅋ 다음 달은 어렵고 12월에는 무조건 가용',
-                        likes: 8231,
+                        likes: 2231,
                         isLiked: false,
                         isAuthor: true,
                     },
@@ -693,7 +816,7 @@ export const FEED_POSTS: FeedPost[] = [
                         tint: 3,
                         time: '21시간 전',
                         text: '@' + SHOTARO + ' 12월에 올것같다고 했는데 오늘 비행기 타는거 진짜 남자친구 붙잡으러 가는것 같음 킹리적 의심',
-                        likes: 2003,
+                        likes: 1003,
                         isLiked: false,
                         isAuthor: false,
                     },
@@ -719,83 +842,11 @@ export const FEED_POSTS: FeedPost[] = [
             },
         ],
     },
-            {
-        id: 7,
-        user: SEONGCHAN,
-        likedBy: { name: SEONGCHAN, tints: [ANTON, WONBIN, SOHEE] },
-        music:'Beenzino (빈지노) – Always Awake',
-        src:getInstagramProfileSrc(SEONGCHAN),
-        commentCount: 18,
-        ratio: 0.8,
-        slides: [
-            { kind: 'photo', src: '/instagram/chan1.jpg' },
-            { kind: 'photo', src: '/instagram/chan2.jpg' },
-            { kind: 'photo', src: '/instagram/chan3.jpg' },
-            { kind: 'photo', src: '/instagram/chan4.jpg' },
-        ],
-        likes: '293',
-        caption: '🥖🥖🥖',
-        date: '9월 17일',
-        previewComments: [
-            { id: 201, user: ANTON, tint: 3, text: '성찬이형 오늘 옷 잘 어울리는데요 😍 ', isLiked: false },
-            { id: 202, user: EUNSEOK, tint: 3, text: '언제 또 해외 나갔냐', isLiked: false },
-        ],
-        commentList: [
-            {
-                id: 1,
-                user: ANTON,
-                tint: 3,
-                time: '한 달 전',
-                text: '성찬이형 오늘 옷 잘 어울리는데요 😍',
-                likes: 28,
-                isLiked: false,
-                replies: [
-                    {
-                        id: 21,
-                        user: SEONGCHAN,
-                        tint: 3,
-                        time: '한 달 전',
-                        text: '@' + ANTON + ' 앤토니랑 제일 잘 어울림 ㅎㅎ',
-                        likes: 12,
-                        isLiked: false,
-                        isAuthor: true,
-                    },
-                    {
-                        id: 22,
-                        user: SOHEE,
-                        tint: 3,
-                        time: '한 달 전',
-                        text: '@' + SEONGCHAN + ' 🤢🤮',
-                        likes: 0,
-                        isLiked: false,
-                        isAuthor: false,
-                    },
-                ]
-            },
-            {
-                id: 2,
-                user: EUNSEOK,
-                tint: 3,
-                time: '한 달 전',
-                text: '언제 또 해외 나갔냐',
-                likes: 0,
-                isLiked: false
-            },
-            {
-                id: 3,
-                user: SHOTARO,
-                tint: 3,
-                time: '한 달 전',
-                text: '성찬 잘생겼는데~',
-                likes: 0,
-                isLiked: false,
-            },
-        ],
-    },
       {
         id: 8,
         user: SOHEE,
         src:getInstagramProfileSrc(SOHEE),
+        music:'Sunflower (Spider-Man: Into the Spider-Verse) - 	Post Malone(포스트 말론) , Swae Lee(스웨 리)',
         commentCount: 2392,
         ratio: 1.14,
         slides: [
@@ -827,66 +878,153 @@ export const FEED_POSTS: FeedPost[] = [
                 id: 1,
                 user: SEONGCHAN,
                 tint: 2,
-                time: '4주',
+                time: '한 달 전',
                 text: '꼬마 스파이더맨 나가신다 ㄷㄷ',
                 likes: 4084,   
                 isLiked: false,
-                isLikedByAuthor: true,
             },
             {
                 id: 2,
                 user: EUNSEOK,
                 tint: 3,
-                time: '4주',
+                time: '한 달 전',
                 text: '오... 역시 인플루언서',
                 likes: 203,
                 isLiked: false,
-                isLikedByAuthor: true,
             },
             {
                 id: 3,
                 user: WONBIN,
                 tint: 3,
-                time: '4주',
+                time: '한 달 전',
                 text: '아 이소희 같이 찍자니까ㅏ아ㅏㅏ',
                 likes: 24,
                 isLiked: false,
-                isLikedByAuthor: true,
             },
             {
                 id: 4,
                 user: 'idoidosoido',
                 tint: 3,
-                time: '4주',
+                time: '한 달 전',
                 text: '귀여움으로세상구하실것같음',
                 likes: 26,
                 isLiked: false,
-                isLikedByAuthor: true,
             },
             {
                 id: 5,
                 user: 'naranlady',
                 tint: 3,
-                time: '4주',
+                time: '한 달 전',
                 text: '이상하다나위험에빠졌는데왜안오시지?',
                 likes: 93,
                 isLiked: false,
-                isLikedByAuthor: true,
             },
         ],
     },
-    {
+        {
         id: 9,
         user: SEONGCHAN,
-        tint: 0,
-        src: getInstagramProfileSrc(SEONGCHAN),
+        likedBy: { name: ANTON, tints: [ANTON, WONBIN, SOHEE] },
+        music:'Sunday - KYLE',
+        src:getInstagramProfileSrc(SEONGCHAN),
+        commentCount: 27,
         ratio: 0.8,
-        slides: [{ kind: 'video', src: '/instagram/chanton.mp4' }],
-        likes: '11.2만',
-        likedBy: { name: 'bbinniy', tints: [ANTON, SEONGCHAN, WONBIN] },
-        caption: '앤토나ㅏ',
-        date: '2026.03.22',
-        commentList: [],
+        slides: [
+            { kind: 'photo', src: '/instagram/chanton1.jpg' },
+            { kind: 'photo', src: '/instagram/chanton2.jpg' },
+            { kind: 'photo', src: '/instagram/chanton3.jpg' },
+            { kind: 'photo', src: '/instagram/chanton4.jpg' },
+            { kind: 'photo', src: '/instagram/chanton5.jpg' },
+        ],
+        likes: '173',
+        caption: '덥다 더워',
+        date: '5월 13일',
+        previewComments: [
+            { id: 201, user: ANTON, tint: 3, text: '사진 뭐예요 😵', isLiked: true },
+            { id: 202, user: EUNSEOK, tint: 3, text: '잘 사귀네', isLiked: false },
+        ],
+        commentList: [
+            {
+                id: 1,
+                user: ANTON,
+                tint: 3,
+                time: '23주',
+                text: '사진 뭐예요 😵',
+                likes: 28,
+                isLiked: false,
+                isLikedByAuthor: true,
+                replies: [
+                    {
+                        id: 21,
+                        user: SEONGCHAN,
+                        tint: 3,
+                        time: '23주',
+                        text: '@' + ANTON + ' ㅎㅎ',
+                        likes: 12,
+                        isLiked: false,
+                        isAuthor: true,
+                    },
+                    {
+                        id: 22,
+                        user: 'sweet.nightmares',
+                        tint: 3,
+                        time: '23주',
+                        text: '@' + ANTON + ' 셋이 사귀고 싶다',
+                        likes: 0,
+                        isLiked: false,
+                        isAuthor: false,
+                    },
+                ]
+            },
+            {
+                id: 2,
+                user: 'oddevenodd',
+                tint: 3,
+                time: '23주',
+                text: '우리도 좀 만나줘라',
+                likes: 0,
+                isLiked: false,
+                replies: [
+                    {
+                        id: 21,
+                        user: SEONGCHAN,
+                        tint: 3,
+                        time: '23주',
+                        text: '@oddevenodd 앤토니 곧 해외 가는데 그때 ㄱㄱ 연락함',
+                        likes: 12,
+                        isLiked: false,
+                        isAuthor: true,
+                    },
+                ]
+            },
+            {
+                id: 3,
+                user: SOHEE,
+                tint: 3,
+                time: '23주',
+                text: '결혼까지 하세요',
+                likes: 21,
+                isLiked: false,
+            },
+            {
+                id: 4,
+                user: SHOTARO,
+                tint: 3,
+                time: '23주',
+                text: '둘다 귀여워~',
+                likes: 0,
+                isLiked: false,
+            },
+                        {
+                id: 5,
+                user: 'coldblooded',
+                tint: 3,
+                time: '23주',
+                text: '행복해 보인다 야',
+                likes: 0,
+                isLiked: false,
+            },
+        ],
     },
     {
         id: 10,
@@ -894,22 +1032,141 @@ export const FEED_POSTS: FeedPost[] = [
         tint: 0,
         src: getInstagramProfileSrc(SEONGCHAN),
         ratio: 0.8,
-        slides: [{ kind: 'photo', bg: 'linear-gradient(180deg,#efe6dc 0%,#c9d4b5 55%,#5d5f4a 100%)' }],
-        likes: '0',
-        caption: '',
-        date: '',
-        commentList: [],
-    },
-    {
-        id: 11,
-        user: SEONGCHAN,
-        tint: 0,
-        src: getInstagramProfileSrc(SEONGCHAN),
-        ratio: 0.8,
-        slides: [{ kind: 'photo', bg: 'linear-gradient(160deg,#d6b27a,#b0522e)' }],
-        likes: '0',
-        caption: '',
-        date: '',
-        commentList: [],
+        commentCount: 3921,
+        slides: [{ kind: 'video', src: '/instagram/chanton0.mp4' }],
+        likes: '6.4만',
+        likedBy: { name: 'bbinniy', tints: [ANTON, EUNSEOK, WONBIN] },
+        caption: '사랑해',
+        date: '2024년 6월 28일',
+        previewComments: [
+            {
+                id: 101,
+                user: ANTON,
+                tint: 2,
+                text: 'lUV 😍',  
+                isLiked: true,
+                 
+            },
+            {
+                id: 102,
+                user: EUNSEOK,
+                tint: 3,
+                text: '?',
+                isLiked: false,
+            },
+        ],
+        commentList: [
+            {
+                id: 1,
+                user: ANTON,
+                tint: 2,
+                time: '121주',
+                text: 'lUV 😍',
+                likes: 8024,   
+                isLiked: true,
+            },
+            {
+                id: 2,
+                user: EUNSEOK,
+                tint: 3,
+                time: '121주',
+                text: '?',
+                likes: 3,
+                isLiked: false,
+            },
+            {
+                id: 3,
+                user: 'lagisreal',
+                tint: 3,
+                time: '121주',
+                text: '@alltimefeelsogood 미친 얼합 ㄹㅈㄷ',
+                likes: 207,
+                isLiked: false,
+            },
+            {
+                id: 4,
+                user: SOHEE,
+                tint: 3,
+                time: '121주',
+                text: '엥?',
+                likes: 24,
+                isLiked: false,
+            },
+            {
+                id: 5,
+                user: 'livingindream',
+                tint: 3,
+                time: '121주',
+                text: '성찬이형 형 남자도 됐었어요?',
+                likes: 93,
+                isLiked: false,
+                 replies: [
+                    {
+                        id: 21,
+                        user: SEONGCHAN,
+                        tint: 3,
+                        time: '121주',
+                        text: '@livingindream 응? 난 원래 남자만 됐어 ㅎㅎ',
+                        likes: 2342,
+                        isLiked: false,
+                        isAuthor: true,
+                    },
+                 ]
+            },
+            {
+                id: 6,
+                user: SHOTARO,
+                tint: 3,
+                time: '121주',
+                text: '성찬?',
+                likes: 11,
+                isLiked: false,
+            },
+            {
+                id: 7,
+                user: 'oddevenodd',
+                tint: 3,
+                time: '121주',
+                text: '야 성찬아 뭐냐',
+                likes: 0,
+                isLiked: false,
+            },
+            {
+                id: 8,
+                user: 'bbaam',
+                tint: 3,
+                time: '121주',
+                text: '수영선수 이찬영?',
+                likes: 928,
+                isLiked: false,
+            },
+            {
+                id: 9,
+                user: WONBIN,
+                tint: 3,
+                time: '121주',
+                text: '뭐예요?',
+                likes: 73,
+                isLiked: false,
+            },
+            {
+                id: 10,
+                user: 'notenoughspace',
+                tint: 3,
+                time: '121주',
+                text: '아 ㅁㅊ 잘생긴 게이 찬성',
+                likes: 215,
+                isLiked: false,
+            },
+                        {
+                id: 11,
+                user: 'nothingreallymatters',
+                tint: 3,
+                time: '121주',
+                text: '알고리즘의순기능',
+                likes: 29,
+                isLiked: false,
+            },
+        ],
     },
 ];
