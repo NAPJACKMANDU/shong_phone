@@ -69,8 +69,12 @@ export const RouterSetting = () => {
     const [notifications, setNotifications] = useState<KakaoNoticeMsg[]>([])
     const location = useLocation()
     const navigate = useNavigate()
-
     const pathnameRef = useRef(location.pathname)
+
+    useLayoutEffect(() => {
+        window.scrollTo(0, 0)
+    }, [location.key])
+    
     useEffect(() => {
         pathnameRef.current = location.pathname
     }, [location.pathname])
