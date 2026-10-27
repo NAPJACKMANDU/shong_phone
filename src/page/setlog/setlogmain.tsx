@@ -2,152 +2,27 @@ import { useMemo, useState, useRef } from 'react'
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { KakaoStatusBar, lineProps } from '../../common/kakaoCommon.tsx'
+import {
+    TITLE, YEAR, FIRST_MONTH, LAST_MONTH,
+    FRIEND_AVATAR_URL, MY_AVATAR_URL, FRIEND_NAME, MY_NAME,
+    getSlotsOfDay, hasUploadOnDay, TIME_SLOTS,
+    type SingleLog,
+} from '../../data/setlogdata.ts'
 import '../../css/setlog/setlogCss.css'
 
-/* ===================== 설정 ===================== */
-const TITLE = '성차니형바보'   // 맨 위 제목
-const YEAR = 2026
-const FIRST_MONTH = 4         // 달력은 4월부터
-const LAST_MONTH = 10         // 10월까지
+const availableDays = [...new Set(TIME_SLOTS.map(({ month, day }) => `${month}-${day}`))]
+    .map((date) => {
+        const [month, day] = date.split('-').map(Number)
+        return { month, day }
+    })
+    .sort((a, b) => a.month - b.month || a.day - b.day)
 
-/* 프로필 이미지 링크 설정 (경로 또는 웹 URL) */
-const FRIEND_AVATAR_URL = '/setlog/profileton.png'
-const MY_AVATAR_URL = '/setlog/profilechan.png'
-
-interface SingleLog {
-    time: string;
-    caption?: string;
-    bg?: string;
-    videoUrl?: string;
-}
-
-interface TimeSlotData {
-    month: number;
-    day: number;
-    time: string;
-    friendLog?: SingleLog;
-    myLog?: SingleLog;
-    meComment?: string;
-    friendComment?: string;
-}
-
-/* ===================== 날짜별/시간대별 고유 데이터 ===================== */
-const TIME_SLOTS: TimeSlotData[] = [
-    /* ----------------- 4월 1일 (하루 여러 시간대 데이터) ----------------- */
-    {
-        month: 4, day: 27, time: '08:00',
-        friendLog: { time: '08:00', caption: '형 저 오늘 늦게 들어가용ㅇ :)', videoUrl: '/setlog/ton1.mp4   ' },
-        friendComment: '아ㅏㅏ 왜~ ㅠㅠ',
-        myLog: { time: '08:00', bg: '#e4e4e4' }
-    },
-    {
-        month: 4, day: 27, time: '11:00',
-        friendLog: { time: '11:00', caption: '사실 거짓말이에요 ^^;'},
-        friendComment: '귀엽네 보고 싶어~~',
-        myLog: { time: '11:00', caption: '학교 간다'},
-        meComment: '저 있는 곳 오네요',
-    },
-    {
-        month: 4, day: 27, time: '15:00',
-        friendLog: { time: '15:00', bg: '#e4e4e4' },
-        myLog: { time: '15:00', caption: '배고프다' },
-    },
-    {
-        month: 4, day: 27, time: '16:00',
-        friendLog: { time: '16:00', bg: '#e4e4e4' },
-        myLog: { time: '16:00', caption: '찬영이 연습 그만' },
-        meComment: 'ㅋㅋㅋ'
-    },
-    {
-        month: 4, day: 27, time: '18:00',
-        friendLog: { time: '18:00', caption: '집 가용' },
-        friendComment: '얼른 와 오늘 저녁은~',
-        myLog: { time: '18:00', bg: '#e4e4e4' },
-    },
-    {
-        month: 4, day: 27, time: '21:00',
-        friendLog: { time: '21:00', caption: '형 얼른 나와요' },
-        myLog: { time: '21:00',  bg: '#e4e4e4'},
-        friendComment: '형 보고 싶어?'
-    },
-
-    /* ----------------- 4월 5일 ----------------- */
-    {
-        month: 4, day: 28, time: '09:00',
-        friendLog: { time: '05:00', caption: '연습 갈게요 😪' },
-        myLog: { time: '05:00',  bg: '#e4e4e4'},
-        friendComment :'찬영이 안 피곤해?'
-    },
-    {
-        month: 4, day: 28, time: '11:00',
-        friendLog: { time: '11:00',  bg: '#e4e4e4'},
-        myLog: { time: '11:00', caption: '수영하는 앤토니의 모오습'},
-    },
-    {
-        month: 4, day: 28, time: '12:00',
-        friendLog: { time: '12:00',  bg: '#e4e4e4'},
-        myLog: { time: '12:00', caption: '그만하고 밥 먹으러 가자ㅏㅏ'},
-    },
-    {
-        month: 4, day: 28, time: '13:00',
-        friendLog: { time: '13:00',  caption: '결국 밥 먹으러 나온 우리의 모오습' },
-        myLog: { time: '13:00',  bg: '#e4e4e4'}
-    },
-    {
-        month: 4, day: 28, time: '15:00',
-        friendLog: { time: '15:00',  caption: '형 이따 봐요 ㅎㅎ' },
-        myLog: { time: '15:00',   caption: '형 운동하러 왔어 찬영이 이따 봐'}
-    },
-    {
-        month: 4, day: 28, time: '15:00',
-        friendLog: { time: '15:00',  caption: '형 이따 봐요 ㅎㅎ' },
-        myLog: { time: '15:00',   caption: '운하러 왔어'}
-    },
-
-    {
-        month: 4, day: 28, time: '15:00',
-        friendLog: { time: '15:00',  caption: '형 이따 봐요 ㅎㅎ' },
-        myLog: { time: '15:00',   caption: '운동하러 왔어 찬영이 이따 봐'}
-    },
-
-
-    /* ----------------- 5월 ----------------- */
-    {
-        month: 5, day: 1, time: '10:00',
-        friendLog: { time: '10:00', caption: '5/1 10:00 근로자의 날 힐링', bg: 'linear-gradient(180deg,#ee0979 0%,#ff6a00 100%)' },
-        myLog: { time: '10:00', caption: '5/1 10:00 늦잠 자고 기상', bg: 'linear-gradient(160deg,#4facfe 0%,#00f2fe 100%)' }
-    },
-    {
-        month: 5, day: 28, time: '12:00',
-        friendLog: { time: '12:00', caption: '5/5 12:00 어린이날 나들이', bg: 'linear-gradient(170deg,#43e97b 0%,#38f9d7 100%)' },
-        myLog: { time: '12:00', caption: '5/5 12:00 푸른 잔디밭 구경', bg: 'linear-gradient(160deg,#fa709a 0%,#fee140 100%)' }
-    },
-
-    /* ----------------- 6월 ----------------- */
-    {
-        month: 6, day: 10, time: '12:00',
-        friendLog: { time: '12:00', caption: '6/10 12:00 초여름 계곡 물소리', bg: 'linear-gradient(180deg,#26a69a 0%,#004d40 100%)' },
-        myLog: { time: '12:00', caption: '6/10 12:00 여름 시작 2초 영상', bg: 'linear-gradient(160deg,#4fc3f7 0%,#0277bd 100%)' }
-    },
-
-    /* ----------------- 7월 ----------------- */
-    {
-        month: 7, day: 14, time: '15:00',
-        friendLog: { time: '15:00', caption: '7/14 15:00 장마철 빗소리 ☔', bg: 'linear-gradient(160deg,#78909c 0%,#263238 100%)' },
-        myLog: { time: '15:00', caption: '7/14 15:00 창문 밖 산책 길', bg: 'linear-gradient(160deg,#90a4ae 0%,#37474f 100%)' }
-    },
-
-    /* ----------------- 8월 ----------------- */
-    {
-        month: 8, day: 4, time: '11:00',
-        friendLog: { time: '11:00', caption: '8/4 11:00 여름 휴가 바다 도착!', bg: 'linear-gradient(180deg,#00bcd4 0%,#006064 100%)' },
-        myLog: { time: '11:00', caption: '8/4 11:00 시원한 바다 파도 소리 🌊', bg: 'linear-gradient(160deg,#29b6f6 0%,#01579b 100%)' }
-    }
-    /* 9월, 10월: 업로드 없음 */
-]
-
-const FRIEND_NAME = '엥똔'
-const MY_NAME = '성찬'
+const getChronologicalSlots = (month: number, day: number) =>
+    getSlotsOfDay(month, day).sort((a, b) => {
+        const [aHours, aMinutes] = a.time.split(':').map(Number)
+        const [bHours, bMinutes] = b.time.split(':').map(Number)
+        return aHours * 60 + aMinutes - (bHours * 60 + bMinutes)
+    })
 
 /* ===================== 아이콘 ===================== */
 const Smile = ({ className }: { className?: string }) => (
@@ -251,7 +126,6 @@ const VideoCardMedia = ({ src }: { src?: string }) => {
     const handleTimeUpdate = () => {
         if (videoRef.current && videoRef.current.currentTime >= 2.0) {
             videoRef.current.currentTime = 0
-            videoRef.current.pause()
         }
     }
 
@@ -262,6 +136,7 @@ const VideoCardMedia = ({ src }: { src?: string }) => {
             ref={videoRef}
             src={src}
             autoPlay
+            loop
             muted
             playsInline
             onTimeUpdate={handleTimeUpdate}
@@ -284,7 +159,7 @@ export const SetlogMain = () => {
     /* 선택된 날짜에 해당되는 시간대 목록만 필터링 */
     const currentDaySlots = useMemo(() => {
         if (!sel) return []
-        return TIME_SLOTS.filter((s) => s.month === sel.m && s.day === sel.d)
+        return getChronologicalSlots(sel.m, sel.d)
     }, [sel])
 
     const currentSlot = currentDaySlots[timeIndex] || null
@@ -295,17 +170,29 @@ export const SetlogMain = () => {
 
     /* 이전/다음 시간대(도트)로 이동 */
     const shiftSlot = (dir: number) => {
-        if (currentDaySlots.length === 0) return
-        let nextIdx = timeIndex + dir
-        if (nextIdx < 0) nextIdx = 0
-        if (nextIdx >= currentDaySlots.length) nextIdx = currentDaySlots.length - 1
-        setTimeIndex(nextIdx)
+        if (!sel || currentDaySlots.length === 0) return
+
+        const nextIdx = timeIndex + dir
+        if (nextIdx >= 0 && nextIdx < currentDaySlots.length) {
+            setTimeIndex(nextIdx)
+            return
+        }
+
+        const currentDay = sel.m * 32 + sel.d
+        const adjacentDay = dir > 0
+            ? availableDays.find(({ month, day }) => month * 32 + day > currentDay)
+            : [...availableDays].reverse().find(({ month, day }) => month * 32 + day < currentDay)
+
+        if (!adjacentDay) return
+
+        const adjacentSlots = getChronologicalSlots(adjacentDay.month, adjacentDay.day)
+        setSel({ m: adjacentDay.month, d: adjacentDay.day })
+        setTimeIndex(dir > 0 ? 0 : adjacentSlots.length - 1)
     }
 
     /* 달력 날짜 클릭 시: 날짜 지정 및 무조건 첫 번째 도트(index 0)부터 보여줌 */
     const pickCalendarDay = (m: number, d: number) => {
-        const hasData = TIME_SLOTS.some((s) => s.month === m && s.day === d)
-        if (hasData) {
+        if (getSlotsOfDay(m, d).length > 0) {
             setSel({ m, d })
             setTimeIndex(0) // 무조건 첫 번째 도트부터!
         } else {
@@ -326,11 +213,6 @@ export const SetlogMain = () => {
         while (cells.length % 7 !== 0) cells.push(null)
         return Array.from({ length: cells.length / 7 }, (_, r) => cells.slice(r * 7, r * 7 + 7))
     }, [calMonth])
-
-    /* 한 사람이라도 업로드한 날에는 달력에 스마일 표시 */
-    const hasUploadOnDay = (m: number, d: number) => {
-        return TIME_SLOTS.some((slot) => slot.month === m && slot.day === d && (slot.friendLog || slot.myLog))
-    }
 
     const renderCard = (
         log: SingleLog | undefined, 
@@ -453,7 +335,7 @@ export const SetlogMain = () => {
                     <div className="sl-card" style={{ background: '#e4e4e4' }} aria-hidden="true">
                         <div className="sl-user">
                         <Avatar tone={'friend'} />
-                        <span>엥똔</span>
+                        <span>{FRIEND_NAME}</span>
                     </div>
                     <div className="sl-center">
                         <span className="sl-time">16:00</span>
@@ -463,7 +345,7 @@ export const SetlogMain = () => {
                         <div className="sl-card" style={{ background: '#e4e4e4' }} aria-hidden="true">
                             <div className="sl-user">
                             <Avatar tone={'me'} />
-                            <span>성찬</span>
+                            <span>{MY_NAME}</span>
                         </div>
                         <div className="sl-center">
                            <span className="sl-time">16:00</span>

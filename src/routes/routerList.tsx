@@ -1,5 +1,6 @@
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
+import { receiveKakaoMessage } from "../data/kakaoData.ts"
 import {
     CALENDARMAIN_PATH,
     CGVHOME_PATH,
@@ -54,26 +55,37 @@ import InstagramSearch from "../page/instagram/instagramsearch.tsx"
 import InstagramProfile from "../page/instagram/instagramprofile.tsx"
 import InstagramStory from "../page/instagram/instagramstory.tsx"
 
+const ANTONY_CHAT_ID = "antony"
+
+// 카톡 앱 안(목록/친구/더보기/채팅방)인지 판별 (메모 앱은 제외)
+const isInKakaoTalk = (pathname: string) =>
+    pathname === KAKAOCHATLIST_PATH() ||
+    pathname === KAKAOFRIENDS_PATH() ||
+    pathname === KAKAOMORE_PATH() ||
+    pathname.startsWith(KAKAOCHATROOM_PATH())
+
 export const RouterSetting = () => {
     const [unlocked, setUnlocked] = useState(false)
     const [notifications, setNotifications] = useState<KakaoNoticeMsg[]>([])
     const location = useLocation()
     const navigate = useNavigate()
 
-    useLayoutEffect(() => {
-        window.scrollTo(0, 0)
-    }, [location.key])
+    const pathnameRef = useRef(location.pathname)
+    useEffect(() => {
+        pathnameRef.current = location.pathname
+    }, [location.pathname])
 
-    // 잠금 해제 후 5초 뒤 알림 표시
+    // 잠금 해제 후 5초 뒤 앤토니 메시지 수신
     useEffect(() => {
         if (!unlocked) return
         const timer = window.setTimeout(() => {
-            setNotifications([{
-                id: 1,
-                sender: "앤토니",
-                text: "형.. 저 한국 도착했어요 지금 비행기에서 내려요 바로 형 집 가도 되나요? 형 집에 없어도 기다릴게요 보고 싶어 죄송해요",
-                time: "방금",
-            }])
+            const message = receiveKakaoMessage(
+                ANTONY_CHAT_ID,
+                "형.. 저 한국 도착했어요 지금 비행기에서 내려요 바로 형 집 가도 되나요? 형 집에 없어도 기다릴게요 보고 싶어 죄송해요",
+            )
+            // 카톡 안에 있으면 상단 알림 없이 (방: 미리보기 / 그 외: 숫자 증가)
+            if (!message || isInKakaoTalk(pathnameRef.current)) return
+            setNotifications([{ id: 1, sender: "앤토니", text: message.text, time: "방금" }])
         }, 5000)
         return () => window.clearTimeout(timer)
     }, [unlocked])
@@ -141,10 +153,20 @@ export const RouterSetting = () => {
             )}
             {unlocked && (
                 <>
+                <div
+                    style={{ display: "contents" }}
+                    onClick={(e) => {
+                        if (notifications.length === 0) return
+                        if ((e.target as HTMLElement).closest("button")) return // 닫기 버튼 등은 제외
+                        setNotifications([])
+                        navigate(`${KAKAOCHATROOM_PATH()}/${ANTONY_CHAT_ID}`)
+                    }}
+                >
                     <KakaoNotification
                         messages={notifications}
                         onClear={() => setNotifications([])}
                     />
+                </div>
                     <Routes>
                         <Route path={MAIN_PATH()} element={<HomeScreen showStatusBar={true}/>}></Route>
                         <Route path={HOMESCREEN_PATH()} element={<HomeScreen showStatusBar={true}/>}></Route>

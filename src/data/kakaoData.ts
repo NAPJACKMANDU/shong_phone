@@ -223,3 +223,68 @@ export const getKakaoPerson = (id: string): KakaoPerson => {
 
 export const getKakaoChat = (id: string | undefined): KakaoChat | undefined =>
     KAKAO_CHATS.find((chat) => chat.id === id)
+
+/* ===================== 실시간 수신 메시지 ===================== */
+export interface KakaoLiveMessage {
+    id: string
+    from: 'other'
+    authorId: string
+    date: string
+    time: string
+    text: string
+    photo?: boolean
+    photoUrl?: string
+    tail?: boolean
+}
+
+const liveListeners = new Set<() => void>()
+const EMPTY_LIVE: KakaoLiveMessage[] = []
+let liveMessages: Record<string, KakaoLiveMessage[]> = {}
+let activeChatId: string | null = null
+let liveSeq = 0
+
+const pad = (n: number) => String(n).padStart(2, '0')
+const formatKakaoTime = (d: Date) => {
+    const h = d.getHours()
+    return `${h < 12 ? '오전' : '오후'} ${h % 12 || 12}:${pad(d.getMinutes())}`
+}
+
+export const getKakaoLiveMessages = (chatId: string): KakaoLiveMessage[] =>
+    liveMessages[chatId] ?? EMPTY_LIVE
+
+export const subscribeToKakaoLive = (listener: () => void): (() => void) => {
+    liveListeners.add(listener)
+    return () => liveListeners.delete(listener)
+}
+
+/** 채팅방 화면이 열려 있는 동안 해당 방 id를 등록 (나가면 null) */
+export const setActiveKakaoChat = (chatId: string | null): void => {
+    activeChatId = chatId
+}
+
+/** 메시지 수신. 열려 있는 방이 아니면 안읽음 +1 */
+export const receiveKakaoMessage = (
+    chatId: string,
+    text: string,
+    options?: { authorId?: string; date?: string; time?: string },
+): KakaoLiveMessage | undefined => {
+    const chat = KAKAO_CHATS.find((entry) => entry.id === chatId)
+    if (!chat) return undefined
+
+    const now = new Date()
+    const message: KakaoLiveMessage = {
+        id: `live-${++liveSeq}`,
+        from: 'other',
+        authorId: options?.authorId ?? chat.memberIds.find((id) => id !== 'self') ?? chat.memberIds[0],
+        date: options?.date ?? `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`,
+        time: options?.time ?? formatKakaoTime(now),
+        text,
+    }
+
+    liveMessages = { ...liveMessages, [chatId]: [...getKakaoLiveMessages(chatId), message] }
+    if (activeChatId !== chatId) chat.unread = (chat.unread ?? 0) + 1
+
+    liveListeners.forEach((listener) => listener())
+    unreadListeners.forEach((listener) => listener())
+    return message
+}

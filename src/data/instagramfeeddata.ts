@@ -22,6 +22,7 @@ export interface CommentItem {
     isLiked?: boolean
     isLikedByAuthor?: boolean
     isAuthor?: boolean
+    isUserComment?: boolean
     replies?: CommentReply[]
     src?: string
 }
@@ -84,6 +85,7 @@ export const getInstagramProfileSrc = (username: string, src?: string) =>
 type CommentLikeTarget = Pick<CommentItem, 'user' | 'text' | 'isLiked'> & Partial<Pick<CommentItem, 'likes'>>
 
 const COMMENT_LIKES_STORAGE_PREFIX = 'instagram-comment-like:'
+const USER_COMMENTS_STORAGE_PREFIX = 'instagram-user-comments:'
 const commentLikeListeners = new Set<() => void>()
 let commentLikesVersion = 0
 
@@ -110,10 +112,75 @@ export const setCommentLike = (post: FeedPost, comment: CommentLikeTarget, isLik
     commentLikeListeners.forEach((listener) => listener())
 }
 
+const getUserCommentsStorageKey = (postId: number) => `${USER_COMMENTS_STORAGE_PREFIX}${postId}`
+
+const isStoredComment = (value: unknown): value is CommentItem => {
+    if (!value || typeof value !== 'object') return false
+    const comment = value as Partial<CommentItem>
+    return typeof comment.id === 'number'
+        && typeof comment.user === 'string'
+        && typeof comment.text === 'string'
+        && typeof comment.time === 'string'
+        && typeof comment.likes === 'number'
+}
+
+export const getUserComments = (postId: number): CommentItem[] => {
+    const storedComments = localStorage.getItem(getUserCommentsStorageKey(postId))
+    if (storedComments === null) return []
+
+    const parsed: unknown = JSON.parse(storedComments)
+    if (!Array.isArray(parsed) || !parsed.every(isStoredComment)) {
+        throw new Error(`Saved Instagram comments for post ${postId} have an invalid format.`)
+    }
+    return parsed
+}
+
+const saveUserComments = (postId: number, comments: CommentItem[]) => {
+    localStorage.setItem(getUserCommentsStorageKey(postId), JSON.stringify(comments))
+    commentLikesVersion += 1
+    commentLikeListeners.forEach((listener) => listener())
+}
+
+export const addUserComment = (postId: number, text: string) => {
+    const comments = getUserComments(postId)
+    const id = Math.max(Date.now(), ...comments.map((comment) => comment.id + 1))
+    const autoReply = comments.length === 0
+        ? {
+            id: id + 1,
+            user: SOHEE,
+            tint: 3,
+            time: '방금 전',
+            text: '인스타 삭제한 줄',
+            likes: 0,
+            src: getInstagramProfileSrc(SOHEE),
+        } satisfies CommentReply
+        : undefined
+    const comment: CommentItem = {
+        id,
+        user: SEONGCHAN,
+        tint: 0,
+        time: '방금 전',
+        text,
+        likes: 0,
+        isUserComment: true,
+        ...(autoReply ? { replies: [autoReply] } : {}),
+    }
+
+    saveUserComments(postId, [...comments, comment])
+    return autoReply
+}
+
+export const deleteUserComment = (postId: number, commentId: number) => {
+    const comments = getUserComments(postId)
+    const remaining = comments.filter((comment) => comment.id !== commentId)
+    if (remaining.length !== comments.length) saveUserComments(postId, remaining)
+}
+
 export const subscribeToCommentLikes = (listener: () => void) => {
     commentLikeListeners.add(listener)
     const handleStorage = (event: StorageEvent) => {
-        if (event.key?.startsWith(COMMENT_LIKES_STORAGE_PREFIX)) {
+        if (event.key?.startsWith(COMMENT_LIKES_STORAGE_PREFIX)
+            || event.key?.startsWith(USER_COMMENTS_STORAGE_PREFIX)) {
             commentLikesVersion += 1
             listener()
         }
@@ -293,7 +360,7 @@ export const FEED_POSTS: FeedPost[] = [
                         isAuthor: true,
                     },
                     {
-                        id: 26,
+                        id: 27,
                         user: SOHEE,
                         tint: 3,
                         time: '1일',
@@ -952,7 +1019,6 @@ export const FEED_POSTS: FeedPost[] = [
                 text: '사진 뭐예요 😵',
                 likes: 28,
                 isLiked: false,
-                isLikedByAuthor: true,
                 replies: [
                     {
                         id: 21,
@@ -978,6 +1044,15 @@ export const FEED_POSTS: FeedPost[] = [
             },
             {
                 id: 2,
+                user: EUNSEOK,
+                tint: 3,
+                time: '23주',
+                text: '잘 사귀네',
+                likes: 0,
+                isLiked: false,
+            },
+            {
+                id: 3,
                 user: 'oddevenodd',
                 tint: 3,
                 time: '23주',
@@ -998,7 +1073,7 @@ export const FEED_POSTS: FeedPost[] = [
                 ]
             },
             {
-                id: 3,
+                id: 4,
                 user: SOHEE,
                 tint: 3,
                 time: '23주',
@@ -1007,7 +1082,7 @@ export const FEED_POSTS: FeedPost[] = [
                 isLiked: false,
             },
             {
-                id: 4,
+                id: 5,
                 user: SHOTARO,
                 tint: 3,
                 time: '23주',
@@ -1016,7 +1091,7 @@ export const FEED_POSTS: FeedPost[] = [
                 isLiked: false,
             },
                         {
-                id: 5,
+                id: 6,
                 user: 'coldblooded',
                 tint: 3,
                 time: '23주',

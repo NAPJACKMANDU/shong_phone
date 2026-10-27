@@ -689,3 +689,24 @@
     padding: calc(var(--u) * 1) calc(var(--u) * 4);
     color: #111;
 }
+.ih-comment-send-btn {
+    border: 0;
+    background: none;
+    color: #0095f6;
+    font-family: inherit;
+    font-size: calc(var(--u) * 13);
+    font-weight: 700;
+    padding: calc(var(--u) * 4);
+}
+.ih-comment-send-btn:disabled {
+    opacity: 0.45;
+}
+.ih-comment-actions .ih-reply-btn {
+    cursor: pointer;
+}
+.ih-kakao-notification {
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    pointer-events: none;
+}

@@ -190,6 +190,12 @@
     background-color: #888;
     color: #fff;
 }
+@media (max-height: 700px) {
+    .sl-cards {
+        top: 19%;
+        bottom: 19%;
+    }
+}
 .sl-card-empty {
     background-color: #e4e4e4;
     color: #6e6e6e;
@@ -248,15 +254,27 @@
 }
 .sl-center {
     position: absolute;
-    top: calc(var(--u) * 82);
+    top: calc(var(--u) * 48);
+    bottom: calc(var(--u) * 50);
     left: 0;
     right: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding: 0 calc(var(--u) * 42);
     text-align: center;
     z-index: 2;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
 }
+.sl-center::-webkit-scrollbar {
+    display: none;
+}
 .sl-time {
     display: block;
+    flex: 0 0 auto;
     font-size: calc(var(--u) * 21);
     line-height: calc(var(--u) * 28);
     font-weight: 900;
@@ -264,8 +282,9 @@
 }
 .sl-caption {
     display: block;
+    flex: 0 0 auto;
     margin-top: calc(var(--u) * 1);
-    padding: 0 calc(var(--u) * 50);
+    padding: 0 calc(var(--u) * 8);
     font-size: calc(var(--u) * 14.5);
     line-height: calc(var(--u) * 21);
     font-weight: 500;
@@ -296,10 +315,12 @@
 .sl-comment {
     position: absolute;
     left: calc(var(--u) * 15);
+    right: calc(var(--u) * 48);
     bottom: calc(var(--u) * 14);
     display: flex;
     align-items: center;
     gap: calc(var(--u) * 5);
+    min-width: 0;
     z-index: 2;
 }
 .sl-bubble {
@@ -312,6 +333,9 @@
     line-height: calc(var(--u) * 25);
     font-weight: 700;
     white-space: nowrap;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .sl-more {
     position: absolute;

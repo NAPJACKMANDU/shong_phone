@@ -107,5 +107,5 @@ export interface GridPost {
 export const GRID_POSTS: GridPost[] = [
     { id: 1, feedPostId: 4, multi: true, src: '/instagram/chan1.jpg' },
     { id: 2, feedPostId: 9, multi: true, src: '/instagram/chanton1.jpg' },
-    { id: 3, feedPostId: 10,  kind: 'video', src: '/instagram/chanton0.mp4' },
+    { id: 3, feedPostId: 10, multi: false, src: '/instagram/ton.jpg' },
 ]

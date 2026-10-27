@@ -1,9 +1,11 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { IgAvatar, IgTabBar, IconPlus } from '../../common/instagramcommon.tsx'
+import KakaoNotification from '../kakaoTalk/kakaoNotification.tsx'
+import type { KakaoNoticeMsg } from '../kakaoTalk/kakaoNotification.tsx'
 import { GRID_POSTS } from '../../data/instagramdata.ts'
 import { FEED_POSTS, getInstagramProfileSrc, SEONGCHAN } from '../../data/instagramfeeddata.ts'
-import type { FeedPost } from '../../data/instagramfeeddata.ts'
+import type { CommentReply, FeedPost } from '../../data/instagramfeeddata.ts'
 import { CommentModal, PostCard } from './instagramhome.tsx'
 import '../../css/instagram/instagramprofileCss.css'
 
@@ -86,9 +88,17 @@ export const InstagramProfile = () => {
     const [tab, setTab] = useState<'grid' | 'repost' | 'tagged'>('grid')
     const [selectedPostId, setSelectedPostId] = useState<number | null>(null)
     const [activeCommentPost, setActiveCommentPost] = useState<FeedPost | null>(null)
+    const [notifications, setNotifications] = useState<KakaoNoticeMsg[]>([])
     const viewerRef = useRef<HTMLDivElement>(null)
     const postRefs = useRef(new Map<number, HTMLDivElement>())
     const selectedPost = PROFILE_POSTS.find((post) => post.id === selectedPostId) ?? null
+    const showAutoReplyNotification = (reply: CommentReply) => {
+        setNotifications((current) => [...current, {
+            id: Date.now(),
+            sender: reply.user,
+            text: `댓글에 답글을 남겼습니다: ${reply.text}`,
+        }])
+    }
 
     useLayoutEffect(() => {
         if (selectedPostId === null) return
@@ -210,8 +220,15 @@ export const InstagramProfile = () => {
             {selectedPostId === null && <IgTabBar active="profile" />}
 
             {activeCommentPost && (
-                <CommentModal post={activeCommentPost} onClose={() => setActiveCommentPost(null)} />
+                <CommentModal
+                    post={activeCommentPost}
+                    onClose={() => setActiveCommentPost(null)}
+                    onAutoReply={showAutoReplyNotification}
+                />
             )}
+            <div className="ih-kakao-notification">
+                <KakaoNotification messages={notifications} onClear={() => setNotifications([])} />
+            </div>
         </div>
     )
 }

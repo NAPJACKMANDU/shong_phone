@@ -4,7 +4,7 @@ import {
     KakaoStatusBar, KakaoTabBar, KakaoAvatar, IconSearch, IconGear, lineProps, KAKAO_PATH, useKakaoUnreadTotal,
 } from '../../common/kakaoCommon.tsx'
 import '../../css/kakaoTalk/kakaochatlistCss.css'
-import { getKakaoChatUnread, KAKAO_CHATS, getKakaoPerson } from '../../data/kakaoData.ts'
+import { getKakaoChatUnread, KAKAO_CHATS, getKakaoPerson, getKakaoLiveMessages } from '../../data/kakaoData.ts'
 import { getLastKakaoMessage } from '../../data/kakaoMessages.ts'
 
 /* ===================== 아이콘 ===================== */
@@ -76,7 +76,8 @@ export const KakaoChatList = () => {
 
                 {/* 채팅방 목록 */}
                 {KAKAO_CHATS.map((c) => {
-                    const lastMessage = getLastKakaoMessage(c.id)
+                    const live = getKakaoLiveMessages(c.id)
+                    const lastMessage = live[live.length - 1] ?? getLastKakaoMessage(c.id)
                     const preview = lastMessage?.photo ? '사진을 보냈습니다.' : lastMessage?.text ?? ''
 
                     return (

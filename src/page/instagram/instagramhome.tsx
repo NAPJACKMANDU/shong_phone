@@ -5,12 +5,15 @@ import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import {
     IgAvatar, IgTabBar, IconPlus, IconChevronDown, IconHeart, IconComment, IconSendPlane,
 } from '../../common/instagramcommon.tsx'
+import KakaoNotification from '../kakaoTalk/kakaoNotification.tsx'
+import type { KakaoNoticeMsg } from '../kakaoTalk/kakaoNotification.tsx'
 import { getSeenStoryUserIds, IG_USERS, IG_PATH } from '../../data/instagramdata.ts'
 import {
-    FEED_POSTS, getCommentLike, getCommentLikesVersion, getInitialCommentLike,
-    getInstagramProfileSrc, SEONGCHAN, setCommentLike, subscribeToCommentLikes,
+    addUserComment, deleteUserComment, FEED_POSTS, getCommentLike, getCommentLikesVersion,
+    getInitialCommentLike, getInstagramProfileSrc, getUserComments, SEONGCHAN,
+    setCommentLike, subscribeToCommentLikes,
 } from '../../data/instagramfeeddata.ts'
-import type { FeedPost, CommentItem } from '../../data/instagramfeeddata.ts'
+import type { FeedPost, CommentItem, CommentReply } from '../../data/instagramfeeddata.ts'
 import '../../css/instagram/instagramhomeCss.css'
 
 /* ===================== 아이콘 ===================== */
@@ -54,14 +57,6 @@ const IconMoreHorizontal = () => (
         <circle cx="19" cy="12" r="2" />
     </svg>
 )
-const IconImageIcon = () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <rect x="3" y="3" width="18" height="18" rx="4" />
-        <circle cx="8.5" cy="8.5" r="1.5" />
-        <path d="M21 15l-5-5L5 21" />
-    </svg>
-)
-
 const formatCount = (n: number) => n.toLocaleString('ko-KR')
 
 const FeedVideo = ({ src }: { src: string }) => {
@@ -96,11 +91,22 @@ const FeedVideo = ({ src }: { src: string }) => {
 interface CommentModalProps {
     post: FeedPost
     onClose: () => void
+    onAutoReply?: (reply: CommentReply) => void
 }
 
-export const CommentModal = ({ post, onClose }: CommentModalProps) => {
-    const comments = post.commentList ?? []
+export const CommentModal = ({ post, onClose, onAutoReply }: CommentModalProps) => {
+    useSyncExternalStore(subscribeToCommentLikes, getCommentLikesVersion, getCommentLikesVersion)
+    const comments = [...(post.commentList ?? []), ...getUserComments(post.id)]
     const [commentInput, setCommentInput] = useState('')
+
+    const submitComment = () => {
+        const text = commentInput.trim()
+        if (!text) return
+
+        const reply = addUserComment(post.id, text)
+        setCommentInput('')
+        if (reply) onAutoReply?.(reply)
+    }
 
     return (
         <div className="ih-modal-overlay" onClick={onClose}>
@@ -121,7 +127,12 @@ export const CommentModal = ({ post, onClose }: CommentModalProps) => {
                     </div>
 
                     {comments.map((c) => (
-                        <CommentRow key={c.id} post={post} comment={c} />
+                        <CommentRow
+                            key={c.id}
+                            post={post}
+                            comment={c}
+                            onDelete={c.isUserComment ? () => deleteUserComment(post.id, c.id) : undefined}
+                        />
                     ))}
                 </div>
 
@@ -142,10 +153,22 @@ export const CommentModal = ({ post, onClose }: CommentModalProps) => {
                         placeholder="댓글 달기..."
                         value={commentInput}
                         onChange={(e) => setCommentInput(e.target.value)}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
+                                event.preventDefault()
+                                submitComment()
+                            }
+                        }}
                     />
                     <div className="ih-input-actions">
-                        <button className="ih-input-icon"><IconImageIcon /></button>
-                        <button className="ih-gif-btn">GIF</button>
+                        <button
+                            type="button"
+                            className="ih-comment-send-btn"
+                            disabled={!commentInput.trim()}
+                            onClick={submitComment}
+                        >
+                            전송
+                        </button>
                     </div>
                 </div>
             </div>
@@ -154,12 +177,20 @@ export const CommentModal = ({ post, onClose }: CommentModalProps) => {
 }
 
 /* ===================== 댓글 1개 개별 행 ===================== */
-const CommentRow = ({ post, comment }: { post: FeedPost; comment: CommentItem }) => {
+const CommentRow = ({
+    post,
+    comment,
+    onDelete,
+}: {
+    post: FeedPost
+    comment: CommentItem
+    onDelete?: () => void
+}) => {
     useSyncExternalStore(subscribeToCommentLikes, getCommentLikesVersion, getCommentLikesVersion)
     const liked = getCommentLike(post, comment)
     const initialLiked = getInitialCommentLike(post, comment)
     const likeCount = Math.max(0, comment.likes + Number(liked) - Number(initialLiked))
-    const [hideReplies, setHideReplies] = useState(true)
+    const [hideReplies, setHideReplies] = useState(!(comment.isUserComment && comment.replies?.length))
 
     const toggleLike = () => {
         setCommentLike(post, comment, !getCommentLike(post, comment))
@@ -184,6 +215,9 @@ const CommentRow = ({ post, comment }: { post: FeedPost; comment: CommentItem })
                     </p>
                     <div className="ih-comment-actions">
                         <button className="ih-reply-btn">답글 달기</button>
+                        {onDelete && (
+                            <button className="ih-reply-btn" onClick={onDelete}>삭제</button>
+                        )}
                     </div>
                 </div>
                 <button className="ih-comment-like-btn" onClick={toggleLike}>
@@ -246,7 +280,8 @@ export const PostCard = ({ post, onOpenComments }: { post: FeedPost; onOpenComme
     const total = post.slides.length
     const likeCount = post.likes 
     const previewComments = post.previewComments?.slice(0, 2) ?? []
-    const commentCount = post.commentCount ?? Math.max(post.commentList?.length ?? 0, post.previewComments?.length ?? 0)
+    const commentCount = (post.commentCount ?? Math.max(post.commentList?.length ?? 0, post.previewComments?.length ?? 0))
+        + getUserComments(post.id).length
  
     // 사진을 옆으로 밀면 몇 번째인지 알아내요 (1/3 표시와 아래 점이 바뀌어요)
     const handleSlides = (e: UIEvent<HTMLDivElement>) => {
@@ -364,10 +399,19 @@ export const PostCard = ({ post, onOpenComments }: { post: FeedPost; onOpenComme
 export const InstagramHome = () => {
     const navigate = useNavigate()
     const [activeCommentPost, setActiveCommentPost] = useState<FeedPost | null>(null)
+    const [notifications, setNotifications] = useState<KakaoNoticeMsg[]>([])
     const seenStoryUserIds = getSeenStoryUserIds()
 
     const openStory = (id: string, hasStory: boolean) => {
         if (hasStory) navigate(`${IG_PATH.story}?user=${encodeURIComponent(id)}`)
+    }
+
+    const showAutoReplyNotification = (reply: CommentReply) => {
+        setNotifications((current) => [...current, {
+            id: Date.now(),
+            sender: reply.user,
+            text: `댓글에 답글을 남겼습니다: ${reply.text}`,
+        }])
     }
 
     return (
@@ -437,8 +481,15 @@ export const InstagramHome = () => {
 
             {/* 댓글 바텀시트 팝업 모달 */}
             {activeCommentPost && (
-                <CommentModal post={activeCommentPost} onClose={() => setActiveCommentPost(null)} />
+                <CommentModal
+                    post={activeCommentPost}
+                    onClose={() => setActiveCommentPost(null)}
+                    onAutoReply={showAutoReplyNotification}
+                />
             )}
+            <div className="ih-kakao-notification">
+                <KakaoNotification messages={notifications} onClear={() => setNotifications([])} />
+            </div>
         </div>
     )
 }

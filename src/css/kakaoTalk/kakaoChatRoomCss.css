@@ -362,3 +362,61 @@
     width: calc(var(--u) * 16);
     height: calc(var(--u) * 16);
 }
+
+/* ===================== 새 메시지 미리보기 알림 ===================== */
+.kr-incoming {
+    position: absolute;
+    left: calc(var(--u) * 10);
+    right: calc(var(--u) * 10);
+    bottom: calc(var(--u) * 90);
+    height: calc(var(--u) * 36);
+    padding: 0 calc(var(--u) * 14) 0 calc(var(--u) * 8);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 10);
+    border: 0;
+    border-radius: calc(var(--u) * 24);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 2px 14px rgba(40, 60, 90, 0.15);
+    font-family: inherit;
+    text-align: left;
+    color: #111;
+    cursor: pointer;
+    z-index: 26;
+    animation: kr-incoming-in 0.22s ease-out;
+}
+.kr-incoming > :first-child {
+    flex: 0 0 auto;
+}
+.kr-incoming-text {
+    flex: 1;
+    min-width: 0;
+    display: block;
+    font-size: calc(var(--u) * 14);
+    line-height: calc(var(--u) * 20);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.kr-incoming-text b {
+    margin-right: calc(var(--u) * 8);
+    font-weight: 500;
+}
+.kr-incoming-count {
+    flex: 0 0 auto;
+    min-width: calc(var(--u) * 20);
+    height: calc(var(--u) * 20);
+    padding: 0 calc(var(--u) * 6);
+    box-sizing: border-box;
+    border-radius: calc(var(--u) * 10);
+    background: #f9e44c;
+    font-size: calc(var(--u) * 12);
+    line-height: calc(var(--u) * 20);
+    text-align: center;
+    font-weight: 600;
+}
+@keyframes kr-incoming-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}

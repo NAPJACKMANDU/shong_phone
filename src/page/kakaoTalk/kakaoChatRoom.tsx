@@ -1,9 +1,13 @@
-import { Fragment, useLayoutEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import {
     KakaoStatusBar, KakaoAvatar, IconSearch, lineProps, KAKAO_PATH, useKakaoUnreadTotal,
 } from '../../common/kakaoCommon.tsx'
-import { getKakaoChat, getKakaoPerson, markKakaoChatRead } from '../../data/kakaoData.ts'
+import {
+    getKakaoChat, getKakaoPerson, markKakaoChatRead,
+    getKakaoLiveMessages, subscribeToKakaoLive, setActiveKakaoChat,
+    type KakaoLiveMessage,
+} from '../../data/kakaoData.ts'
 import { getKakaoMessages } from '../../data/kakaoMessages.ts'
 import '../../css/kakaoTalk/kakaoChatRoomCss.css'
 
@@ -63,6 +67,9 @@ const formatMessageDate = (date: string): string =>
         weekday: 'long',
     }).format(new Date(`${date}T12:00:00`))
 
+const useKakaoLiveMessages = (chatId: string) =>
+useSyncExternalStore(subscribeToKakaoLive, () => getKakaoLiveMessages(chatId))
+
 /* ===================== 채팅방 페이지 ===================== */
 export const KakaoChatRoom = () => {
     const navigate = useNavigate()
@@ -71,8 +78,34 @@ export const KakaoChatRoom = () => {
     const [showMembers, setShowMembers] = useState(false)
     const unreadTotal = useKakaoUnreadTotal()
     const chat = getKakaoChat(chatId)
-    const messages = chat ? getKakaoMessages(chat.id) : []
+    const liveMessages = useKakaoLiveMessages(chatId ?? '')
+    const messages = chat ? [...getKakaoMessages(chat.id), ...liveMessages] : []
     const participants = chat?.memberIds.map(getKakaoPerson) ?? []
+
+    const [incoming, setIncoming] = useState<{ message: KakaoLiveMessage; count: number } | null>(null)
+    const prevLiveCount = useRef(liveMessages.length)
+
+    // 현재 열려 있는 방 등록 (이 방의 메시지는 안읽음으로 안 쌓임)
+    useEffect(() => {
+        if (!chatId) return
+        setActiveKakaoChat(chatId)
+        return () => setActiveKakaoChat(null)
+    }, [chatId])
+
+    // 방이 바뀌면 알림 초기화
+    useEffect(() => {
+        setIncoming(null)
+        prevLiveCount.current = getKakaoLiveMessages(chatId ?? '').length
+    }, [chatId])
+
+    // 새 메시지가 오면 입력창 위 알림 표시
+    useEffect(() => {
+        const added = liveMessages.length - prevLiveCount.current
+        prevLiveCount.current = liveMessages.length
+        if (added <= 0) return
+        const latest = liveMessages[liveMessages.length - 1]
+        setIncoming((prev) => ({ message: latest, count: (prev?.count ?? 0) + added }))
+    }, [liveMessages])
 
     useLayoutEffect(() => {
         if (chatId) markKakaoChatRead(chatId)
@@ -81,6 +114,21 @@ export const KakaoChatRoom = () => {
         box.scrollTop = box.scrollHeight
     }, [chatId])
 
+    // 맨 아래까지 스크롤하면 알림 숨김
+    const handleScroll = () => {
+        const box = boxRef.current
+        if (!box) return
+        if (box.scrollHeight - box.scrollTop - box.clientHeight < 24) setIncoming(null)
+    }
+
+    // 알림을 누르면 최신 메시지로 이동
+    const scrollToLatest = () => {
+        boxRef.current?.scrollTo({ top: boxRef.current.scrollHeight, behavior: 'smooth' })
+        setIncoming(null)
+    }
+
+    const incomingAuthor = incoming ? getKakaoPerson(incoming.message.authorId) : null
+
     if (!chat) {
         return <Navigate to={KAKAO_PATH.chats} replace />
     }
@@ -88,7 +136,7 @@ export const KakaoChatRoom = () => {
     return (
         <div className="kk-wrapper kr-wrapper">
             {/* 메시지 목록 */}
-            <div className="kr-messages" ref={boxRef}>
+            <div className="kr-messages" ref={boxRef} onScroll={handleScroll}>
                 <div className="kr-inner">
                     {messages.map((m, index) => {
                         const previousMessage = messages[index - 1]
@@ -194,6 +242,16 @@ export const KakaoChatRoom = () => {
             {/* 하단 입력창 */}
             <div className="kr-bottom" />
             <div className="kr-input">
+            {incoming && incomingAuthor && (
+                <button className="kr-incoming" onClick={scrollToLatest}>
+                    <KakaoAvatar {...incomingAuthor} size={24} />
+                    <span className="kr-incoming-text">
+                        <b>{incomingAuthor.name}</b>
+                        {incoming.message.text}
+                    </span>
+                    {incoming.count > 1 && <span className="kr-incoming-count">{incoming.count}</span>}
+                </button>
+            )}
                 <button className="kr-circle-btn"><IconPlus /></button>
                 <span className="kr-placeholder">메시지 입력</span>
                 <button className="kr-emoji"><IconSmile /></button>
