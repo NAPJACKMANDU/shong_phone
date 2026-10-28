@@ -67,7 +67,7 @@
 }
 .ih-story {
     flex: 0 0 auto;
-    width: calc(var(--u) * 72);
+    width: calc(var(--u) * 70);
     padding: 0;
     border: none;
     background: none;
@@ -79,7 +79,7 @@
 
 .ih-story-friend {
     flex: 0 0 auto;
-    width: calc(var(--u) * 75);
+    width: calc(var(--u) * 80);
     padding: 0;
     border: none;
     background: none;
@@ -172,7 +172,7 @@
 
 .ih-story-name-me {
     width: 100%;
-    margin-top: calc(var(--u) * 8.5);
+    margin-top: calc(var(--u) * 15.5);
     font-size: calc(var(--u) * 11);
     line-height: calc(var(--u) * 15);
     color: #262626;
