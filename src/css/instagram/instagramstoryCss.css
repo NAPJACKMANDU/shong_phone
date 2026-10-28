@@ -233,3 +233,12 @@
     width: 100%;
     height: 100%;
 }
+
+.st-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* 카드를 꽉 채움 (넘치는 부분은 잘림) */
+    object-position: center; /* 가운데 기준으로 자르기 */
+}

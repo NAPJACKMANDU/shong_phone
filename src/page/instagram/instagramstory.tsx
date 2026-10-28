@@ -68,17 +68,18 @@ export const InstagramStory = () => {
         <div className="kk-wrapper st-wrapper">
             {story.src && <link rel="preload" as="image" href={story.src} />}
             {/* 스토리 화면 */}
-            <div className="st-card">
-                  {story.src && <img src={story.src} alt="story" loading="eager" decoding="async"
-                                    style={{ 
-                                               width: '100%', 
-                                               height: '100%', 
-                                               objectFit: 'contain' // or 'cover'
-                                            }} />}
-                  <div className="st-text-story">{story.text}</div>
-            </div>
-
-
+                <div className="st-card">
+                    {story.src && (
+                        <img
+                            className="st-img"
+                            src={story.src}
+                            alt="story"
+                            loading="eager"
+                            decoding="async"
+                        />
+                    )}
+                    <div className="st-text-story">{story.text}</div>
+                </div>
             {/* 넘기기 영역 (왼쪽 = 이전, 오른쪽 = 다음) */}
             <button className="st-zone prev" onClick={goPrev} aria-label="이전 스토리" />
             <button className="st-zone next" onClick={goNext} aria-label="다음 스토리" />
