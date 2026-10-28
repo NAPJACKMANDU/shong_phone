@@ -1,9 +1,3 @@
-/* ===================== 메모 데이터 (목록 + 메모룸 공용) =====================
-   - 메모룸에 보이는 글은 각 메모의 body 에서 가져와요.
-   - 목록의 제목 = body 의 첫 줄, 미리보기 = 그 다음에 나오는 첫 번째 글자 줄이에요.
-     (글자가 없으면 '추가 텍스트 없음')
-   - 메모룸 맨 위 날짜(stamp)와 목록 날짜(date)는 따로 적어요. */
-
 export const MEMO_PATH = {
     list: '/kakaoMemo',
     room: '/kakaomemoroom',
@@ -33,7 +27,7 @@ export const TOTAL_COUNT = 11
 
 export const MEMOS: Memo[] = [
     // ----- 고정된 메모 -----
-    { id: 1, section: 'pinned', date: '2025. 10. 22.', stamp: '2025년 10월 22일 오후 9:12', 
+    { id: 1, section: 'pinned', date: '2025. 7. 14.', stamp: '2025년 7월 14일 오후 9:12', 
        body: [
     '앤톤 찬영 리',
     '- 풀네임 뭐에요 😡',
@@ -52,9 +46,10 @@ export const MEMOS: Memo[] = [
     '같이 간 나라',
     '뉴저지 프랑스 도쿄 오사카 후쿠오카 상하이',
     '- 형 저희 태국도 가고 코타키나발루도 다녀왔잖아요.. 😵',
+    '최근에 쿠알라룸푸르도 다녀옴',
     '',
 	'손잡은날 뽀뽀한날 키스한날 잔날 사귄당일',
-	'사귄날짜 2023년 10월 22일',
+	'사귄날짜 2023년 7으ㅜㅏㄹ월 14일',
 	'고백 내가 함 사귀고 몇 달 뒤에 인스타로 오픈함 친구들한테 욕먹음',
 	'- 왜 욕먹었어여ㅕ ',
 	'',
@@ -99,7 +94,7 @@ export const MEMOS: Memo[] = [
 	
 ].join('\n'),
      },
-    { id: 2, section: 'pinned', date: '2025. 8. 5.', stamp: '2025년 8월 5일 오전 11:20',
+    { id: 2, section: 'pinned', date: '2025. 6. 5.', stamp: '2025년 6월 5일 오전 11:20',
         body: ['넥슨',
             'seongchan0913',
             'seongchan123!!',
@@ -131,11 +126,11 @@ export const MEMOS: Memo[] = [
 
     // ----- 이전 7일 -----
     {
-        id: 5, section: 'week', date: '목요일', stamp: '2026년 10월 15일 오후 3:03',
+        id: 5, section: 'week', date: '목요일', stamp: '2026년 7월 8일 오후 3:03',
         body: [
             '<NOL 모바일티켓이 도착했어요>',
             '',
-            '받은티켓 : 2026 준플레이오프 1차전 KIA vs LG',
+            '받은티켓 : KIA vs LG',
             '',
             'PIN번호 : ABCD932847ADED',
             '',

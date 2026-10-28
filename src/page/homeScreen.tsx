@@ -394,7 +394,7 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
                 navigate("/KakaoChatList", { state: { animateScreenEnter: true } });
                 break;
             case "Instagram":
-                navigate("/instagramhome"); // 인스타그램을 누르면 이동할 경로
+                navigate("/instagramhome");
                 break;
             case "메모":
                 navigate("/kakaoMemo");
@@ -494,8 +494,8 @@ export const HomeScreen = ({ showStatusBar = true }: { showStatusBar?: boolean }
                         {/* 캘린더 위젯 */}
                         <div className="widget-wrap" onClick={() => navigate('/calendarmain')}>
                             <div className="widget widget-calendar">
-                                <div className="widget-cal-day">목요일</div>
-                                <div className="widget-cal-date">22</div>
+                                <div className="widget-cal-day">화요일</div>
+                                <div className="widget-cal-date">14</div>
 
                                 {/* 하단 일정 블록 (분홍색 포인트 바 + 텍스트) */}
                                 <div className="widget-cal-event-box">

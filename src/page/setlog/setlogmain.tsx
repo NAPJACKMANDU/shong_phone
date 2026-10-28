@@ -154,7 +154,7 @@ export const SetlogMain = () => {
     /* 선택된 날짜 내 시간대 인덱스 (0부터 시작) */
     const [timeIndex, setTimeIndex] = useState<number>(0)
     const [open, setOpen] = useState(false)
-    const [calMonth, setCalMonth] = useState(10)
+    const [calMonth, setCalMonth] = useState(7)
 
     /* 선택된 날짜에 해당되는 시간대 목록만 필터링 */
     const currentDaySlots = useMemo(() => {

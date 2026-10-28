@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getAppToday } from '../../common/appDate'
 import { KakaoStatusBar, IconSearch, lineProps } from '../../common/kakaoCommon.tsx'
 import '../../css/calendar/calendarCss.css'
 
@@ -63,6 +64,7 @@ const EVENTS: Record<string, CalEvent[]> = {
     '5-25': [{ title: '부처님오신날(대체공휴일)', type: 'holiday' }],
     '6-1': [{ title: '앤토니 미국', type: 'event' }],
     '6-6': [{ title: '현충일', type: 'holiday' }],
+    '7-14': [{ title: '천사랑 3주년 ㅎㅎ', type: 'event' }],
     '8-15': [{ title: '광복절', type: 'holiday' }],
     '8-17': [{ title: '광복절(대체공휴일)', type: 'holiday' }],
     '9-24': [{ title: '추석 연휴', type: 'holiday' }],
@@ -71,7 +73,6 @@ const EVENTS: Record<string, CalEvent[]> = {
     '10-3': [{ title: '개천절', type: 'holiday' }],
     '10-5': [{ title: '개천절(대체공휴일)', type: 'holiday' }],
     '10-9': [{ title: '한글날', type: 'holiday' }],
-    '10-22': [{ title: '천사랑 3주년 ㅎㅎ', type: 'event' }],
     '12-25': [{ title: '성탄절', type: 'holiday' }],
 }
 
@@ -94,7 +95,7 @@ const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 export const CalendarMain = () => {
     const navigate = useNavigate()
     const scrollRef = useRef<HTMLDivElement>(null)
-    const today = useMemo(() => new Date(), [])
+    const today = useMemo(() => getAppToday(), [])
     const todayInYear = today.getFullYear() === YEAR
 
     const [month, setMonth] = useState<number>(todayInYear ? today.getMonth() + 1 : 10)

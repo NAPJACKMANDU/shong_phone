@@ -84,7 +84,7 @@ const MEMORIES: Memory[] = [
 
 const PINNED: Tile[] = [
     { id: 1, label: '즐겨찾기', heart: true, src: '/photo-thumbs/227.jpg' },
-    { id: 2, label: <>최근 저장된<br />항목</>, two: true, src: '/photo-thumbs/233.jpg' },
+    { id: 2, label: <>최근 저장된<br />항목</>, two: true, src: '/photo-thumbs/252.jpg' },
     { id: 3, label: '지도', map: true, bg: '#bcdcec' }
 ]
 
@@ -98,7 +98,7 @@ const ALBUMS: Tile[] = [
 const PEOPLE: Tile[] = [
     { id: 1, src: '/photo-thumbs/166.jpg' },
     { id: 2, src: '/photo-thumbs/39.jpg' },
-    { id: 3, src: '/photo-thumbs/234.jpg' },
+    { id: 3, src: '/photo-thumbs/253.jpg' },
     { id: 4, src: '/photo-thumbs/187.jpg' },
 
 ]

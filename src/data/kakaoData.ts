@@ -1,4 +1,5 @@
 import type { ProfileColor } from '../common/kakaoCommon'
+import { APP_TODAY } from '../common/appDate'
 import kakaoBank from '../img/kakaobank.png'
 import shotaro from '../img/shotaro.png'
 import wonbin from '../img/wonbin.png'
@@ -276,7 +277,7 @@ export const receiveKakaoMessage = (
         id: `live-${++liveSeq}`,
         from: 'other',
         authorId: options?.authorId ?? chat.memberIds.find((id) => id !== 'self') ?? chat.memberIds[0],
-        date: options?.date ?? `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`,
+        date: options?.date ?? APP_TODAY,
         time: options?.time ?? formatKakaoTime(now),
         text,
     }
