@@ -72,11 +72,11 @@ export const ANTON = 'antonyeeton';
 
 const PROFILE_SOURCES: Partial<Record<string, string>> = {
     [SHOTARO]: '/instagram/shotaroProfile.jpg',
-    [EUNSEOK]:'/instagram/dolprofile.jpg',
+    [EUNSEOK]:'/instagram/dolProfile.jpg',
     [SEONGCHAN]: '/instagram/chanProfile.jpg',
-    [WONBIN]: '/instagram/wonbinprofile.jpg',
-    [SOHEE]: '/instagram/soheeprofile.jpg',
-    [ANTON]:'/instagram/antonprofile.jpg'
+    [WONBIN]: '/instagram/wonbinProfile.jpg',
+    [SOHEE]: '/instagram/soheeProfile.jpg',
+    [ANTON]:'/instagram/antonProfile.jpg'
 }
 
 export const getInstagramProfileSrc = (username: string, src?: string) =>

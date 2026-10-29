@@ -221,12 +221,6 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
               <rect x="9" y="11" width="4" height="6" rx="2" fill="rgba(60,60,60,0.8)" />
             </svg>
           </button>
-          <div className="lock-dnd">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff">
-              <path d="M21 14.5A9 9 0 0 1 9.5 3a9 9 0 1 0 11.5 11.5z" />
-            </svg>
-            <span>방해금지 모드</span>
-          </div>
           <button className="lock-quick-btn" aria-label="Camera">
             <svg width="24" height="20" viewBox="0 0 34 28" fill="#fff">
               <path d="M11 0h12l2.5 4H30a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h4.5z" />

@@ -285,7 +285,7 @@
 .ip-post-viewer::after {
     content: "";
     display: block;
-    height: calc(100dvh - var(--u) * 100);
+    height: calc(3dvh - var(--u) * 2);
 }
 .ip-post-item {
     scroll-snap-align: start;
