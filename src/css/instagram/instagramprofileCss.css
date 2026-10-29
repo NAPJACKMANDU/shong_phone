@@ -282,6 +282,11 @@
 .ip-post-viewer::-webkit-scrollbar {
     display: none;
 }
+.ip-post-viewer::after {
+    content: "";
+    display: block;
+    height: calc(100dvh - var(--u) * 100);
+}
 .ip-post-item {
     scroll-snap-align: start;
     scroll-margin-top: calc(var(--u) * 48);

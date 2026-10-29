@@ -54,12 +54,12 @@ export const PhotosLibrary = () => {
             <div className="pl-grid" ref={gridRef} onScroll={updateVisibleDate}>
                 {/* 헤더 영역 뒤로 사진이 가리지 않도록 상단 빈 공간 */}
                 <div className="pl-grid-spacer" />
-                {PHOTOS.map((p, index) => (
+                {PHOTOS.map((p) => (
                     <PhotoBox
                         key={p.id}
                         src={p.src}
                         bg={p.bg}
-                        loading={index >= PHOTOS.length - 18 ? 'eager' : 'lazy'}
+                        loading="eager"
                         className={`pl-tile ${p.tall ? 'tall' : ''}`}
                     />
                 ))}

@@ -42,7 +42,7 @@ export const InstagramSearch = () => {
                             {it.kind === 'term' ? (
                                 <div className="is-clock"><IconClock /></div>
                             ) : (
-                                <IgAvatar size={44} tint={it.tint ?? 0} />
+                                <IgAvatar size={42} tint={it.tint ?? 0} src={it.src} />
                             )}
                             <div className="is-text">
                                 <span className="is-name">{it.name}</span>

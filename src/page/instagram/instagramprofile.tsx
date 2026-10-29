@@ -10,12 +10,7 @@ import { CommentModal, PostCard } from './instagramhome.tsx'
 import '../../css/instagram/instagramprofileCss.css'
 
 /* ===================== 아이콘 ===================== */
-const IconLock = () => (
-    <svg className="lock" viewBox="0 0 12 15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-        <rect x="1.5" y="6" width="9" height="7.5" rx="2" />
-        <path d="M3.5 6V4.5a2.5 2.5 0 0 1 5 0V6" />
-    </svg>
-)
+
 const IconChevron = () => (
     <svg className="chev" viewBox="0 0 12 8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="1.5 1.5 6 6 10.5 1.5" />
@@ -108,7 +103,10 @@ export const InstagramProfile = () => {
         if (!viewer || !postElement) return
 
         const headerHeight = viewer.querySelector('.ip-post-viewer-header')?.clientHeight ?? 0
-        viewer.scrollTo({ top: postElement.offsetTop - headerHeight, behavior: 'auto' })
+        const postTop = postElement.getBoundingClientRect().top
+            - viewer.getBoundingClientRect().top
+            + viewer.scrollTop
+        viewer.scrollTop = postTop - headerHeight
     }, [selectedPostId])
 
     return (
@@ -192,7 +190,7 @@ export const InstagramProfile = () => {
                                 else postRefs.current.delete(post.id)
                             }}
                         >
-                            <PostCard post={post} onOpenComments={setActiveCommentPost} />
+                            <PostCard key={`${selectedPostId}-${post.id}`} post={post} onOpenComments={setActiveCommentPost} />
                         </div>
                     ))}
                 </div>
@@ -203,7 +201,6 @@ export const InstagramProfile = () => {
                 <div className="ig-header-row">
                     <button className="ig-icon-btn" style={{ left: 'calc(var(--u) * 25)' }}><IconPlus /></button>
                     <button className="ip-name">
-                        <IconLock />
                         <b>{USERNAME}</b>
                         <IconChevron />
                         <i />

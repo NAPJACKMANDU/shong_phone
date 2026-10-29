@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getBackDestination, KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { IgAvatar, IconHeart, IconComment, IconSendPlane, IconClose } from '../../common/instagramcommon.tsx'
@@ -27,6 +27,9 @@ export const InstagramStory = () => {
     const [uIdx, setUIdx] = useState(firstUser)
     const [sIdx, setSIdx] = useState(0)
     const [tick, setTick] = useState(0)   // 같은 스토리를 다시 시작할 때 막대 애니메이션을 처음부터
+    const [isPaused, setIsPaused] = useState(false)
+    const remainingTime = useRef(STORY_MS)
+    const timerStartedAt = useRef<number | null>(null)
 
     const user = STORY_USERS[uIdx]
     const story = user.stories[sIdx]
@@ -53,19 +56,37 @@ export const InstagramStory = () => {
         }
     }
 
-    // 5초 뒤 자동으로 다음 스토리
     useEffect(() => {
-        const timer = window.setTimeout(goNext, STORY_MS)
-        return () => window.clearTimeout(timer)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        remainingTime.current = STORY_MS
     }, [uIdx, sIdx, tick])
+
+    // 남은 시간만큼 자동으로 다음 스토리
+    useEffect(() => {
+        if (isPaused) return
+
+        timerStartedAt.current = Date.now()
+        const timer = window.setTimeout(goNext, remainingTime.current)
+        return () => {
+            window.clearTimeout(timer)
+            if (timerStartedAt.current !== null) {
+                remainingTime.current = Math.max(0, remainingTime.current - (Date.now() - timerStartedAt.current))
+                timerStartedAt.current = null
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [uIdx, sIdx, tick, isPaused])
 
     useEffect(() => {
         markStoryUserSeen(user.id)
     }, [user.id])
 
     return (
-        <div className="kk-wrapper st-wrapper">
+        <div
+            className="kk-wrapper st-wrapper"
+            onPointerDownCapture={() => setIsPaused(true)}
+            onPointerUpCapture={() => setIsPaused(false)}
+            onPointerCancelCapture={() => setIsPaused(false)}
+        >
             {story.src && <link rel="preload" as="image" href={story.src} />}
             {/* 스토리 화면 */}
                 <div className="st-card">
@@ -85,7 +106,7 @@ export const InstagramStory = () => {
             <button className="st-zone next" onClick={goNext} aria-label="다음 스토리" />
 
             {/* 위쪽 진행 막대 */}
-            <div className="st-progress">
+            <div className={`st-progress ${isPaused ? 'paused' : ''}`}>
                 {user.stories.map((s, i) => (
                     <div
                         key={`${uIdx}-${s.id}-${i === sIdx ? tick : 0}`}

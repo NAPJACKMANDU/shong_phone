@@ -49,6 +49,9 @@
 .st-seg.cur i {
     animation: st-fill 5s linear forwards;
 }
+.st-progress.paused .st-seg.cur i {
+    animation-play-state: paused;
+}
 @keyframes st-fill {
     from { width: 0; }
     to { width: 100%; }

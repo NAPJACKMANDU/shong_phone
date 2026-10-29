@@ -85,11 +85,12 @@ export interface SearchItem {
     kind: 'term' | 'user'       // term: 시계 아이콘 (검색어), user: 프로필 사진
     name: string
     sub?: string
+    src?: string
     tint?: number
 }
 
 export const SEARCH_HISTORY: SearchItem[] = [
-    { id: 1, kind: 'user', name: 'Antonyeeton', sub: '앤톤 찬영 리 • bbinniy님 외 3명이 팔로우합니다', tint: 1 },
+    { id: 1, kind: 'user', name: 'Antonyeeton', sub: '앤톤 찬영 리 • bbinniy님 외 3명이 팔로우합니다', tint:3, src: getInstagramProfileSrc(ANTON)},
     { id: 2, kind: 'term', name: '앤톤'},
     { id: 3, kind: 'term', name: '수영팀' },
 ]
@@ -105,7 +106,7 @@ export interface GridPost {
 }
 
 export const GRID_POSTS: GridPost[] = [
-    { id: 1, feedPostId: 4, multi: true, src: '/instagram/chan1.jpg' },
-    { id: 2, feedPostId: 9, multi: true, src: '/instagram/chanton1.jpg' },
-    { id: 3, feedPostId: 10, multi: false, src: '/instagram/ton.jpg' },
+    { id: 1, feedPostId: 5, multi: true, src: '/instagram/chan1.jpg' },
+    { id: 2, feedPostId: 10, multi: true, src: '/instagram/chanton1.jpg' },
+    { id: 3, feedPostId: 11, multi: false, src: '/instagram/ton.jpg' },
 ]

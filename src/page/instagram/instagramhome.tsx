@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react'
 import type { UIEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
@@ -98,6 +98,8 @@ export const CommentModal = ({ post, onClose, onAutoReply }: CommentModalProps) 
     useSyncExternalStore(subscribeToCommentLikes, getCommentLikesVersion, getCommentLikesVersion)
     const comments = [...(post.commentList ?? []), ...getUserComments(post.id)]
     const [commentInput, setCommentInput] = useState('')
+    const touchStartY = useRef<number | null>(null)
+    const modalBodyRef = useRef<HTMLDivElement>(null)
 
     const submitComment = () => {
         const text = commentInput.trim()
@@ -110,7 +112,22 @@ export const CommentModal = ({ post, onClose, onAutoReply }: CommentModalProps) 
 
     return (
         <div className="ih-modal-overlay" onClick={onClose}>
-            <div className="ih-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div
+                className="ih-modal-content"
+                onClick={(e) => e.stopPropagation()}
+                onTouchStart={(event) => {
+                    touchStartY.current = event.touches[0]?.clientY ?? null
+                }}
+                onTouchEnd={(event) => {
+                    const startY = touchStartY.current
+                    touchStartY.current = null
+                    const endY = event.changedTouches[0]?.clientY
+                    if (startY !== null && endY !== undefined
+                        && endY - startY > 80 && (modalBodyRef.current?.scrollTop ?? 0) <= 0) {
+                        onClose()
+                    }
+                }}
+            >
                 {/* 시트 핸들러 */}
                 <div className="ih-modal-drag-handle" />
 
@@ -121,7 +138,7 @@ export const CommentModal = ({ post, onClose, onAutoReply }: CommentModalProps) 
                 </div>
 
                 {/* 댓글 목록 스크롤 영역 */}
-                <div className="ih-modal-body">
+                <div className="ih-modal-body" ref={modalBodyRef}>
                     <div className="ih-modal-recommend-filter">
                         회원님을 위한 추천 <IconChevronDown />
                     </div>
@@ -270,6 +287,43 @@ const CommentRow = ({
     )
 }
 
+/* ===================== 피드 글 (2줄까지만 보이고, 3줄 이상이면 더보기) ===================== */
+const FeedCaption = ({ user, caption }: { user: string; caption: string }) => {
+    const textRef = useRef<HTMLDivElement>(null)
+    const [expanded, setExpanded] = useState(false)
+    const [overflowing, setOverflowing] = useState(false)   // 3줄 이상이라 잘리고 있는지
+
+    useLayoutEffect(() => {
+        const el = textRef.current
+        if (!el || expanded) return
+
+        const check = () => setOverflowing(el.scrollHeight > el.clientHeight + 1)
+        check()
+
+        const observer = new ResizeObserver(check)
+        observer.observe(el)
+        return () => observer.disconnect()
+    }, [caption, expanded])
+
+    return (
+        <div className="ih-caption-wrap">
+            <div ref={textRef} className={`ih-caption ${expanded ? '' : 'clamp'}`}>
+                <b>{user}</b> {caption}
+            </div>
+            {!expanded && overflowing && (
+                <button type="button" className="ih-caption-more" onClick={() => setExpanded(true)}>
+                    더보기
+                </button>
+            )}
+            {expanded && overflowing && (
+                <button type="button" className="ih-caption-less" onClick={() => setExpanded(false)}>
+                    접기
+                </button>
+            )}
+        </div>
+    )
+}
+
 /* ===================== 피드 게시물 카드 ===================== */
 export const PostCard = ({ post, onOpenComments }: { post: FeedPost; onOpenComments: (post: FeedPost) => void }) => {
     useSyncExternalStore(subscribeToCommentLikes, getCommentLikesVersion, getCommentLikesVersion)
@@ -365,7 +419,7 @@ export const PostCard = ({ post, onOpenComments }: { post: FeedPost; onOpenComme
             )}
  
             {/* 글 */}
-            <div className="ih-caption"><b>{post.user}</b> {post.caption}</div>
+            <FeedCaption user={post.user} caption={post.caption} />
             <div className="ih-hashtags">{post.hashtags}</div>
             {previewComments.length > 0 && (
                 <button

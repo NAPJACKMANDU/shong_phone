@@ -11,7 +11,7 @@ export const PHOTOS_PATH = {
 /* ===================== 사진 박스 =====================
    src 가 있으면 사진을, 없으면 bg(색/그라데이션) 자리표시를 보여줘요. */
 export const PhotoBox = ({
-    src, bg, className = '', style, children, loading = 'lazy',
+    src, bg, className = '', style, children, loading = 'eager',
 }: { src?: string; bg?: string; className?: string; style?: CSSProperties; children?: ReactNode; loading?: 'eager' | 'lazy' }) => (
     <div className={`pc-photo ${className}`} style={{ ...(bg ? { background: bg } : {}), ...style }}>
         {src && <img src={src} alt="" loading={loading} decoding="async" />}
