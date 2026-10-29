@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import type { ReactNode } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getBackDestination, KakaoStatusBar, lineProps } from '../../common/kakaoCommon.tsx'
 import { MsgAvatar, IconMic, IconChevronLeft } from '../../common/imessagecommon.tsx'
-import { getThread, UNREAD_TOTAL } from '../../data/messagesdata.ts'
+import {
+    getThread, getThreadReadVersion, getUnreadTotal, markThreadAsRead, subscribeToThreadReadStatus,
+} from '../../data/messagesdata.ts'
 import type { ChatItem } from '../../data/messagesdata.ts'
 import '../../css/message/messageschatCss.css'
 
@@ -88,23 +90,27 @@ export const MessagesChat = () => {
     const location = useLocation()
     const [params] = useSearchParams()
     const thread = getThread(Number(params.get('id')))
-    const boxRef = useRef<HTMLDivElement>(null)
+    const wrapperRef = useRef<HTMLDivElement>(null)
     const [text, setText] = useState('')
+    useSyncExternalStore(subscribeToThreadReadStatus, getThreadReadVersion, getThreadReadVersion)
 
     const rows = useMemo(() => layoutRows(thread.items), [thread])
 
-    // 처음에는 가장 아래(최근 메시지)로, 위로 끝까지 올리면 처음 안내 글이 보여요
-    useEffect(() => {
-        const box = boxRef.current
-        if (box) box.scrollTop = box.scrollHeight
+    // The wrapper is the scroll container; start at the latest message.
+    useLayoutEffect(() => {
+        const wrapper = wrapperRef.current
+        if (wrapper) wrapper.scrollTop = wrapper.scrollHeight
+        markThreadAsRead(thread.id)
     }, [thread.id])
+
+    const unreadTotal = getUnreadTotal()
 
     const gap = (mt: number) => ({ marginTop: `calc(var(--u) * ${mt})` })
 
     return (
-        <div className="kk-wrapper ic-wrapper">
+        <div className="kk-wrapper ic-wrapper" ref={wrapperRef}>
             {/* 메시지 목록 */}
-            <div className="ic-messages" ref={boxRef}>
+            <div className="ic-messages">
                 {rows.map(({ item, mt, tail }, i) => {
                     if (item.kind === 'bubble') {
                         const color = item.from === 'other' ? 'gray' : (item.color ?? thread.meColor)
@@ -143,9 +149,12 @@ export const MessagesChat = () => {
             {/* 위쪽 흐림 + 상단 (뒤로 / 상대방 / 영상통화) */}
             <div className="im-topfade" />
             <div className="ic-top">
-                <button className="ic-back im-glass" onClick={() => navigate(getBackDestination(location.pathname), { replace: true })}>
+                <button
+                    className="ic-back im-glass"
+                    onClick={() => navigate(getBackDestination(location.pathname), { replace: true, state: location.state })}
+                >
                     <IconChevronLeft />
-                    <span className="ic-back-count">{UNREAD_TOTAL - thread.unreadCount}</span>
+                    {unreadTotal > 0 && <span className="ic-back-count">{unreadTotal}</span>}
                 </button>
                 <div className="ic-center-avatar"><MsgAvatar size={60} letter={thread.letter} /></div>
                 <button className="ic-name im-glass">

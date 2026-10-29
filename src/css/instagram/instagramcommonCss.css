@@ -23,6 +23,7 @@
     height: calc(var(--u) * 108);
     z-index: 20;
     background-color: #fff;
+    transition: height 0.2s ease;
 }
 .ig-header-row {
     position: absolute;
@@ -30,6 +31,15 @@
     left: 0;
     right: 0;
     height: calc(var(--u) * 40);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.ig-header-hidden .ig-header {
+    height: calc(var(--u) * 60);
+}
+.ig-header-hidden .ig-header-row {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
 }
 .ig-icon-btn {
     position: absolute;

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getBackDestination, KakaoStatusBar, IconSearch, lineProps } from '../../common/kakaoCommon.tsx'
 import { MEMOS, SECTION_DEFS, TOTAL_COUNT, MEMO_PATH, memoTitle, memoPreview } from '../../data/memoData.ts'
@@ -41,6 +41,7 @@ const IconCompose = () => (
 export const KakaoMemo = () => {
     const navigate = useNavigate()
     const location = useLocation()
+    const wrapperRef = useRef<HTMLDivElement>(null)
     const [query, setQuery] = useState('')
     const [pinnedOpen, setPinnedOpen] = useState(true)
 
@@ -55,8 +56,17 @@ export const KakaoMemo = () => {
             .filter((s) => s.memos.length > 0 || (!q && s.showWhenEmpty))
     }, [query])
 
+    useLayoutEffect(() => {
+        const state = location.state as { listScrollTop?: unknown } | null
+        const scrollTop = typeof state?.listScrollTop === 'number' ? state.listScrollTop : 0
+        if (wrapperRef.current) wrapperRef.current.scrollTop = scrollTop
+    }, [location.state])
+
     return (
-        <div className="kk-wrapper mm-wrapper">
+        <div
+            className="kk-wrapper mm-wrapper"
+            ref={wrapperRef}
+        >
             <KakaoStatusBar time="4:23" battery={74} />
 
             {/* 상단 헤더 */}
@@ -92,7 +102,9 @@ export const KakaoMemo = () => {
                                         <div
                                             className="mm-row"
                                             key={m.id}
-                                            onClick={() => navigate(`${MEMO_PATH.room}?id=${m.id}`)}
+                                            onClick={() => navigate(`${MEMO_PATH.room}?id=${m.id}`, {
+                                                state: { listScrollTop: wrapperRef.current?.scrollTop ?? 0 },
+                                            })}
                                         >
                                             <div className="mm-memo-title">{memoTitle(m)}</div>
                                             <div className="mm-memo-sub">

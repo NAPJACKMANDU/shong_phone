@@ -39,7 +39,7 @@
     display: flex;
     align-items: center;
     height: calc(var(--u) * 65);
-    margin: calc(var(--u) * 9) calc(var(--u) * 16) 0;
+    margin: calc(var(--u) * 9) calc(var(--u) * 7) 0;
     padding: 0 calc(var(--u) * 17) 0 calc(var(--u) * 11);
     box-sizing: border-box;
     border-radius: calc(var(--u) * 33);
@@ -80,7 +80,8 @@
     display: flex;
     align-items: center;
     height: calc(var(--u) * 73.7);
-    padding-left: calc(var(--u) * 26);
+    padding-left: calc(var(--u) * 14);
+    padding-right: calc(var(--u) * 14);
     cursor: pointer;
 }
 .il-dot {
@@ -133,9 +134,8 @@
     height: calc(var(--u) * 11);
 }
 .il-preview {
-    margin-top: calc(var(--u) * -2);
     padding-right: calc(var(--u) * 4);
-    font-size: calc(var(--u) * 14);
+    font-size: calc(var(--u) * 13);
     line-height: calc(var(--u) * 16);
     color: #8e8e93;
     white-space: pre-line;

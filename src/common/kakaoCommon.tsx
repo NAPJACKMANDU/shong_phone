@@ -100,7 +100,7 @@ export const KakaoStatusBar = ({ time = '4:26', battery = 97, variant = 'default
     const handleBack = () => {
         if (isHome) return
         const dest = getBackDestination(location.pathname)
-        navigate(dest, { replace: true })
+        navigate(dest, { replace: true, state: location.state })
     }
 
     const handleHome = () => {

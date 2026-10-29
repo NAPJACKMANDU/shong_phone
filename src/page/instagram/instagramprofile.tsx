@@ -82,6 +82,7 @@ const PROFILE_POSTS = GRID_POSTS.flatMap((gridPost) => {
 export const InstagramProfile = () => {
     const [tab, setTab] = useState<'grid' | 'repost' | 'tagged'>('grid')
     const [selectedPostId, setSelectedPostId] = useState<number | null>(null)
+    const [isHeaderHidden, setIsHeaderHidden] = useState(false)
     const [activeCommentPost, setActiveCommentPost] = useState<FeedPost | null>(null)
     const [notifications, setNotifications] = useState<KakaoNoticeMsg[]>([])
     const viewerRef = useRef<HTMLDivElement>(null)
@@ -106,11 +107,14 @@ export const InstagramProfile = () => {
         const postTop = postElement.getBoundingClientRect().top
             - viewer.getBoundingClientRect().top
             + viewer.scrollTop
-        viewer.scrollTop = postTop - headerHeight
+        viewer.scrollTo({ top: postTop - headerHeight, behavior: 'instant' })
     }, [selectedPostId])
 
     return (
-        <div className="kk-wrapper ig-wrapper">
+        <div
+            className={`kk-wrapper ig-wrapper ${isHeaderHidden ? 'ig-header-hidden' : ''}`}
+            onScroll={(event) => setIsHeaderHidden(event.currentTarget.scrollTop > 10)}
+        >
             {PROFILE_POSTS.flatMap((post) => post.slides
                 .filter((slide) => slide.kind === 'photo' && slide.src)
                 .map((slide) => <link key={`${post.id}-${slide.src}`} rel="preload" as="image" href={slide.src} />))}
@@ -172,7 +176,11 @@ export const InstagramProfile = () => {
             </div>
 
             {selectedPost && (
-                <div className="ip-post-viewer" ref={viewerRef}>
+                <div
+                    className="ip-post-viewer"
+                    ref={viewerRef}
+                    onScroll={(event) => setIsHeaderHidden(event.currentTarget.scrollTop > 10)}
+                >
                     <div className="ip-post-viewer-header">
                         <button type="button" onClick={() => setSelectedPostId(null)} aria-label="프로필로 돌아가기">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">

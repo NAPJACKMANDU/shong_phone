@@ -251,36 +251,30 @@ const WATCHED: Watched[] = [
     date: '2025.12.27(토) 18:00~21:10', theater: ['용산아이파크몰 IMAX관'], tag: 'IMAX 2',
     poster: 'cgv/avatar_fire_and_ash.png',
   },
+  {
+    id: 33, title: '왕과 사는 남자', age: '12',
+    watchedAt: '2026-02-04',
+    date: '2026.05.25(월) 15:00~17:45', theater: ['용산아이파크몰 IMAX관'], tag: 'IMAX 2',
+    poster: 'cgv/king.jpg',
+  },
 
   // 7. 2026.04.22 ~ 2026.10.21
   {
-    id: 33, title: '군체', age: '12',
+    id: 34, title: '군체', age: '12',
     watchedAt: '2026-05-21',
     date: '2026.05.25(월) 15:00~17:45', theater: ['용산아이파크몰 IMAX관'], tag: 'IMAX 2',
     poster: 'cgv/colony.png',
   },
   {
-    id: 34, title: '토이 스토리 5', age: 'ALL',
+    id: 35, title: '토이 스토리 5', age: 'ALL',
     watchedAt: '2026-06-27',
-    date: '2026.06.27(토) 13:20~15:00', theater: ['강남 3관'], tag: '일반 1',
+    date: '2026.06.27(토) 13:20~15:00', theater: ['강남 3관'], tag: '일반 5',
     poster: 'cgv/toy_story5.png',
   },
-  {
-    id: 35, title: '오디세이', age: '15',
-    watchedAt: '2026-08-16',
-    date: '2026.08.16(일) 16:40~19:20', theater: ['용산아이파크몰 IMAX관'], tag: 'IMAX 1',
-    poster: 'cgv/the_odyssey.png',
-  },
-  {
-    id: 36, title: '스파이더맨: 브랜드 뉴 데이', age: '12',
-    watchedAt: '2026-07-29',
-    date: '2026.08.29(토) 16:40~19:20', theater: ['용산아이파크몰 IMAX관'], tag: 'IMAX 5',  
-    poster: 'cgv/spiderman_brand_new_day.png',
-  }
 ]
 
-const PERIOD_START = Date.UTC(2026, 3, 22)
-const PERIOD_END = Date.UTC(2026, 9, 21)
+const PERIOD_START = Date.UTC(2025, 12, 15)
+const PERIOD_END = Date.UTC(2026, 6, 14)
 const OLDEST_PERIOD = 6
 
 const shiftPeriod = (timestamp: number, period: number) => {

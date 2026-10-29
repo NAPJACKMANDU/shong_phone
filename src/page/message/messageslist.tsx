@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { KakaoStatusBar, IconSearch, lineProps } from '../../common/kakaoCommon.tsx'
 import { MsgAvatar, IconMic, IMESSAGE_PATH } from '../../common/imessagecommon.tsx'
-import { lastMessageText, THREADS } from '../../data/messagesdata.ts'
+import {
+    getThreadReadVersion, getThreadUnreadCount, lastMessageText, subscribeToThreadReadStatus, THREADS,
+} from '../../data/messagesdata.ts'
 import '../../css/message/messageslistCss.css'
 
 /* ===================== 아이콘 ===================== */
@@ -26,7 +28,10 @@ const IconCompose = () => (
 /* ===================== 메시지 목록 페이지 ===================== */
 export const MessagesList = () => {
     const navigate = useNavigate()
+    const location = useLocation()
+    const wrapperRef = useRef<HTMLDivElement>(null)
     const [query, setQuery] = useState('')
+    useSyncExternalStore(subscribeToThreadReadStatus, getThreadReadVersion, getThreadReadVersion)
 
     const threads = useMemo(() => {
         const q = query.trim().toLowerCase()
@@ -37,8 +42,17 @@ export const MessagesList = () => {
         )
     }, [query])
 
+    useLayoutEffect(() => {
+        const state = location.state as { listScrollTop?: unknown } | null
+        const scrollTop = typeof state?.listScrollTop === 'number' ? state.listScrollTop : 0
+        if (wrapperRef.current) wrapperRef.current.scrollTop = scrollTop
+    }, [location.state])
+
     return (
-        <div className="kk-wrapper il-wrapper">
+        <div
+            className="kk-wrapper il-wrapper"
+            ref={wrapperRef}
+        >
             {/* 내용 (스크롤) */}
             <div className="il-scroll">
                 <h1 className="il-title">메시지</h1>
@@ -54,8 +68,14 @@ export const MessagesList = () => {
 
                 <div className="il-list">
                     {threads.map(({ thread, preview }) => (
-                        <div className="il-row" key={thread.id} onClick={() => navigate(`${IMESSAGE_PATH.chat}?id=${thread.id}`)}>
-                            {thread.unreadCount > 0 && <i className="il-dot" />}
+                        <div
+                            className="il-row"
+                            key={thread.id}
+                            onClick={() => navigate(`${IMESSAGE_PATH.chat}?id=${thread.id}`, {
+                                state: { listScrollTop: wrapperRef.current?.scrollTop ?? 0 },
+                            })}
+                        >
+                            {getThreadUnreadCount(thread.id) > 0 && <i className="il-dot" />}
                             <MsgAvatar size={45} letter={thread.letter} />
                             <div className="il-body">
                                 <span className="il-name">{thread.name}</span>

@@ -123,7 +123,7 @@ export const RouterSetting = () => {
 
             // 설정된 조건별 목적지로 이동
             const dest = getBackDestination(pathname)
-            navigate(dest, { replace: true })
+            navigate(dest, { replace: true, state: location.state })
         }
 
         const handlePointerCancel = () => {
@@ -139,7 +139,7 @@ export const RouterSetting = () => {
             window.removeEventListener("pointerup", handlePointerUp)
             window.removeEventListener("pointercancel", handlePointerCancel)
         }
-    }, [location.pathname, navigate])
+    }, [location.pathname, location.state, navigate])
 
     return (
         <>

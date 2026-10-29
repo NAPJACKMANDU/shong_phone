@@ -532,7 +532,7 @@ export const FEED_POSTS: FeedPost[] = [
         music: '도경수(D.O.) - Si Fueras Mía',
         likedBy: { name: SHOTARO, tints: [SHOTARO, WONBIN, EUNSEOK] },
         src:getInstagramProfileSrc(ANTON),
-        commentCount: 5932,
+        commentCount: 3972,
         ratio: 0.8,
         slides: [
             { kind: 'photo', src: '/instagram/tonpost3.jpg' },
@@ -569,7 +569,7 @@ export const FEED_POSTS: FeedPost[] = [
             'When we look back on the time we’ve spent together in the future, I hope these moments remain cozy memories that warmly embrace our hearts, like gentle sunlight shimmering on the water’s edge. Thank you for always being by my side and filling me with that warmth first.'].join('\n'),
         date: '6월 28일',
         previewComments: [
-            { id: 201, user: SEONGCHAN, tint: 2, text: '천사', isLiked: false },
+            { id: 201, user: SEONGCHAN, tint: 2, text: '천사 먼발치라는 말도 알아~ 많이 컸네 이제 아가 아니네~ ㅎㅎ', isLiked: false },
             { id: 202, user: WONBIN, tint: 2, text: '임마ㅏ 우리 친하게 지내자', isLiked: false },
         ],
         commentList: [
@@ -578,7 +578,7 @@ export const FEED_POSTS: FeedPost[] = [
                 user: SEONGCHAN,
                 tint: 2,
                 time: '2주',
-                text: '천사',
+                text: '천사 먼발치라는 말도 알아~ 많이 컸네 이제 아가 아니네~ ㅎㅎ',
                 likes: 4923,
                 isLiked: false,
                 isLikedByAuthor : true,
@@ -588,7 +588,7 @@ export const FEED_POSTS: FeedPost[] = [
                         user: ANTON,
                         tint: 3,
                         time: '2주',
-                        text: '@' + SEONGCHAN + ' 😇',
+                        text: '@' + SEONGCHAN + ' 베이비 졸업',
                         likes: 3254,
                         isLiked: false,
                         isAuthor: true,
@@ -664,10 +664,10 @@ export const FEED_POSTS: FeedPost[] = [
             },
             {
                 id: 5,
-                user: 'error_404_found',
+                user: 'letstonright',
                 tint: 3,
                 time: '2주',
-                text: '귀엽다',
+                text: '이앤톤 너무 어른스러움 ㅠㅠ',
                 likes: 0,
                 isLiked: false,
                 

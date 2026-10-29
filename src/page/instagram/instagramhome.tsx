@@ -452,6 +452,7 @@ export const PostCard = ({ post, onOpenComments }: { post: FeedPost; onOpenComme
 /* ===================== 메인 홈 컴포넌트 ===================== */
 export const InstagramHome = () => {
     const navigate = useNavigate()
+    const [isHeaderHidden, setIsHeaderHidden] = useState(false)
     const [activeCommentPost, setActiveCommentPost] = useState<FeedPost | null>(null)
     const [notifications, setNotifications] = useState<KakaoNoticeMsg[]>([])
     const seenStoryUserIds = getSeenStoryUserIds()
@@ -469,7 +470,10 @@ export const InstagramHome = () => {
     }
 
     return (
-        <div className="kk-wrapper ig-wrapper">
+        <div
+            className={`kk-wrapper ig-wrapper ${isHeaderHidden ? 'ig-header-hidden' : ''}`}
+            onScroll={(event) => setIsHeaderHidden(event.currentTarget.scrollTop > 10)}
+        >
             {FEED_POSTS.flatMap((post) => post.slides
                 .filter((slide) => slide.kind === 'photo' && slide.src)
                 .map((slide) => <link key={`${post.id}-${slide.src}`} rel="preload" as="image" href={slide.src} />))}

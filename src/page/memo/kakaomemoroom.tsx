@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getBackDestination, KakaoStatusBar, lineProps } from '../../common/kakaoCommon.tsx'
@@ -76,9 +77,15 @@ export const KakaoMemoRoom = () => {
     const location = useLocation()
     const [params] = useSearchParams()
     const memo = getMemo(Number(params.get('id')))
+    const wrapperRef = useRef<HTMLDivElement>(null)
+
+    useLayoutEffect(() => {
+        const wrapper = wrapperRef.current
+        if (wrapper) wrapper.scrollTop = 0
+    }, [memo.id])
 
     return (
-        <div className="kk-wrapper mr-wrapper">
+        <div className="kk-wrapper mr-wrapper" ref={wrapperRef}>
             {/* 글 */}
             <div className="mr-scroll">
                 <div className="mr-stamp">{memo.stamp}</div>
@@ -88,7 +95,12 @@ export const KakaoMemoRoom = () => {
             {/* 위쪽 흐림 + 뒤로 / 공유·더보기 */}
             <div className="mr-topfade" />
             <div className="mr-top">
-                <button className="mr-round mr-glass" onClick={() => navigate(getBackDestination(location.pathname), { replace: true })}><IconBack /></button>
+                <button
+                    className="mr-round mr-glass"
+                    onClick={() => navigate(getBackDestination(location.pathname), { replace: true, state: location.state })}
+                >
+                    <IconBack />
+                </button>
                 <div className="mr-pill mr-glass">
                     <button><IconShare /></button>
                     <button><IconDots /></button>
