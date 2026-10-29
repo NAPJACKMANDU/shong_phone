@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { KakaoStatusBar } from '../../common/kakaoCommon.tsx'
 import { IgAvatar, IgTabBar, IconPlus } from '../../common/instagramcommon.tsx'
 import KakaoNotification from '../kakaoTalk/kakaoNotification.tsx'
@@ -85,9 +85,9 @@ export const InstagramProfile = () => {
     const [isHeaderHidden, setIsHeaderHidden] = useState(false)
     const [activeCommentPost, setActiveCommentPost] = useState<FeedPost | null>(null)
     const [notifications, setNotifications] = useState<KakaoNoticeMsg[]>([])
-    const viewerRef = useRef<HTMLDivElement>(null)
-    const postRefs = useRef(new Map<number, HTMLDivElement>())
     const selectedPost = PROFILE_POSTS.find((post) => post.id === selectedPostId) ?? null
+    const selectedPostIndex = PROFILE_POSTS.findIndex((post) => post.id === selectedPostId)
+    const visiblePosts = selectedPostIndex >= 0 ? PROFILE_POSTS.slice(selectedPostIndex) : []
     const showAutoReplyNotification = (reply: CommentReply) => {
         setNotifications((current) => [...current, {
             id: Date.now(),
@@ -96,19 +96,10 @@ export const InstagramProfile = () => {
         }])
     }
 
-    useLayoutEffect(() => {
-        if (selectedPostId === null) return
-
-        const viewer = viewerRef.current
-        const postElement = postRefs.current.get(selectedPostId)
-        if (!viewer || !postElement) return
-
-        const headerHeight = viewer.querySelector('.ip-post-viewer-header')?.clientHeight ?? 0
-        const postTop = postElement.getBoundingClientRect().top
-            - viewer.getBoundingClientRect().top
-            + viewer.scrollTop
-        viewer.scrollTo({ top: postTop - headerHeight, behavior: 'instant' })
-    }, [selectedPostId])
+    const closePostViewer = () => {
+        setSelectedPostId(null)
+        setIsHeaderHidden(false)
+    }
 
     return (
         <div
@@ -178,27 +169,19 @@ export const InstagramProfile = () => {
             {selectedPost && (
                 <div
                     className="ip-post-viewer"
-                    ref={viewerRef}
                     onScroll={(event) => setIsHeaderHidden(event.currentTarget.scrollTop > 10)}
                 >
                     <div className="ip-post-viewer-header">
-                        <button type="button" onClick={() => setSelectedPostId(null)} aria-label="프로필로 돌아가기">
+                        <button type="button" onClick={closePostViewer} aria-label="프로필로 돌아가기">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 4 7 12 15 20" />
                             </svg>
                         </button>
                         <b>게시물</b>
                     </div>
-                    {PROFILE_POSTS.map((post) => (
-                        <div
-                            className="ip-post-item"
-                            key={post.id}
-                            ref={(element) => {
-                                if (element) postRefs.current.set(post.id, element)
-                                else postRefs.current.delete(post.id)
-                            }}
-                        >
-                            <PostCard key={`${selectedPostId}-${post.id}`} post={post} onOpenComments={setActiveCommentPost} />
+                    {visiblePosts.map((post) => (
+                        <div className="ip-post-item" key={post.id}>
+                            <PostCard post={post} onOpenComments={setActiveCommentPost} />
                         </div>
                     ))}
                 </div>

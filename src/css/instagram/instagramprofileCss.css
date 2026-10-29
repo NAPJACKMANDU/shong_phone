@@ -272,8 +272,6 @@
     inset: calc(var(--u) * 52) 0 0;
     z-index: 25;
     overflow-y: auto;
-    scroll-snap-type: y proximity;
-    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
     background-color: #fff;
@@ -281,15 +279,6 @@
 }
 .ip-post-viewer::-webkit-scrollbar {
     display: none;
-}
-.ip-post-viewer::after {
-    content: "";
-    display: block;
-    height: calc(3dvh - var(--u) * 2);
-}
-.ip-post-item {
-    scroll-snap-align: start;
-    scroll-margin-top: calc(var(--u) * 48);
 }
 .ip-post-viewer-header {
     position: sticky;
