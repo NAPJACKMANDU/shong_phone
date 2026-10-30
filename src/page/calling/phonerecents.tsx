@@ -94,7 +94,7 @@ export const PhoneRecents = () => {
                                 <span className="pr-time">{c.time}</span>
                                 <PhoneInfoButton />
                             </div>
-                        </div>
+                        </div>  
                     ))}
                     {calls.length === 0 && <div className="pr-empty">통화 기록이 없습니다</div>}
                 </div>

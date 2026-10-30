@@ -156,11 +156,11 @@ export const MessagesChat = () => {
                     <IconChevronLeft />
                     {unreadTotal > 0 && <span className="ic-back-count">{unreadTotal}</span>}
                 </button>
-                <div className="ic-center-avatar"><MsgAvatar size={60} letter={thread.letter} /></div>
                 <button className="ic-name im-glass">
                     {thread.name}
                     <IconSmallChevron />
                 </button>
+                <div className="ic-center-avatar"><MsgAvatar size={60} letter={thread.letter} /></div>
                 <button className="ic-video im-round im-glass"><IconVideo /></button>
             </div>
 

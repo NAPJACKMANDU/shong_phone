@@ -289,7 +289,7 @@ export const TIME_SLOTS: TimeSlotData[] = [
     {
         month: 6, day: 2, time: '10:00',
         friendLog:  {time: '10:00', caption: '오자마자 행사 다녀왔네요..', videoUrl: '/setlog/ton24.mp4'},
-        myLog: { time: '10:00', caption: '형은 양치 중 거기 오후 7시더라', videoUrl: '/setlog/shong32.mp4'},
+        myLog: { time: '10:00', caption: '형은 양치 중 거기 오후 9시더라', videoUrl: '/setlog/shong32.mp4'},
         friendComment :'기사 봤어 보고 싶다~~ㅜ',
         meComment :'맞아요 시차 🙃',
     },
@@ -386,25 +386,25 @@ export const TIME_SLOTS: TimeSlotData[] = [
 
     /* ----------------- 7월 ----------------- */
     {
-        month: 7, day: 10, time: '11:00',
+        month: 7, day: 10, time: '10:00',
         friendLog: { time: '11:00', caption: '성차니 형 저 파티 왔어요 ㅎㅎ', videoUrl: '/setlog/ton27.mp4' },
         friendComment : '오랜만에 셋로그 뭐야ㅏ',
         myLog: { time: '11:00', bg: '#e4e4e4'},
     },
     {
-        month: 7, day: 10, time: '12:00',
+        month: 7, day: 10, time: '11:00',
         friendLog: { time: '12:00', caption: 'I miss you 😬', videoUrl: '/setlog/ton28.mp4' },
         friendComment : '형도 보고 싶어',
         myLog: { time: '12:00', bg: '#e4e4e4'},
     },
     {
-        month: 7, day: 10, time: '15:00',
+        month: 7, day: 10, time: '14:00',
         friendLog: { time: '15:00', caption: 'yeah-!!', videoUrl: '/setlog/ton29.mp4' },
         friendComment : '거기 새벽 한 시 아니야?',
         myLog: { time: '13:00', bg: '#e4e4e4'},
     },
     {
-        month: 7, day: 10, time: '16:00',
+        month: 7, day: 10, time: '15:00',
         friendLog: { time: '16:00', caption: '우아ㅏ 저 잘생겼대요 :D', videoUrl: '/setlog/ton30.mp4' },
         friendComment : '하 찬영아 술 깨면 연락해',
         myLog: { time: '15:00', bg: '#e4e4e4'},
