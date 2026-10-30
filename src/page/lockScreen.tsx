@@ -23,7 +23,7 @@ interface LockScreenProps {
   showStatusBar?: boolean;
 }
 
-export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps) => {
+export const LockScreen = ({ onSuccess }: LockScreenProps) => {
   const [showPasscode, setShowPasscode] = useState(false);
   const [dragY, setDragY] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -108,7 +108,7 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
       {/* 배경 사진 (공통) */}
       <HomeWallpaper className="lock-bg" />
 
-      {showStatusBar && (
+    
         <div className="status-bar fixed-status-bar">
           <span className="status-carrier">LG U+</span>
           <div className="dynamic-island">
@@ -125,10 +125,10 @@ export const LockScreen = ({ onSuccess, showStatusBar = true }: LockScreenProps)
               <rect x="15" y="0" width="3" height="12" rx="0.8" />
             </svg>
             <span className="status-5g">5G</span>
-            <div className="battery">79</div>
+            <div className="battery">74</div>
           </div>
         </div>
-      )}
+      
 
       {/* ===== 2. 암호 입력 화면 (상태바 아래에 등장) ===== */}
       <div className={`passcode-screen ${showPasscode ? 'active' : ''}`}>
